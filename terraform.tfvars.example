@@ -1,0 +1,30 @@
+# Copia este fichero como terraform.tfvars y rellena los valores del país.
+
+project_id                     = "my-gcp-project-spain"
+country                        = "spain"
+billing_cloud_platform_dataset = "BILLING_CLOUD_PLATFORM"
+location                       = "EU"
+
+# ─── Cuentas pagadoras ─────────────────────────────────────────────────────
+# Una entrada por cada payer_billing_account_id del país.
+# Clave   = ID tal como aparece en reseller_billing_detailed_export_v1
+# Valor   = nombre que se mostrará en los cuadros de mando
+payer_billing_accounts = {
+  "AAAAAA-BBBBBB-CCCCCC" = "Cuenta Principal"
+  # "DDDDDD-EEEEEE-FFFFFF" = "Cuenta Secundaria"   # añade más si hace falta
+}
+
+# ─── Símbolos de divisa ────────────────────────────────────────────────────
+# Clave = CurrencyIsoCode tal como aparece en CurrencyIsoCode__c de Salesforce
+# Valor = símbolo a mostrar en las vistas de Looker
+currency_symbols = {
+  "EUR" = "€"
+  "USD" = "$"
+  "GBP" = "£"
+}
+
+scheduled_query_service_account = "bigquery-talend@my-gcp-project-spain.iam.gserviceaccount.com"
+
+# Service account que ejecuta la migración de sku_third_party desde ip-billing-prod.
+# Dejar vacío si no aplica en este despliegue.
+sku_third_party_migration_service_account = ""

@@ -1,0 +1,14 @@
+# Valores reales por país — NUNCA subir al repositorio
+terraform.tfvars
+
+# Estado y caché de Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfplan
+
+# Credenciales y claves
+*.json
+*.pem
+*.key

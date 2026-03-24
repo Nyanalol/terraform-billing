@@ -1,0 +1,27 @@
+
+SELECT
+  CAST(NULL AS STRING) AS billing_account_id,
+  CAST(NULL AS STRING) AS Dominio__c,
+  CAST(NULL AS STRING) AS OpportunityId__c,
+  CAST(NULL AS STRING) AS SKU__c,
+  CAST(NULL AS STRING) AS CurrencyIsoCode__c,
+  CAST(NULL AS STRING) AS TotalSupport,
+  CAST(NULL AS STRING) AS Margen__c,
+  CAST(NULL AS STRING) AS Total_gcp,
+  CAST(NULL AS STRING) AS Magen_gcp,
+  CAST(NULL AS STRING) AS Total_gmp,
+  CAST(NULL AS STRING) AS Margen_gmp,
+  CAST(NULL AS STRING) AS Margen_total,
+  CAST(NULL AS STRING) AS Cargo_Google__c,
+  CAST(NULL AS STRING) AS Importe__c,
+  CAST(NULL AS STRING) AS invoice_month,
+  CAST(NULL AS STRING) AS invoce_date,
+  CAST(NULL AS STRING) AS cambio_aplicado,
+  CAST(NULL AS STRING) AS project_id,
+  CAST(NULL AS STRING) AS descripcion,
+  CAST(NULL AS STRING) AS Margen_gcp_euros,
+  CAST(NULL AS STRING) AS Margen_gmp_euros,
+  CAST(NULL AS STRING) AS Margen_soporte_euros,
+  CAST(NULL AS STRING) AS Margen_soporte_maps_euros,
+  CAST(NULL AS STRING) AS Total_thirdparty
+LIMIT 0
