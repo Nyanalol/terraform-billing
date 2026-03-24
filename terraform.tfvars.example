@@ -21,6 +21,13 @@ currency_symbols = {
   "EUR" = "€"
   "USD" = "$"
   "GBP" = "£"
+  "HKD" = "HK$"
+  "INR" = "₹"
+  "VND" = "₫"
+  "MXN" = "MX$"
+  "COP" = "COL$"
+  "SGD" = "S$"
+  "CHF" = "Fr"
 }
 
 scheduled_query_service_account = "bigquery-talend@my-gcp-project-spain.iam.gserviceaccount.com"
