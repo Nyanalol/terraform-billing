@@ -17,12 +17,12 @@ resource "google_bigquery_table" "billing_accounts" {
   }
 
   schema = jsonencode([
-    { name = "Fecha_Fin_Contrato__c",    type = "DATE",   mode = "NULLABLE" },
-    { name = "Fecha_Inicio_Contrato__c", type = "DATE",   mode = "NULLABLE" },
-    { name = "billing_account_id__c",    type = "STRING", mode = "NULLABLE" },
-    { name = "billing_account_desc__c",  type = "STRING", mode = "NULLABLE" },
-    { name = "Desglosar_Facturas__c",    type = "STRING", mode = "NULLABLE" },
-    { name = "Billing_Model__c",         type = "STRING", mode = "NULLABLE" }
+    { name = "Fecha_Fin_Contrato__c", type = "DATE", mode = "NULLABLE" },
+    { name = "Fecha_Inicio_Contrato__c", type = "DATE", mode = "NULLABLE" },
+    { name = "billing_account_id__c", type = "STRING", mode = "NULLABLE" },
+    { name = "billing_account_desc__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Desglosar_Facturas__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Billing_Model__c", type = "STRING", mode = "NULLABLE" }
   ])
 }
 
@@ -39,31 +39,31 @@ resource "google_bigquery_table" "importes_lecturas_temp" {
   }
 
   schema = jsonencode([
-    { name = "billing_account_id",       type = "STRING", mode = "NULLABLE" },
-    { name = "Dominio__c",               type = "STRING", mode = "NULLABLE" },
-    { name = "OpportunityId__c",         type = "STRING", mode = "NULLABLE" },
-    { name = "SKU__c",                   type = "FLOAT",  mode = "NULLABLE" },
-    { name = "CurrencyIsoCode__c",       type = "STRING", mode = "NULLABLE" },
-    { name = "TotalSupport",             type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen__c",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_gcp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Magen_gcp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_gmp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_gmp",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_total",            type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Cargo_Google__c",         type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Importe__c",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "invoice_month",           type = "STRING", mode = "NULLABLE" },
-    { name = "invoce_date",             type = "STRING", mode = "NULLABLE" },
-    { name = "cambio_aplicado",         type = "FLOAT",  mode = "NULLABLE" },
-    { name = "project_id",              type = "STRING", mode = "NULLABLE" },
-    { name = "descripcion",             type = "STRING", mode = "NULLABLE" },
-    { name = "Margen_gcp_euros",        type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_gmp_euros",        type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_soporte_euros",    type = "FLOAT",  mode = "NULLABLE" },
+    { name = "billing_account_id", type = "STRING", mode = "NULLABLE" },
+    { name = "Dominio__c", type = "STRING", mode = "NULLABLE" },
+    { name = "OpportunityId__c", type = "STRING", mode = "NULLABLE" },
+    { name = "SKU__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "CurrencyIsoCode__c", type = "STRING", mode = "NULLABLE" },
+    { name = "TotalSupport", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_gcp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Magen_gcp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_gmp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_gmp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_total", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Cargo_Google__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Importe__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "invoice_month", type = "STRING", mode = "NULLABLE" },
+    { name = "invoce_date", type = "STRING", mode = "NULLABLE" },
+    { name = "cambio_aplicado", type = "FLOAT", mode = "NULLABLE" },
+    { name = "project_id", type = "STRING", mode = "NULLABLE" },
+    { name = "descripcion", type = "STRING", mode = "NULLABLE" },
+    { name = "Margen_gcp_euros", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_gmp_euros", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_soporte_euros", type = "FLOAT", mode = "NULLABLE" },
     { name = "Margen_soporte_maps_euros", type = "FLOAT", mode = "NULLABLE" },
-    { name = "Margen_SWO",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_thirdparty",        type = "FLOAT",  mode = "NULLABLE" }
+    { name = "Margen_SWO", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_thirdparty", type = "FLOAT", mode = "NULLABLE" }
   ])
 }
 
@@ -79,31 +79,31 @@ resource "google_bigquery_table" "importes_lecturas_by_project" {
   }
 
   schema = jsonencode([
-    { name = "billing_account_id",       type = "STRING", mode = "NULLABLE" },
-    { name = "Dominio__c",               type = "STRING", mode = "NULLABLE" },
-    { name = "OpportunityId__c",         type = "STRING", mode = "NULLABLE" },
-    { name = "SKU__c",                   type = "FLOAT",  mode = "NULLABLE" },
-    { name = "CurrencyIsoCode__c",       type = "STRING", mode = "NULLABLE" },
-    { name = "TotalSupport",             type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen__c",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_gcp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Magen_gcp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_gmp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_gmp",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_total",            type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Cargo_Google__c",         type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Importe__c",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "invoice_month",           type = "STRING", mode = "NULLABLE" },
-    { name = "invoice_date",            type = "STRING", mode = "NULLABLE" },
-    { name = "cambio_aplicado",         type = "FLOAT",  mode = "NULLABLE" },
-    { name = "project_id",              type = "STRING", mode = "NULLABLE" },
-    { name = "descripcion",             type = "STRING", mode = "NULLABLE" },
-    { name = "Margen_gcp_euros",        type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_gmp_euros",        type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_soporte_euros",    type = "FLOAT",  mode = "NULLABLE" },
+    { name = "billing_account_id", type = "STRING", mode = "NULLABLE" },
+    { name = "Dominio__c", type = "STRING", mode = "NULLABLE" },
+    { name = "OpportunityId__c", type = "STRING", mode = "NULLABLE" },
+    { name = "SKU__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "CurrencyIsoCode__c", type = "STRING", mode = "NULLABLE" },
+    { name = "TotalSupport", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_gcp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Magen_gcp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_gmp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_gmp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_total", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Cargo_Google__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Importe__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "invoice_month", type = "STRING", mode = "NULLABLE" },
+    { name = "invoice_date", type = "STRING", mode = "NULLABLE" },
+    { name = "cambio_aplicado", type = "FLOAT", mode = "NULLABLE" },
+    { name = "project_id", type = "STRING", mode = "NULLABLE" },
+    { name = "descripcion", type = "STRING", mode = "NULLABLE" },
+    { name = "Margen_gcp_euros", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_gmp_euros", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_soporte_euros", type = "FLOAT", mode = "NULLABLE" },
     { name = "Margen_soporte_maps_euros", type = "FLOAT", mode = "NULLABLE" },
-    { name = "Margen_SWO",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_thirdparty",        type = "STRING", mode = "REQUIRED" }
+    { name = "Margen_SWO", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_thirdparty", type = "FLOAT", mode = "NULLABLE" }
   ])
 }
 
@@ -119,14 +119,14 @@ resource "google_bigquery_table" "billing_accounts_full" {
   }
 
   schema = jsonencode([
-    { name = "Fecha_Fin_Contrato__c",    type = "DATE",   mode = "NULLABLE" },
-    { name = "Fecha_Inicio_Contrato__c", type = "DATE",   mode = "NULLABLE" },
-    { name = "billing_account_id__c",    type = "STRING", mode = "NULLABLE" },
-    { name = "billing_account_desc__c",  type = "STRING", mode = "NULLABLE" },
-    { name = "Desglosar_Facturas__c",    type = "STRING", mode = "NULLABLE" },
-    { name = "Billing_Model__c",         type = "STRING", mode = "NULLABLE" },
-    { name = "StageName",                type = "STRING", mode = "REQUIRED" },
-    { name = "Empresa_IP__c",            type = "STRING", mode = "NULLABLE" }
+    { name = "Fecha_Fin_Contrato__c", type = "DATE", mode = "NULLABLE" },
+    { name = "Fecha_Inicio_Contrato__c", type = "DATE", mode = "NULLABLE" },
+    { name = "billing_account_id__c", type = "STRING", mode = "NULLABLE" },
+    { name = "billing_account_desc__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Desglosar_Facturas__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Billing_Model__c", type = "STRING", mode = "NULLABLE" },
+    { name = "StageName", type = "STRING", mode = "REQUIRED" },
+    { name = "Empresa_IP__c", type = "STRING", mode = "NULLABLE" }
   ])
 }
 
@@ -142,20 +142,20 @@ resource "google_bigquery_table" "importes_lecturas_workspace" {
   }
 
   schema = jsonencode([
-    { name = "Cargo_Google__c",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Descripcion__c",               type = "STRING", mode = "NULLABLE" },
-    { name = "Definicion_del_producto__c",   type = "STRING", mode = "NULLABLE" },
-    { name = "Fecha_Inicio__c",              type = "DATE",   mode = "NULLABLE" },
-    { name = "Fecha_Fin__c",                 type = "DATE",   mode = "NULLABLE" },
-    { name = "Dominio__c",                   type = "STRING", mode = "NULLABLE" },
-    { name = "Anyo__c",                      type = "STRING", mode = "NULLABLE" },
-    { name = "Mes__c",                       type = "STRING", mode = "NULLABLE" },
-    { name = "CurrencyIsoCode",              type = "STRING", mode = "NULLABLE" },
-    { name = "SKU2__c",                      type = "STRING", mode = "NULLABLE" },
-    { name = "Oportunidad__c",               type = "STRING", mode = "NULLABLE" },
-    { name = "Order_Number__c",              type = "STRING", mode = "NULLABLE" },
-    { name = "usage_type",                   type = "STRING", mode = "NULLABLE" },
-    { name = "type",                         type = "STRING", mode = "NULLABLE" }
+    { name = "Cargo_Google__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Descripcion__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Definicion_del_producto__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Fecha_Inicio__c", type = "DATE", mode = "NULLABLE" },
+    { name = "Fecha_Fin__c", type = "DATE", mode = "NULLABLE" },
+    { name = "Dominio__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Anyo__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Mes__c", type = "STRING", mode = "NULLABLE" },
+    { name = "CurrencyIsoCode", type = "STRING", mode = "NULLABLE" },
+    { name = "SKU2__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Oportunidad__c", type = "STRING", mode = "NULLABLE" },
+    { name = "Order_Number__c", type = "STRING", mode = "NULLABLE" },
+    { name = "usage_type", type = "STRING", mode = "NULLABLE" },
+    { name = "type", type = "STRING", mode = "NULLABLE" }
   ])
 }
 
@@ -171,30 +171,30 @@ resource "google_bigquery_table" "importes_lecturas_anuales" {
   }
 
   schema = jsonencode([
-    { name = "billing_account_id",       type = "STRING", mode = "NULLABLE" },
-    { name = "Dominio__c",               type = "STRING", mode = "NULLABLE" },
-    { name = "OpportunityId__c",         type = "STRING", mode = "NULLABLE" },
-    { name = "SKU__c",                   type = "FLOAT",  mode = "NULLABLE" },
-    { name = "CurrencyIsoCode__c",       type = "STRING", mode = "NULLABLE" },
-    { name = "TotalSupport",             type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen__c",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_gcp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Magen_gcp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Total_gmp",               type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_gmp",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_total",            type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Cargo_Google__c",         type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Importe__c",              type = "FLOAT",  mode = "NULLABLE" },
-    { name = "invoice_month",           type = "STRING", mode = "NULLABLE" },
-    { name = "invoce_date",             type = "STRING", mode = "NULLABLE" },
-    { name = "cambio_aplicado",         type = "FLOAT",  mode = "NULLABLE" },
-    { name = "project_id",              type = "STRING", mode = "NULLABLE" },
-    { name = "descripcion",             type = "STRING", mode = "NULLABLE" },
-    { name = "Margen_gcp_euros",        type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_gmp_euros",        type = "FLOAT",  mode = "NULLABLE" },
-    { name = "Margen_soporte_euros",    type = "FLOAT",  mode = "NULLABLE" },
+    { name = "billing_account_id", type = "STRING", mode = "NULLABLE" },
+    { name = "Dominio__c", type = "STRING", mode = "NULLABLE" },
+    { name = "OpportunityId__c", type = "STRING", mode = "NULLABLE" },
+    { name = "SKU__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "CurrencyIsoCode__c", type = "STRING", mode = "NULLABLE" },
+    { name = "TotalSupport", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_gcp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Magen_gcp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Total_gmp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_gmp", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_total", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Cargo_Google__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Importe__c", type = "FLOAT", mode = "NULLABLE" },
+    { name = "invoice_month", type = "STRING", mode = "NULLABLE" },
+    { name = "invoce_date", type = "STRING", mode = "NULLABLE" },
+    { name = "cambio_aplicado", type = "FLOAT", mode = "NULLABLE" },
+    { name = "project_id", type = "STRING", mode = "NULLABLE" },
+    { name = "descripcion", type = "STRING", mode = "NULLABLE" },
+    { name = "Margen_gcp_euros", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_gmp_euros", type = "FLOAT", mode = "NULLABLE" },
+    { name = "Margen_soporte_euros", type = "FLOAT", mode = "NULLABLE" },
     { name = "Margen_soporte_maps_euros", type = "FLOAT", mode = "NULLABLE" },
-    { name = "Total_thirdparty",        type = "FLOAT",  mode = "NULLABLE" }
+    { name = "Total_thirdparty", type = "FLOAT", mode = "NULLABLE" }
   ])
 }
 

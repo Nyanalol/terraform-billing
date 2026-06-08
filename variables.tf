@@ -1,6 +1,11 @@
 variable "project_id" {
   description = "GCP project ID where the BigQuery datasets will be created."
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-z][a-z0-9-]{4,28}[a-z0-9]$", var.project_id))
+    error_message = "project_id no parece un ID de proyecto GCP válido (6-30 chars, minúsculas/números/guiones, empieza por letra)."
+  }
 }
 
 variable "country" {
@@ -35,6 +40,15 @@ variable "payer_billing_accounts" {
   description = "Map of payer_billing_account_id → account_name. Populates the payer_billing_accounts lookup table used by all billing views."
   type        = map(string)
   default     = {}
+
+  validation {
+    # Los IDs de cuenta pagadora tienen el formato XXXXXX-YYYYYY-ZZZZZZ (hex).
+    condition = alltrue([
+      for id in keys(var.payer_billing_accounts) :
+      can(regex("^[0-9A-Fa-f]{6}-[0-9A-Fa-f]{6}-[0-9A-Fa-f]{6}$", id))
+    ])
+    error_message = "Cada payer_billing_account_id debe tener el formato XXXXXX-YYYYYY-ZZZZZZ (3 grupos hex de 6, sin el prefijo 'billingAccounts/')."
+  }
 }
 
 # ─── Símbolos de divisa ───────────────────────────────────────────────────────
@@ -63,4 +77,45 @@ variable "sku_third_party_migration_service_account" {
   description = "Service account email for the sku_third_party migration query. Leave empty if not applicable."
   type        = string
   default     = ""
+}
+
+# ─── Service Account (bigquery-talend) ───────────────────────────────────────
+# Terraform crea la SA y le asigna los permisos (pasos 5, 8, 10, 12 del checklist):
+#   - En su propio proyecto: owner + bigquery.admin + bigquery.connectionUser
+#   - En el proyecto de España (cruzado): dataViewer + jobUser
+variable "service_account_id" {
+  description = "Account ID de la SA de Talend (antes de la @). Email: <id>@<project_id>.iam.gserviceaccount.com."
+  type        = string
+  default     = "bigquery-talend"
+}
+
+variable "create_service_account" {
+  description = "Si Terraform debe CREAR la SA. Poner false si la SA ya existe en el proyecto (p.ej. Hong Kong, creada a mano)."
+  type        = bool
+  default     = true
+}
+
+variable "spain_project_id" {
+  description = "Project ID del proyecto de España para los permisos cruzados de la SA."
+  type        = string
+  default     = "ip-billing-prod"
+}
+
+variable "manage_spain_iam" {
+  description = "Si Terraform gestiona los bindings IAM cruzados en el proyecto de España. Requiere setIamPolicy sobre ese proyecto."
+  type        = bool
+  default     = true
+}
+
+# ─── Staging bucket + HMAC (pasos 15-16) ─────────────────────────────────────
+variable "staging_bucket_name" {
+  description = "Nombre del bucket de staging de Talend (gcp-billing-process-staging-<código>). Vacío = no crear bucket."
+  type        = string
+  default     = ""
+}
+
+variable "create_hmac_key" {
+  description = "Si Terraform crea la clave HMAC (access/secret key) para la SA. El secret queda en el estado como output sensible."
+  type        = bool
+  default     = true
 }

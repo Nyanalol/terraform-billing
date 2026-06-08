@@ -8,11 +8,13 @@ Copia [`terraform.tfvars.example`](terraform.tfvars.example) como `terraform.tfv
 ## 1. Proyecto GCP
 
 - [ ] El proyecto GCP existe y está activo.
-- [ ] Las APIs necesarias están habilitadas en el proyecto:
-  - `bigquery.googleapis.com`
-  - `bigquerydatatransfer.googleapis.com` ← necesaria para las scheduled queries
-- [ ] Tienes credenciales con permisos suficientes para crear datasets, tablas y Data Transfer configs  
-  (`roles/bigquery.admin` + `roles/bigquerydatatransfer.admin` o equivalente).
+- [ ] Las APIs las habilita **Terraform** (`apis.tf`: `bigquery`, `bigquerydatatransfer`, `storage`).
+      Ya no hace falta activarlas a mano; solo que la cuenta que aplica pueda habilitar servicios
+      (`roles/serviceusage.serviceUsageAdmin` o equivalente).
+- [ ] Tienes credenciales con permisos suficientes para crear datasets, tablas, Data Transfer
+      configs, la service account, su IAM, el bucket de staging y la clave HMAC
+      (`roles/owner` sobre el proyecto del país suele ser lo más simple).
+- [ ] Si `manage_spain_iam = true`: la cuenta que aplica tiene `setIamPolicy` sobre `ip-billing-prod`.
 
 ---
 
@@ -61,19 +63,24 @@ Toma como referencia [`terraform.tfvars.example`](terraform.tfvars.example).
 
 ---
 
-## 4. Cuentas de servicio (crear antes del apply)
+## 4. Cuentas de servicio (las crea Terraform — paso 5 del checklist guarro)
 
-Las scheduled queries necesitan service accounts existentes en GCP. Créalos antes de referenciarlos en tfvars.
+**Ahora Terraform crea la SA `bigquery-talend` y le asigna los permisos** (fichero
+`modules/billing_datasets/service_account.tf`). Ya **no** hay que crearla a mano antes del apply.
+Quien manda en los permisos es **DATA (Terraform)**; Ops solo descarga el JSON de la SA ya creada.
 
-### `scheduled_query_service_account`
-Usada por **workspace\_sku\_sf** y **maps\_services**.
+Roles que asigna Terraform:
 
-| Recurso | Rol necesario |
+| Dónde | Roles |
 |---|---|
-| Dataset `BILLING_CLOUD_PLATFORM` | `roles/bigquery.dataEditor` |
-| Proyecto | `roles/bigquery.jobUser` |
+| Proyecto del país | `roles/owner`, `roles/bigquery.admin`, `roles/bigquery.connectionUser` |
+| Proyecto de España (`ip-billing-prod`), cruzado | `roles/bigquery.dataViewer`, `roles/bigquery.jobUser` |
 
-- [ ] SA creado y email anotado en `terraform.tfvars`.
+- [ ] Si la SA **ya existe** en el proyecto (creada a mano antes), poner `create_service_account = false`
+      en el `terraform.tfvars` (o hacer `terraform import`), para que el apply no choque.
+- [ ] Quien hace `apply` tiene `setIamPolicy` sobre `ip-billing-prod` (para los bindings cruzados).
+      Si no, poner `manage_spain_iam = false` y dar esos permisos a mano.
+- [ ] Tras el apply, **pasar la SA a Ops** para que descarguen el JSON key.
 
 ### `sku_third_party_migration_service_account` _(solo si el país recibe migración de terceros)_
 Usada por la query **sku\_third\_party\_migration\_from\_spain**.
@@ -101,7 +108,30 @@ Terraform crea las tablas con schema vacío y `lifecycle { ignore_changes = [sch
 
 ---
 
-## 6. Revisar el plan antes de aplicar
+## 6. Inicializar el backend remoto (estado en GCS)
+
+El estado de Terraform vive en un bucket de GCS compartido (`ip-billing-terraform-state`,
+proyecto `ip-billing-prod`), **no en local**. Cada país tiene su propio "espacio" de estado
+mediante un `prefix` distinto. Hay que pasar el prefix del país al inicializar:
+
+```bash
+terraform init -backend-config="prefix=billing/spain"   # cambiar 'spain' por el país
+```
+
+- [ ] He inicializado con el `prefix` correcto del país (`billing/<país>`).
+- [ ] No me he equivocado de país en el prefix (un prefix erróneo trabajaría sobre el estado de otro país).
+
+> El bucket de estado se crea **una sola vez** para todo el equipo (bootstrap manual):
+> ```bash
+> gcloud storage buckets create gs://ip-billing-terraform-state \
+>   --project=ip-billing-prod --location=EU \
+>   --uniform-bucket-level-access --public-access-prevention
+> gcloud storage buckets update gs://ip-billing-terraform-state --versioning
+> ```
+
+---
+
+## 7. Revisar el plan antes de aplicar
 
 ```bash
 terraform plan -out=plan.tfplan
@@ -117,7 +147,7 @@ Comprueba en el plan:
 
 ---
 
-## 7. Después del apply
+## 8. Después del apply
 
 - [ ] Verificar en BigQuery console que los 4 datasets existen con las tablas y vistas correctas.
 - [ ] Abrir una vista (ej. `billing_gcp`) y hacer un `SELECT * … LIMIT 10` — no debe dar error de referencia.

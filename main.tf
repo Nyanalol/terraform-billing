@@ -11,4 +11,12 @@ module "billing_datasets" {
   ext_maps_services_sheet_url               = var.ext_maps_services_sheet_url
   ext_workspace_sku_sf_sheet_url            = var.ext_workspace_sku_sf_sheet_url
   sku_third_party_migration_service_account = var.sku_third_party_migration_service_account
+
+  service_account_id     = var.service_account_id
+  create_service_account = var.create_service_account
+  spain_project_id       = var.spain_project_id
+  manage_spain_iam       = var.manage_spain_iam
+
+  staging_bucket_name = var.staging_bucket_name
+  create_hmac_key     = var.create_hmac_key
 }

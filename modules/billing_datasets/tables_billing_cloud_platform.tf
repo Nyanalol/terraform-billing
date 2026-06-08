@@ -12,12 +12,12 @@ resource "google_bigquery_table" "ext_workspace_sku_sf" {
   labels              = local.common_labels
 
   schema = jsonencode([
-    { name = "sku_id",              type = "STRING", mode = "NULLABLE" },
-    { name = "sku_sf_flex",         type = "STRING", mode = "NULLABLE" },
-    { name = "sku_sf_month",        type = "STRING", mode = "NULLABLE" },
-    { name = "service_id",          type = "STRING", mode = "NULLABLE" },
+    { name = "sku_id", type = "STRING", mode = "NULLABLE" },
+    { name = "sku_sf_flex", type = "STRING", mode = "NULLABLE" },
+    { name = "sku_sf_month", type = "STRING", mode = "NULLABLE" },
+    { name = "service_id", type = "STRING", mode = "NULLABLE" },
     { name = "service_description", type = "STRING", mode = "NULLABLE" },
-    { name = "sku_description",     type = "STRING", mode = "NULLABLE" },
+    { name = "sku_description", type = "STRING", mode = "NULLABLE" },
   ])
 
   external_data_configuration {
@@ -54,6 +54,9 @@ resource "google_bigquery_table" "ext_maps_services" {
   }
 }
 
+# NOTA: Terraform solo crea el "cascarón" de esta tabla. Los DATOS los gestiona la
+# scheduled query maps_services (WRITE_TRUNCATE en scheduled_queries.tf); por eso el
+# schema va con ignore_changes. El solapamiento es intencionado, no un error.
 resource "google_bigquery_table" "maps_services" {
   project             = var.project_id
   dataset_id          = google_bigquery_dataset.billing_cloud_platform.dataset_id
@@ -95,7 +98,7 @@ resource "google_bigquery_table" "gcp_billing_accounts_name_id" {
 
   schema = jsonencode([
     { name = "displayName", type = "STRING", mode = "NULLABLE" },
-    { name = "ID",          type = "STRING", mode = "NULLABLE" }
+    { name = "ID", type = "STRING", mode = "NULLABLE" }
   ])
 
   lifecycle {
@@ -110,11 +113,13 @@ resource "google_bigquery_table" "reseller_billing_detailed_export_v1" {
   deletion_protection = false
   labels              = local.common_labels
 
-  # Schema and partitioning are managed by the Google Billing export — ignore both.
+  # La tabla la crea el export de billing de Google (OPS, paso 3 del checklist):
+  # schema, particionado y clustering los gestiona el propio export — Terraform los ignora
+  # para no pelearse con él (el export la clusteriza por payer_billing_account_id).
   schema = jsonencode([])
 
   lifecycle {
-    ignore_changes = [schema, time_partitioning]
+    ignore_changes = [schema, time_partitioning, clustering]
   }
 }
 
@@ -140,12 +145,12 @@ resource "google_bigquery_table" "workspace_sku_sf" {
   labels              = local.common_labels
 
   schema = jsonencode([
-    { name = "sku_id",              type = "STRING", mode = "NULLABLE" },
-    { name = "sku_sf_flex",         type = "STRING", mode = "NULLABLE" },
-    { name = "sku_sf_month",        type = "STRING", mode = "NULLABLE" },
-    { name = "service_id",          type = "STRING", mode = "NULLABLE" },
+    { name = "sku_id", type = "STRING", mode = "NULLABLE" },
+    { name = "sku_sf_flex", type = "STRING", mode = "NULLABLE" },
+    { name = "sku_sf_month", type = "STRING", mode = "NULLABLE" },
+    { name = "service_id", type = "STRING", mode = "NULLABLE" },
     { name = "service_description", type = "STRING", mode = "NULLABLE" },
-    { name = "sku_description",     type = "STRING", mode = "NULLABLE" }
+    { name = "sku_description", type = "STRING", mode = "NULLABLE" }
   ])
 
   lifecycle {

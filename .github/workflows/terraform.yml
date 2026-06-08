@@ -1,0 +1,29 @@
+name: terraform
+
+# Comprobaciones de formato y validez en cada PR / push a master.
+# NO necesita credenciales de GCP: usa `init -backend=false` y `validate`,
+# que no contactan con el backend ni con la API de Google.
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  fmt-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.13.4"
+
+      - name: terraform fmt
+        run: terraform fmt -check -recursive
+
+      - name: terraform init (sin backend)
+        run: terraform init -backend=false -input=false
+
+      - name: terraform validate
+        run: terraform validate -no-color

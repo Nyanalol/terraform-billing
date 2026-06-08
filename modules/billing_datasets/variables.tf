@@ -53,3 +53,41 @@ variable "sku_third_party_migration_service_account" {
   type        = string
   default     = ""
 }
+
+# ─── Service Account (bigquery-talend) ───────────────────────────────────────
+variable "service_account_id" {
+  description = "Account ID (parte antes de la @) de la SA de Talend. Email resultante: <id>@<project_id>.iam.gserviceaccount.com."
+  type        = string
+  default     = "bigquery-talend"
+}
+
+variable "create_service_account" {
+  description = "Si Terraform debe CREAR la SA. Poner false en países donde la SA ya existe (creada a mano antes de Terraform); los bindings IAM se gestionan igual."
+  type        = bool
+  default     = true
+}
+
+variable "spain_project_id" {
+  description = "Project ID del proyecto de España, donde la SA del país necesita permisos cruzados (dataViewer + jobUser) para Maps y la migración de sku_third_party."
+  type        = string
+  default     = "ip-billing-prod"
+}
+
+variable "manage_spain_iam" {
+  description = "Si Terraform gestiona los bindings IAM cruzados en el proyecto de España. Requiere setIamPolicy sobre spain_project_id. Poner false para darlos a mano."
+  type        = bool
+  default     = true
+}
+
+# ─── Staging bucket + HMAC (pasos 15-16) ─────────────────────────────────────
+variable "staging_bucket_name" {
+  description = "Nombre del bucket de staging de Talend (gcp-billing-process-staging-<código>). Vacío = no crear bucket."
+  type        = string
+  default     = ""
+}
+
+variable "create_hmac_key" {
+  description = "Si Terraform crea la clave HMAC (access/secret key) para la SA. El secret queda en el estado como output sensible."
+  type        = bool
+  default     = true
+}

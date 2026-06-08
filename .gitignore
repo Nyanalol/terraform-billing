@@ -1,5 +1,10 @@
 # Valores reales por país — NUNCA subir al repositorio
 terraform.tfvars
+tfvars/*.tfvars
+!tfvars/example.tfvars
+
+# Logs locales
+logs/
 
 # Estado y caché de Terraform
 .terraform/

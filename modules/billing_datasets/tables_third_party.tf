@@ -16,8 +16,8 @@ resource "google_bigquery_table" "sku_third_party_dataset" {
 
   schema = jsonencode([
     { name = "service_name", type = "STRING", mode = "NULLABLE" },
-    { name = "sku_name",     type = "STRING", mode = "NULLABLE" },
-    { name = "sku_id",       type = "STRING", mode = "NULLABLE" },
-    { name = "date_added",   type = "STRING", mode = "NULLABLE" }
+    { name = "sku_name", type = "STRING", mode = "NULLABLE" },
+    { name = "sku_id", type = "STRING", mode = "NULLABLE" },
+    { name = "date_added", type = "STRING", mode = "NULLABLE" }
   ])
 }
