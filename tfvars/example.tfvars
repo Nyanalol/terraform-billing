@@ -34,8 +34,8 @@ currency_symbols = {
 # manage_spain_iam       = true    # false para no tocar la IAM de España
 
 # ─── Bucket de staging + HMAC (pasos 15-16) ─────────────────────────────────
-staging_bucket_name = "gcp-billing-process-staging-it"   # vacío = no crear bucket
-create_hmac_key     = true                               # output: hmac_access_id / hmac_secret
+staging_bucket_name = "gcp-billing-process-staging-it" # vacío = no crear bucket
+create_hmac_key     = true                             # output: hmac_access_id / hmac_secret
 
 # Migración de sku_third_party desde España. Vacío = no aplica.
 sku_third_party_migration_service_account = ""
