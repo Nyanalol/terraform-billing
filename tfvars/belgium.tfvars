@@ -23,4 +23,4 @@ currency_symbols = {
 
 scheduled_query_service_account = "bigquery-talend@swobe-billing-prod.iam.gserviceaccount.com"
 
-create_hmac_key = false
+create_hmac_key = true
