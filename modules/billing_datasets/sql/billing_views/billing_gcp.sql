@@ -84,8 +84,12 @@ SELECT
   SUM(IF( is_third_party OR (project_is_null = TRUE AND reseller_margin_gcp = 0 AND NOT is_third_party_marketplace), IFNULL(credits_gcp, 0), 0)) AS credits_thirdparty,
 
   SUM(IF( is_third_party_marketplace, IFNULL(cost_gcp, 0), 0)) AS cost_thirdparty_marketplace,
-  SUM(IF( is_third_party_marketplace, IFNULL(customer_cost, 0), 0)) AS customer_cost_thirdparty_marketplace,
-  SUM(IF( is_third_party_marketplace, IFNULL(credits_gcp, 0), 0)) AS credits_thirdparty_marketplace
+  -- GREATEST: elegimos el mayor entre cost_gcp y customer_cost. Google ha empezado a informar
+  -- valores en customer_cost menores o que no tienen sentido aparentemente.
+  SUM(IF( is_third_party_marketplace, GREATEST(IFNULL(cost_gcp, 0), IFNULL(customer_cost, 0)), 0)) AS customer_cost_thirdparty_marketplace,
+  SUM(IF( is_third_party_marketplace, IFNULL(credits_gcp, 0), 0)) AS credits_thirdparty_marketplace,
+  -- Nuevo campo: credits de tipo Reseller Margin (is_third_party_marketplace), a aplicar en los jobs de Talend.
+  SUM(IF( is_third_party_marketplace, IFNULL(reseller_margin_gcp, 0), 0)) AS reseller_margin_thirdparty_marketplace
 
 FROM all_gcp_costs
 GROUP BY

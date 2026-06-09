@@ -73,6 +73,29 @@ Regla de oro: `plan` de todos → revisar → `apply` a uno → verificar → `a
 
 Checklist completo paso a paso: [docs/DEPLOY_CHECKLIST.md](docs/DEPLOY_CHECKLIST.md).
 
+## Capa global (Data Studio único)
+
+El directorio `global/` es un **root de Terraform aparte** (estado propio, `prefix=billing/global`)
+que materializa una capa unificada en `swo-billingglobal-prod`: por cada vista de `looker_views`,
+una tabla `UNION ALL` de todos los países con una columna `country`, refrescada por scheduled
+query y limitada a los últimos 3 meses (clusterizada por `country, invoice_month`). Un único
+Data Studio apunta a estas tablas y filtra por país.
+
+```bash
+terraform -chdir=global init -reconfigure -backend-config="prefix=billing/global"
+terraform -chdir=global apply -var-file="terraform.tfvars"
+```
+
+El mapa `countries` en `global/terraform.tfvars` debe contener **solo países ya desplegados**
+(con su `looker_views`); se amplía y se re-aplica según se despliegan más. La SA
+`bq-global-union` ejecuta las queries por impersonación (sin JSON key).
+
+> Requiere que quien aplica tenga **Project IAM Admin** (o Owner) en `swo-billingglobal-prod`
+> (para el binding `bigquery.jobUser`) y `setIamPolicy` de proyecto en cada país. La SA recibe
+> `dataViewer` **a nivel de proyecto** en cada país: consultar una `looker_view` exige acceso a
+> las tablas subyacentes (en `billing_views` y `BILLING_*_CLOUD_PLATFORM`), no solo a `looker_views`.
+> Opt-out con `manage_country_iam = false` / `manage_global_project_iam = false` para darlos a mano.
+
 ## Qué automatiza Terraform y qué no
 
 Mapeo del procedimiento de despliegue (los 27 pasos) a responsable:

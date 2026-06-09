@@ -14,7 +14,8 @@ SELECT
   SUM(credits_thirdparty) AS credits_thirdparty,
   SUM(cost_thirdparty_marketplace) AS cost_thirdparty_marketplace,
   SUM(customer_cost_thirdparty_marketplace) AS customer_cost_thirdparty_marketplace,
-  SUM(credits_thirdparty_marketplace) AS credits_thirdparty_marketplace
+  SUM(credits_thirdparty_marketplace) AS credits_thirdparty_marketplace,
+  SUM(reseller_margin_thirdparty_marketplace) AS reseller_margin_thirdparty_marketplace
 FROM (
   SELECT
     billing_account_id,
@@ -32,7 +33,8 @@ FROM (
     0 AS credits_thirdparty,
     0 AS cost_thirdparty_marketplace,
     0 AS customer_cost_thirdparty_marketplace,
-    0 AS credits_thirdparty_marketplace
+    0 AS credits_thirdparty_marketplace,
+    0 AS reseller_margin_thirdparty_marketplace
   FROM
     `${project_id}.${billing_views_dataset}.billing_gmp`
   UNION ALL
@@ -52,7 +54,8 @@ FROM (
     credits_thirdparty,
     cost_thirdparty_marketplace,
     customer_cost_thirdparty_marketplace,
-    credits_thirdparty_marketplace
+    credits_thirdparty_marketplace,
+    reseller_margin_thirdparty_marketplace
   FROM
     `${project_id}.${billing_views_dataset}.billing_gcp` ) AS t
 GROUP BY
