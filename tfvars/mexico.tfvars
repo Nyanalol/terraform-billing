@@ -23,4 +23,5 @@ currency_symbols = {
 
 scheduled_query_service_account = "bigquery-talend@swo-billing-prod-484513.iam.gserviceaccount.com"
 
-create_hmac_key = true
+staging_bucket_name = "gcp-billing-process-staging-mx"
+create_hmac_key     = true
