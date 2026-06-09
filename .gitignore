@@ -1,7 +1,6 @@
-# Valores reales por país — NUNCA subir al repositorio
-terraform.tfvars
-tfvars/*.tfvars
-!tfvars/example.tfvars
+# Los tfvars por país SÍ se versionan: no llevan secretos (solo project_id, datasets,
+# IDs de cuenta y símbolos de divisa) y así el repo es autocontenido para todo el equipo.
+# Los secretos reales (JSON keys, HMAC) van en *.json/*.key, ignorados más abajo.
 
 # Logs locales
 logs/

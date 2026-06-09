@@ -9,11 +9,11 @@ output "dataset_id" {
 }
 
 output "global_tables" {
-  description = "Tablas unificadas que se crean (una por vista)."
-  value       = [for v in var.views : "${var.global_project_id}.${var.global_dataset}.${v}"]
+  description = "Tablas unificadas que se crean (looker_views + billing_views)."
+  value       = [for t in keys(local.all_union_sql) : "${var.global_project_id}.${var.global_dataset}.${t}"]
 }
 
 output "union_sql" {
-  description = "SQL generado por vista (para depuración)."
-  value       = local.union_sql
+  description = "SQL generado por tabla (looker_views + billing_views) para depuración."
+  value       = local.all_union_sql
 }

@@ -40,6 +40,12 @@ variable "views" {
   ]
 }
 
+variable "billing_views_tables" {
+  description = "Tablas de billing_views (Talend) a consolidar además de las looker_views. Filtran por Anyo__c/Mes__c (no tienen invoice_month). Las llena Talend, así que estarán vacías en países sin Talend montado."
+  type        = list(string)
+  default     = ["importes_lecturas_workspace"]
+}
+
 variable "global_service_account_id" {
   description = "Account ID de la SA que ejecuta las scheduled queries del union."
   type        = string

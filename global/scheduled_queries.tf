@@ -4,10 +4,10 @@
 # query crea/reemplaza la tabla destino y fija el clustering.
 
 resource "google_bigquery_data_transfer_config" "global_union" {
-  for_each = toset(var.views)
+  for_each = local.all_union_sql
 
   project        = var.global_project_id
-  display_name   = "global_union_${each.value}"
+  display_name   = "global_union_${each.key}"
   location       = var.location
   data_source_id = "scheduled_query"
   schedule       = var.schedule
@@ -15,7 +15,7 @@ resource "google_bigquery_data_transfer_config" "global_union" {
   service_account_name = local.global_sa_email
 
   params = {
-    query = local.union_sql[each.value]
+    query = each.value
   }
 
   depends_on = [
