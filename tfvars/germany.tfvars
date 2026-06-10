@@ -25,3 +25,6 @@ currency_symbols = {
 
 create_service_account = false # la SA ya existe
 create_hmac_key        = false
+
+# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+sf_empresa_ip = "Empresa_IP__c='001IV00000gVL84'"

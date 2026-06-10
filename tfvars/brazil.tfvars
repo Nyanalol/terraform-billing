@@ -28,3 +28,6 @@ create_hmac_key        = false
 
 # ThirdParty Reseller Active = FALSE -> sin migracion de sku_third_party.
 sku_third_party_migration_service_account = ""
+
+# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+sf_empresa_ip = "Empresa_IP__c='0015700001lTrkuAAC'"

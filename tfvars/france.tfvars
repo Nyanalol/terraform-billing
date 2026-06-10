@@ -24,3 +24,6 @@ currency_symbols = {
 
 create_service_account = false # la SA ya existe
 create_hmac_key        = false
+
+# TODO Empresa_IP__c: pendiente de OPS. (El valor pasado "KwJt..." era el sf_token, no un Empresa_IP.)
+sf_empresa_ip = ""

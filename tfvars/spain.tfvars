@@ -30,3 +30,6 @@ create_hmac_key        = false
 
 # Espana es el ORIGEN de la migracion de sku_third_party (no la recibe).
 sku_third_party_migration_service_account = ""
+
+# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+sf_empresa_ip = "(Empresa_IP__c='0015700001lTrioAAC' OR Empresa_IP__c='001IV00001TJUpHYAX')"
