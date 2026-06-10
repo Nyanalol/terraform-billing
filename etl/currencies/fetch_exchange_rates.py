@@ -95,7 +95,15 @@ def load_to_bq(rows: list[dict], project: str, dataset: str, table: str, rate_da
     """Carga idempotente: trunca y reescribe SOLO la particion rate_date."""
     from google.cloud import bigquery  # import perezoso: solo para la carga real
 
-    client = bigquery.Client(project=project)
+    # En Cloud Run usa ADC (la service account del servicio). En local, si se exporta
+    # GOOGLE_OAUTH_ACCESS_TOKEN (cuenta g.softwareone.com), lo usamos para NO caer en el
+    # ADC por defecto de la maquina.
+    token = os.environ.get("GOOGLE_OAUTH_ACCESS_TOKEN")
+    if token:
+        from google.oauth2.credentials import Credentials
+        client = bigquery.Client(project=project, credentials=Credentials(token=token))
+    else:
+        client = bigquery.Client(project=project)
     partition = rate_date.strftime("%Y%m%d")
     dest = f"{project}.{dataset}.{table}${partition}"
     job_config = bigquery.LoadJobConfig(

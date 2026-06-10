@@ -19,3 +19,6 @@ terraform.tfstate.backup
 
 # Docs HTML de Talend (material de referencia, no versionar)
 .talend_docs/
+
+# venv local del ETL
+etl/.venv/
