@@ -16,8 +16,8 @@ corriendo en paralelo con Talend y comparando las tablas BQ hasta que cuadran.
 
 | Job Talend | Estado | Destino |
 |---|---|---|
-| `currencies_exchange_rates` | 🟡 en curso | `currencies/fetch_exchange_rates.py` → `billing_reference.currency_exchange_rates` |
-| `diary_get/write_billing_accounts` | ⏳ pendiente | Python (SOQL) + BQ SQL |
+| `currencies_exchange_rates` | ✅ migrado y validado | `currencies/fetch_exchange_rates.py` → `billing_reference.currency_exchange_rates` |
+| `diary_get/write_billing_accounts` | 🟡 `billing_accounts` validado (diff 0/0 en Colombia) | `billing_accounts/extract_billing_accounts.py` + `transform_billing_accounts.sql`. `billing_accounts_full` parqueado (se ve con España). |
 | `get_data` / `get_data_workspace` | ⏳ pendiente | columnas `total_*` a las vistas |
 | `workspace_reseller` | ⏳ pendiente | Python (SOQL) + BQ SQL + UPSERT SF |
 | `mix_and_match` | ⏳ pendiente | Python (SOQL) + BQ SQL + UPSERT SF |
