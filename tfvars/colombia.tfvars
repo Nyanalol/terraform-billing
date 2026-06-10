@@ -24,3 +24,6 @@ scheduled_query_service_account = "bigquery-talend@swoco-billing-prod.iam.gservi
 
 staging_bucket_name = "gcp-billing-process-staging-co"
 create_hmac_key     = true
+
+# Cláusula Empresa_IP__c de Salesforce (para el config de Talend). Ver generate-config-billing.ps1.
+sf_empresa_ip = "Empresa_IP__c='001IV00001PehnLYAR'"

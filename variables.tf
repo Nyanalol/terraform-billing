@@ -119,3 +119,15 @@ variable "create_hmac_key" {
   type        = bool
   default     = true
 }
+
+# ─── Metadato para generar el config de Talend (NO lo usa Terraform) ──────────
+# Cláusula COMPLETA de Empresa_IP__c del país (para la línea sf_opp_query_condition del
+# config_billing). Puede ser una sola o varias con OR. Lo lee generate-config-billing.ps1.
+# Ejemplos:
+#   sf_empresa_ip = "Empresa_IP__c='001IV00001PehnLYAR'"
+#   sf_empresa_ip = "(Empresa_IP__c='0015700001lTrioAAC' OR Empresa_IP__c='001IV00001TJUpHYAX')"
+variable "sf_empresa_ip" {
+  description = "Cláusula Empresa_IP__c del país (una o varias con OR) para el config de Talend. Terraform no lo usa."
+  type        = string
+  default     = ""
+}
