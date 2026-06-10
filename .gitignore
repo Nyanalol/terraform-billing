@@ -22,3 +22,7 @@ terraform.tfstate.backup
 
 # venv local del ETL
 etl/.venv/
+
+# Python bytecode
+__pycache__/
+*.pyc
