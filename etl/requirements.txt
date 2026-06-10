@@ -1,0 +1,2 @@
+# ETL de facturacion (sustituye a Talend). Python 3.10+.
+google-cloud-bigquery>=3.0,<4

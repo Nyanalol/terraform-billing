@@ -16,6 +16,12 @@ variable "location" {
   default     = "EU"
 }
 
+variable "reference_dataset" {
+  description = "Dataset de datos de referencia compartidos (tipos de cambio, etc.) en el proyecto global."
+  type        = string
+  default     = "billing_reference"
+}
+
 variable "countries" {
   description = "Mapa país → project_id. El nombre se usa como valor de la columna 'country'. Incluir SOLO países ya desplegados (con su dataset looker_views)."
   type        = map(string)
