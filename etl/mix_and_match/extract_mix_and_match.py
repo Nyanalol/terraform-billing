@@ -47,7 +47,9 @@ OPP_COLUMNS = [
     "Sop_Tec_imp_minimo__c", "Sop_Tec_Maps_imp_minimo__c",
     "Sop_Tec_imp_fijo__c", "Sop_Tec_Maps_Importe_Fijo__c",
     "Control_lectura_anuales_Consumo__c", "Margen_SWO__c",
-    "Empresa_IP__c", "GoogleInvoiceTypeOpp__c",
+    # OJO: la API de SF devuelve las claves con el nombre EXACTO del campo, y este
+    # empieza en minuscula (googleInvoiceTypeOpp__c). Con "G" el lookup devolvia None.
+    "Empresa_IP__c", "googleInvoiceTypeOpp__c",
 ]
 OLI_COLUMNS = [
     "OpportunityId", "Descripci_n_del_producto__c", "SKU__c", "CurrencyIsoCode",
