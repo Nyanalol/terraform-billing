@@ -32,3 +32,6 @@ staging_bucket_name = "gcp-billing-process-staging-hk"
 create_hmac_key     = true
 
 sku_third_party_migration_service_account = ""
+
+# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+sf_empresa_ip = "Empresa_IP__c='001IV00001JLmUT'"
