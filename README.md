@@ -14,15 +14,16 @@ Salesforce, y publica un **consolidado** multi-país para reporting.
 .
 ├── countries.yaml      # FUENTE ÚNICA de la config de países (17 países)
 ├── infra/              # Terraform: datasets, tablas, vistas, IAM, scheduled queries, consolidado
-│   ├── modules/billing_datasets/   # módulo por país
+│   ├── modules/billing_datasets/   # módulo por país (vistas/tablas, sql/)
 │   ├── global/                     # consolidado (looker_views_global)
+│   ├── consolidado_src/            # vistas estándar por país antiguo + cadena Brasil (sql/ + deploy.sh)
 │   ├── tfvars/                     # config por país (objetivo: generar desde countries.yaml)
 │   └── README.md
 ├── etl/                # ETL Python 3.12+/uv (subtree de swo-gcp-billing-python)
 │   ├── src/etl/        # jobs, extract (Salesforce), load (BigQuery)
 │   └── config/queries/ # SQL de la ETL (marts mix_and_match, extractores)
-├── sql/                # contrato de SQL del sistema (inventario + reconciliación) — ver sql/README.md
-└── docs/               # documentación del sistema
+├── tools/              # generadores desde countries.yaml + checks (drift de esquema)
+└── docs/               # documentación del sistema (incl. CONTRATO_SQL.md)
 ```
 
 ## Las dos mitades
@@ -33,7 +34,7 @@ Salesforce, y publica un **consolidado** multi-país para reporting.
 | **etl/** | swo-gcp-billing-python | *Cómo* se produce: extract (SF + export) → transform (mix_and_match) → load BQ → reverse-ETL a SF | Python 3.12+, uv |
 
 El **contrato** entre ambas es el modelo de datos (los esquemas de `importes_lecturas*` y las 7
-vistas del consolidado). Ver [sql/README.md](sql/README.md).
+vistas del consolidado). Ver [docs/CONTRATO_SQL.md](docs/CONTRATO_SQL.md).
 
 ## Flujo de extremo a extremo
 
@@ -63,7 +64,7 @@ vistas del consolidado). Ver [sql/README.md](sql/README.md).
 
 - [docs/UNIFICACION_PROYECTOS.md](docs/UNIFICACION_PROYECTOS.md) — plan de unificación y decisiones abiertas.
 - [docs/DIFERENCIAS_CONSOLIDADO.md](docs/DIFERENCIAS_CONSOLIDADO.md) — transformaciones del consolidado por país.
-- [sql/README.md](sql/README.md) — contrato de SQL.
+- [docs/CONTRATO_SQL.md](docs/CONTRATO_SQL.md) — contrato de SQL (dónde vive cada SQL, drift).
 - [infra/README.md](infra/README.md) — detalle de la infraestructura Terraform.
 - [etl/README.md](etl/README.md) — detalle de la ETL Python.
 - [etl/MIX_AND_MATCH_SPEC.md](etl/MIX_AND_MATCH_SPEC.md) — spec del motor de facturación.

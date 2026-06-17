@@ -4,7 +4,7 @@
 > **git subtree** del repo de Ángel y mover sus ficheros rompería el `subtree pull`). Por eso, en
 > vez de un único directorio físico, este `sql/` define **el contrato**: qué SQL existe, cuál es la
 > versión canónica, dónde vive y qué se valida en CI. La consolidación física es Fase 1 (ver
-> [docs/UNIFICACION_PROYECTOS.md](../docs/UNIFICACION_PROYECTOS.md)) y se hará cuando el equipo
+> [docs/UNIFICACION_PROYECTOS.md](UNIFICACION_PROYECTOS.md)) y se hará cuando el equipo
 > congele el repo separado de Ángel y se trabaje solo en el monorepo.
 
 ## Dónde vive cada SQL hoy
@@ -47,4 +47,4 @@ Al investigar resultó que **no hay SQL de lógica duplicado** entre infra y etl
 Las 7 vistas estándar que une el consolidado: `consumos_por_account`, `consumos_por_proyecto_new`,
 `consumos_support_flex`, `gcp_billing_adjustment`, `consumos_google_reseller_factura`,
 `importes_lecturas`, `vista_importes_lecturas` (+ `importes_lecturas_workspace`). Ver
-[docs/DIFERENCIAS_CONSOLIDADO.md](../docs/DIFERENCIAS_CONSOLIDADO.md) para las transformaciones por país.
+[docs/DIFERENCIAS_CONSOLIDADO.md](DIFERENCIAS_CONSOLIDADO.md) para las transformaciones por país.
