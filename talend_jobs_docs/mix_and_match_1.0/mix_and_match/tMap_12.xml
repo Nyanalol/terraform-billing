@@ -1,0 +1,79 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_12" preview="pictures/_2Y8ZYBYeEfGpMsTDsMtuqA-tMap_12-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="row15" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="OpportunityId" type="String" expression="" isNullable="false"/>
+        <entry name="Opportunity_Billing_Account_ID__c" type="String" expression="" isNullable="false"/>
+        <entry name="Opportunity_GoogleInvoiceTypeOpp__c" type="String" expression="" isNullable="false"/>
+        <entry name="Dominio__c" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="row26" matching-mode="ALL_MATCHES" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="true" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="invoice_month" type="String" expression="" isNullable="true"/>
+        <entry name="cost_gcp" type="String" expression="" isNullable="true"/>
+        <entry name="credits_gcp" type="String" expression="" isNullable="true"/>
+        <entry name="total_gcp" type="String" expression="" isNullable="true"/>
+        <entry name="cost_gmp" type="String" expression="" isNullable="true"/>
+        <entry name="credits_gmp" type="String" expression="" isNullable="true"/>
+        <entry name="total_gmp" type="String" expression="" isNullable="true"/>
+        <entry name="billing_account_id" type="String" expression="row15.Opportunity_Billing_Account_ID__c " isNullable="true"/>
+        <entry name="reseller_margin_gmp" type="String" expression="" isNullable="true"/>
+        <entry name="reseller_margin_gcp" type="String" expression="" isNullable="true"/>
+        <entry name="currency" type="String" expression="" isNullable="true"/>
+        <entry name="cost_thirdparty" type="String" expression="" isNullable="true"/>
+        <entry name="credits_thirdparty" type="String" expression="" isNullable="true"/>
+        <entry name="total_thirdparty" type="String" expression="" isNullable="true"/>
+        <entry name="cost_thirdparty_marketplace" type="String" expression="" isNullable="true"/>
+        <entry name="credits_thirdparty_marketplace" type="String" expression="" isNullable="true"/>
+        <entry name="total_thirdparty_marketplace" type="String" expression="" isNullable="true"/>
+        <entry name="customer_cost_thirdparty_marketplace" type="String" expression="" isNullable="true"/>
+        <entry name="total_customer_cost_thirdparty_marketplace" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="row211" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="invoice_month" type="String" expression="row26.invoice_month " isNullable="true"/>
+        <entry name="cost_gcp" type="String" expression="Var.isMarketplace ? row26.cost_thirdparty_marketplace : row26.cost_gcp " isNullable="true"/>
+        <entry name="credits_gcp" type="String" expression="Var.isMarketplace ? row26.credits_thirdparty_marketplace : row26.credits_gcp " isNullable="true"/>
+        <entry name="total_gcp" type="String" expression="Var.isMarketplace ? row26.total_thirdparty_marketplace : row26.total_gcp " isNullable="true"/>
+        <entry name="cost_gmp" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.cost_gmp " isNullable="true"/>
+        <entry name="credits_gmp" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.credits_gmp " isNullable="true"/>
+        <entry name="total_gmp" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.total_gmp " isNullable="true"/>
+        <entry name="billing_account_id" type="String" expression="row26.billing_account_id " isNullable="true"/>
+        <entry name="reseller_margin_gmp" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.reseller_margin_gmp " isNullable="true"/>
+        <entry name="reseller_margin_gcp" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.reseller_margin_gcp " isNullable="true"/>
+        <entry name="currency" type="String" expression="row26.currency " isNullable="false"/>
+        <entry name="cost_thirdparty" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.cost_thirdparty " isNullable="true"/>
+        <entry name="credits_thirdparty" type="String" expression="Var.isMarketplace ? &quot;0&quot; : row26.credits_thirdparty " isNullable="true"/>
+        <entry name="total_thirdparty" type="String" expression="Var.isMarketplace ? &quot;0&quot; :row26.total_thirdparty " isNullable="true"/>
+        <entry name="OpportunityId" type="String" expression="row15.OpportunityId " isNullable="false"/>
+        <entry name="isMarketplace" type="boolean" expression="Var.isMarketplace " isNullable="false"/>
+        <entry name="customer_cost_thirdparty_marketplace" type="String" expression="row26.customer_cost_thirdparty_marketplace " isNullable="true"/>
+        <entry name="total_customer_cost_thirdparty_marketplace" type="String" expression="row26.total_customer_cost_thirdparty_marketplace " isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="row15.Dominio__c " isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="isMarketplace" type="boolean" expression="row15.Opportunity_GoogleInvoiceTypeOpp__c != null &amp;&amp; row15.Opportunity_GoogleInvoiceTypeOpp__c.equals(&quot;MARKETPLACE&quot;) " isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+</externalNode>

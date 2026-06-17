@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_3" preview="pictures/_2XFz4BFrEfG8JZhVc2eJ_g-tMap_3-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="rejects" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Cargo_Google__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Descripcion__c" type="String" expression="" isNullable="true"/>
+        <entry name="Definicion_del_producto__c" type="String" expression="" isNullable="true"/>
+        <entry name="Fecha_Inicio__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Fecha_Fin__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="" isNullable="true"/>
+        <entry name="Anyo__c" type="String" expression="" isNullable="true"/>
+        <entry name="Mes__c" type="String" expression="" isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="" isNullable="true"/>
+        <entry name="SKU2__c" type="String" expression="" isNullable="true"/>
+        <entry name="Oportunidad__c" type="String" expression="" isNullable="false"/>
+        <entry name="Order_Number__c" type="String" expression="" isNullable="true"/>
+        <entry name="usage_type" type="String" expression="" isNullable="true"/>
+        <entry name="type" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="gws_excluded_" matching-mode="ALL_MATCHES" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="true" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Dominio__c" type="String" expression="rejects.Dominio__c " isNullable="true"/>
+        <entry name="SKU2__c" type="String" expression="rejects.SKU2__c " isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="rejects_and_na" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Cargo_Google__c" type="Double" expression="rejects.Cargo_Google__c " isNullable="true"/>
+        <entry name="Descripcion__c" type="String" expression="rejects.Descripcion__c " isNullable="true"/>
+        <entry name="Definicion_del_producto__c" type="String" expression="rejects.Definicion_del_producto__c " isNullable="true"/>
+        <entry name="Fecha_Inicio__c" type="java.util.Date" expression="rejects.Fecha_Inicio__c " isNullable="true"/>
+        <entry name="Fecha_Fin__c" type="java.util.Date" expression="rejects.Fecha_Fin__c " isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="rejects.Dominio__c " isNullable="true"/>
+        <entry name="Anyo__c" type="String" expression="rejects.Anyo__c " isNullable="true"/>
+        <entry name="Mes__c" type="String" expression="rejects.Mes__c " isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="rejects.CurrencyIsoCode " isNullable="true"/>
+        <entry name="SKU2__c" type="String" expression="rejects.SKU2__c " isNullable="true"/>
+        <entry name="Oportunidad__c" type="String" expression="rejects.Oportunidad__c " isNullable="false"/>
+        <entry name="Order_Number__c" type="String" expression="rejects.Order_Number__c " isNullable="true"/>
+        <entry name="usage_type" type="String" expression="rejects.usage_type " isNullable="true"/>
+        <entry name="type" type="String" expression="(gws_excluded_.Dominio__c != null &amp;&amp; gws_excluded_.SKU2__c != null )
+? &quot;NA&quot;
+: rejects.type " isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="true" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null"/>
+  </mapperTable>
+</externalNode>

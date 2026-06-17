@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_2" preview="pictures/_0hapoBJFEfGNJMvxKSSaVA-tMap_2-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="row2" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="currency" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="row3" matching-mode="ALL_ROWS" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="currency" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="producto_cartesiano_currencies" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="!row2.currency.equals(row3.currency)" activateExpressionFilter="true" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="base_currency" type="String" expression="row2.currency " isNullable="true"/>
+        <entry name="target_currency" type="String" expression="row3.currency " isNullable="true"/>
+        <entry name="api_url" type="String" expression="&quot;https://hexarate.paikama.co/api/rates/&quot; + row2.currency + &quot;/&quot; + row3.currency + &quot;/&quot; + TalendDate.formatDate(&quot;yyyy-MM-01&quot;, TalendDate.addDate(TalendDate.parseDate(&quot;yyyy-MM-dd&quot;, context.year + &quot;-&quot; + context.month + &quot;-01&quot;), 1, &quot;MM&quot;)) " isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="equal_currencies" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="row2.currency.equals(row3.currency)" activateExpressionFilter="true" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="base_currency" type="String" expression="row2.currency " isNullable="true"/>
+        <entry name="target_currency" type="String" expression="row3.currency " isNullable="true"/>
+        <entry name="exchange_rate" type="Double" expression="1.0" isNullable="true"/>
+        <entry name="timestamp" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="true" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null"/>
+  </mapperTable>
+</externalNode>

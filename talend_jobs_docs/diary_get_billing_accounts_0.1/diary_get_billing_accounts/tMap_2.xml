@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_2" preview="pictures/_7TFtoM_4Eeq4TcVOTyaebg-tMap_2-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="row2" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Id" type="String" expression="" isNullable="false"/>
+        <entry name="OwnerId" type="String" expression="" isNullable="false"/>
+        <entry name="IsDeleted" type="boolean" expression="" isNullable="false"/>
+        <entry name="Name" type="String" expression="" isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="" isNullable="true"/>
+        <entry name="CreatedDate" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="CreatedById" type="String" expression="" isNullable="false"/>
+        <entry name="LastModifiedDate" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="LastModifiedById" type="String" expression="" isNullable="false"/>
+        <entry name="SystemModstamp" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="LastViewedDate" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="LastReferencedDate" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="ConnectionReceivedId" type="String" expression="" isNullable="true"/>
+        <entry name="ConnectionSentId" type="String" expression="" isNullable="true"/>
+        <entry name="billing_account_desc__c" type="String" expression="" isNullable="true"/>
+        <entry name="billing_account_id__c" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="BillingAccounts_n_a" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Fecha_Fin_Contrato__c" type="java.util.Date" expression="TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,&quot;9999-12-31&quot;) " isNullable="true"/>
+        <entry name="Fecha_Inicio_Contrato__c" type="java.util.Date" expression="TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,&quot;9999-12-31&quot;) " isNullable="true"/>
+        <entry name="billing_account_id__c" type="String" expression="row2.billing_account_id__c  " isNullable="true"/>
+        <entry name="billing_account_desc__c" type="String" expression="row2.billing_account_desc__c  " isNullable="true"/>
+        <entry name="Desglosar_Facturas__c" type="String" expression="&quot;&quot; " isNullable="true"/>
+        <entry name="Billing_Model__c" type="String" expression="&quot;N/A&quot; " isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="true" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null"/>
+  </mapperTable>
+</externalNode>

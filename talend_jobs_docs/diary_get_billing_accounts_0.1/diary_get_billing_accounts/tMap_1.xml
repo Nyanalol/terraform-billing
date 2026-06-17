@@ -1,0 +1,192 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_1" preview="pictures/_7TFtoM_4Eeq4TcVOTyaebg-tMap_1-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="row1" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Id" type="String" expression="" isNullable="false"/>
+        <entry name="IsDeleted" type="boolean" expression="" isNullable="false"/>
+        <entry name="AccountId" type="String" expression="" isNullable="true"/>
+        <entry name="RecordTypeId" type="String" expression="" isNullable="true"/>
+        <entry name="Name" type="String" expression="" isNullable="false"/>
+        <entry name="Description" type="String" expression="" isNullable="true"/>
+        <entry name="StageName" type="String" expression="" isNullable="false"/>
+        <entry name="Amount" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Probability" type="Double" expression="" isNullable="true"/>
+        <entry name="CloseDate" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="Type" type="String" expression="" isNullable="true"/>
+        <entry name="NextStep" type="String" expression="" isNullable="true"/>
+        <entry name="LeadSource" type="String" expression="" isNullable="true"/>
+        <entry name="IsClosed" type="boolean" expression="" isNullable="false"/>
+        <entry name="IsWon" type="boolean" expression="" isNullable="false"/>
+        <entry name="ForecastCategory" type="String" expression="" isNullable="false"/>
+        <entry name="ForecastCategoryName" type="String" expression="" isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="" isNullable="true"/>
+        <entry name="CampaignId" type="String" expression="" isNullable="true"/>
+        <entry name="HasOpportunityLineItem" type="boolean" expression="" isNullable="false"/>
+        <entry name="Pricebook2Id" type="String" expression="" isNullable="true"/>
+        <entry name="OwnerId" type="String" expression="" isNullable="false"/>
+        <entry name="CreatedDate" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="CreatedById" type="String" expression="" isNullable="false"/>
+        <entry name="LastModifiedDate" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="LastModifiedById" type="String" expression="" isNullable="false"/>
+        <entry name="SystemModstamp" type="java.util.Date" expression="" isNullable="false"/>
+        <entry name="LastActivityDate" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="FiscalQuarter" type="Integer" expression="" isNullable="true"/>
+        <entry name="FiscalYear" type="Integer" expression="" isNullable="true"/>
+        <entry name="Fiscal" type="String" expression="" isNullable="true"/>
+        <entry name="LastViewedDate" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="LastReferencedDate" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="ConnectionReceivedId" type="String" expression="" isNullable="true"/>
+        <entry name="ConnectionSentId" type="String" expression="" isNullable="true"/>
+        <entry name="SyncedQuoteId" type="String" expression="" isNullable="true"/>
+        <entry name="HasOpenActivity" type="boolean" expression="" isNullable="false"/>
+        <entry name="HasOverdueTask" type="boolean" expression="" isNullable="false"/>
+        <entry name="Linea_negocio_Intelligence_Partner__c" type="String" expression="" isNullable="true"/>
+        <entry name="Competidores__c" type="String" expression="" isNullable="true"/>
+        <entry name="N_Usuarios_Gapps__c" type="Double" expression="" isNullable="true"/>
+        <entry name="N_Usuarios_GMD_1_a_o__c" type="Double" expression="" isNullable="true"/>
+        <entry name="N_Usuarios_GMD_10_a_os__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Aprobada__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Bloqueado__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Contacto_env_o_facturas__c" type="String" expression="" isNullable="true"/>
+        <entry name="Contacto_env_o_renovaciones__c" type="String" expression="" isNullable="true"/>
+        <entry name="Contacto_principal__c" type="String" expression="" isNullable="true"/>
+        <entry name="Contrato__c" type="String" expression="" isNullable="true"/>
+        <entry name="Fecha_Fin_Contrato__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Fecha_Inicio_Contrato_Original__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Fecha_Inicio_Contrato__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Fecha_de_creaci_n__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Forma_de_pago__c" type="String" expression="" isNullable="true"/>
+        <entry name="Forma_env_o_de_facturas__c" type="String" expression="" isNullable="true"/>
+        <entry name="Linea_de_negocio_numerica__c" type="String" expression="" isNullable="true"/>
+        <entry name="Motivo_cierre__c" type="String" expression="" isNullable="true"/>
+        <entry name="Oportunidad_que_amplia__c" type="String" expression="" isNullable="true"/>
+        <entry name="Oportunidad_que_renueva__c" type="String" expression="" isNullable="true"/>
+        <entry name="OppRenImporteAlto__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Pendiente_Facturar__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Posibilidad_de_faturaci_n__c" type="String" expression="" isNullable="true"/>
+        <entry name="RatioProrrata__c" type="Double" expression="" isNullable="true"/>
+        <entry name="RecordTypeName__c" type="String" expression="" isNullable="true"/>
+        <entry name="Socio__c" type="String" expression="" isNullable="true"/>
+        <entry name="Importe_Facturable__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_IP_Anual__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_IP__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Numero_de_facturas__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Productos_Renovables__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Productos_ampliables__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Total_Facturado__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_Facturable_PDF__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Abonada__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Motivo_abono__c" type="String" expression="" isNullable="true"/>
+        <entry name="Duracion_1_ano__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Notificacion_de_renovacion_enviada__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Status_envio_mail_renovacion__c" type="String" expression="" isNullable="true"/>
+        <entry name="Facturas_sin_enviar__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Anual__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Fecha_fin_contrato_anterior__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Nombre_de_pila__c" type="String" expression="" isNullable="true"/>
+        <entry name="Nombre_de_pila_envio_renovaciones__c" type="String" expression="" isNullable="true"/>
+        <entry name="Modelo_facturacion__c" type="String" expression="" isNullable="true"/>
+        <entry name="Comienzo_valido__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Contrato_renovado__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Estado_facturaciones__c" type="String" expression="" isNullable="true"/>
+        <entry name="Importe_Facturable_con_ampliaciones__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_Total_por_ampliaciones__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_constante_amp__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_facturable_asteris__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_facturable_flexible__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_facturable_sin_ampliaciones__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_por_facturar_con_ampliaciones__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Pendiente_facturar_flexible__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Pendiente_por_facturar_asteris__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Periodos_facturables_2__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Periodos_pendiente_de_facturar__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Puede_facturar__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Ultima_facturacion__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Ultimo_periodo_facturado__c" type="Double" expression="" isNullable="true"/>
+        <entry name="ltimo_periodo_facturado_Amp__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Importe_constante__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Importe_Ponderado__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Comentarios_a_la_facturaci_n__c" type="String" expression="" isNullable="true"/>
+        <entry name="Tipo_cuenta_cliente__c" type="String" expression="" isNullable="true"/>
+        <entry name="Google_Segment__c" type="String" expression="" isNullable="true"/>
+        <entry name="Requiere_n_de_pedido_interno__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Motivo_pendiente__c" type="String" expression="" isNullable="true"/>
+        <entry name="Duraci_n_Estimada_Consultor_a__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Actividad_de_Renovacion__c" type="String" expression="" isNullable="true"/>
+        <entry name="Estado_renovacion__c" type="String" expression="" isNullable="true"/>
+        <entry name="Empresa_IP__c" type="String" expression="" isNullable="true"/>
+        <entry name="Email_notificaciones_autom_ticas__c" type="String" expression="" isNullable="true"/>
+        <entry name="Proceso_aprobacion_pais__c" type="String" expression="" isNullable="true"/>
+        <entry name="Total_Facturado_suma_manual__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Cliente_final__c" type="String" expression="" isNullable="true"/>
+        <entry name="Contacto_cliente_final__c" type="String" expression="" isNullable="true"/>
+        <entry name="Periodo_a_facturar_por_fecha__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Imp_Esp_Proveedor__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="LID__Is_Influenced__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="LID__LinkedIn_Company_Id__c" type="String" expression="" isNullable="true"/>
+        <entry name="Renovacion__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Comercial_Territorio1__c" type="String" expression="" isNullable="true"/>
+        <entry name="Comercial_Territorio__c" type="String" expression="" isNullable="true"/>
+        <entry name="Tiene_Hardware__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Tiene_No_Hardware__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Fecha_cierre_soporte__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Tipo_comision__c" type="String" expression="" isNullable="true"/>
+        <entry name="Contacto_env_o_facturas_2__c" type="String" expression="" isNullable="true"/>
+        <entry name="Excluir_envio_automatico_facturas__c" type="boolean" expression="" isNullable="false"/>
+        <entry name="Sop_Tec_Porcent__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_imp_minimo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_imp_fijo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Admin_eu_hora__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Admin_imp_minimo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Admin_imp_fijo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Mantenimiento_eu_hora__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Mantenimiento_imp_minimo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Mantenimiento_imp_fijo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Control_lectura_anuales_Importe_anual__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="Control_lectura_anuales_Consumo__c" type="BigDecimal" expression="" isNullable="true"/>
+        <entry name="PPV__c" type="String" expression="" isNullable="true"/>
+        <entry name="CR__c" type="String" expression="" isNullable="true"/>
+        <entry name="Welcome_Letter__c" type="String" expression="" isNullable="true"/>
+        <entry name="billing_account_id__c" type="String" expression="" isNullable="true"/>
+        <entry name="billing_account_desc__c" type="String" expression="" isNullable="true"/>
+        <entry name="Margen_de_partner_Descuento_GCP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_de_partner_Descuento_GMP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_de_partner_Descuento_Soporte__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_de_partner_Margen_GCP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_de_partner_Margen_GMP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_de_partner_Margen_Soporte__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Desglosar_Facturas__c" type="String" expression="" isNullable="true"/>
+        <entry name="Billing_Model__c" type="String" expression="" isNullable="true"/>
+        <entry name="Control_lectura_anuales_Fecha_fin__c" type="String" expression="" isNullable="true"/>
+        <entry name="Control_lectura_anuales_Fecha_inicio__c" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="BillingAccounts_facturables" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Fecha_Fin_Contrato__c" type="java.util.Date" expression="row1.Fecha_Fin_Contrato__c == null ? TalendDate.parseDate(&quot;yyyy-MM-dd&quot;,&quot;9999-12-31&quot;) : row1.Fecha_Fin_Contrato__c " isNullable="true"/>
+        <entry name="Fecha_Inicio_Contrato__c" type="java.util.Date" expression="row1.Fecha_Inicio_Contrato__c " isNullable="true"/>
+        <entry name="billing_account_id__c" type="String" expression="row1.billing_account_id__c " isNullable="true"/>
+        <entry name="billing_account_desc__c" type="String" expression="row1.billing_account_desc__c " isNullable="true"/>
+        <entry name="Desglosar_Facturas__c" type="String" expression="row1.Desglosar_Facturas__c " isNullable="true"/>
+        <entry name="Billing_Model__c" type="String" expression="row1.Billing_Model__c " isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="true" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null"/>
+  </mapperTable>
+</externalNode>

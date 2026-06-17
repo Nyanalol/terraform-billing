@@ -1,0 +1,103 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_1" preview="pictures/_2XFz4BFrEfG8JZhVc2eJ_g-tMap_1-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="row8" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="invoice_month" type="String" expression="" isNullable="true"/>
+        <entry name="usage_amount" type="Integer" expression="" isNullable="true"/>
+        <entry name="usage_unit" type="String" expression="" isNullable="true"/>
+        <entry name="google_charge" type="Double" expression="" isNullable="true"/>
+        <entry name="currency" type="String" expression="" isNullable="true"/>
+        <entry name="currency_conversion_rate" type="Double" expression="" isNullable="true"/>
+        <entry name="service_description" type="String" expression="" isNullable="true"/>
+        <entry name="sku_description" type="String" expression="" isNullable="true"/>
+        <entry name="usage_start_time" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="usage_end_time" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="domain_name" type="String" expression="" isNullable="true"/>
+        <entry name="order_id" type="String" expression="" isNullable="true"/>
+        <entry name="sku_id" type="String" expression="" isNullable="true"/>
+        <entry name="sku_sf" type="String" expression="" isNullable="true"/>
+        <entry name="usage_type" type="String" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="row9" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="true" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="true" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="sku__c" type="String" expression="row8.sku_sf " isNullable="false"/>
+        <entry name="dominio__c" type="String" expression="row8.domain_name " isNullable="false"/>
+        <entry name="OpportunityId" type="String" expression="" isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="lectura" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="true" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Cargo_Google__c" type="Double" expression="row8.google_charge" isNullable="true"/>
+        <entry name="Descripcion__c" type="String" expression="&quot;Usage of &quot;+ row8.usage_amount +&quot; seats, Order:&quot;+row8.order_id+&quot;, &quot;+row8.domain_name + &quot;, &quot;+ row8.service_description +&quot;-&quot; + row8.sku_description + &quot; | &quot; + row8.usage_type " isNullable="true"/>
+        <entry name="Definicion_del_producto__c" type="String" expression="&quot;Usage of &quot;+ row8.usage_amount +&quot; seats, Order:&quot;+row8.order_id+&quot;, &quot;+row8.domain_name + &quot;, &quot;+ row8.service_description +&quot;-&quot; + row8.sku_description + &quot; | &quot; + row8.usage_type " isNullable="true"/>
+        <entry name="Fecha_Inicio__c" type="java.util.Date" expression="row8.usage_start_time " isNullable="true"/>
+        <entry name="Fecha_Fin__c" type="java.util.Date" expression="row8.usage_end_time " isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="row8.domain_name " isNullable="true"/>
+        <entry name="Anyo__c" type="String" expression="StringHandling.LEFT(row8.invoice_month,4) " isNullable="true"/>
+        <entry name="Mes__c" type="String" expression="StringHandling.RIGHT(row8.invoice_month,2) " isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="row8.currency " isNullable="true"/>
+        <entry name="SKU2__c" type="String" expression="row8.sku_sf " isNullable="true"/>
+        <entry name="Oportunidad__c" type="String" expression="row9.OpportunityId " isNullable="false"/>
+        <entry name="Order_Number__c" type="String" expression="row8.order_id " isNullable="true"/>
+        <entry name="usage_type" type="String" expression="row8.usage_type " isNullable="true"/>
+        <entry name="type" type="String" expression="&quot;pass&quot;" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="rejects" isMinimized="false" isReject="true" isRejectInnerJoin="true" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="true" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Cargo_Google__c" type="Double" expression="row8.google_charge" isNullable="true"/>
+        <entry name="Descripcion__c" type="String" expression="&quot;Usage of &quot;+ row8.usage_amount +&quot; seats, Order:&quot;+row8.order_id+&quot;, &quot;+row8.domain_name + &quot;, &quot;+ row8.service_description +&quot;-&quot; + row8.sku_description + &quot; | &quot; + row8.usage_type " isNullable="true"/>
+        <entry name="Definicion_del_producto__c" type="String" expression="&quot;Usage of &quot;+ row8.usage_amount +&quot; seats, Order:&quot;+row8.order_id+&quot;, &quot;+row8.domain_name + &quot;, &quot;+ row8.service_description +&quot;-&quot; + row8.sku_description + &quot; | &quot; + row8.usage_type " isNullable="true"/>
+        <entry name="Fecha_Inicio__c" type="java.util.Date" expression="row8.usage_start_time  " isNullable="true"/>
+        <entry name="Fecha_Fin__c" type="java.util.Date" expression="row8.usage_end_time  " isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="row8.domain_name  " isNullable="true"/>
+        <entry name="Anyo__c" type="String" expression="StringHandling.LEFT(row8.invoice_month,4)  " isNullable="true"/>
+        <entry name="Mes__c" type="String" expression="StringHandling.RIGHT(row8.invoice_month,2)  " isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="row8.currency  " isNullable="true"/>
+        <entry name="SKU2__c" type="String" expression="row8.sku_sf  " isNullable="true"/>
+        <entry name="Oportunidad__c" type="String" expression="row9.OpportunityId  " isNullable="false"/>
+        <entry name="Order_Number__c" type="String" expression="row8.order_id  " isNullable="true"/>
+        <entry name="usage_type" type="String" expression="row8.usage_type " isNullable="true"/>
+        <entry name="type" type="String" expression="&quot;reject&quot;" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="Carga_lecturas" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="OpportunityId__c" type="String" expression="row9.OpportunityId  " isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="row8.domain_name  " isNullable="true"/>
+        <entry name="SKU__c" type="String" expression="row8.sku_sf  " isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="row8.currency  " isNullable="true"/>
+        <entry name="Cargo_Google__c" type="Double" expression="row8.google_charge" isNullable="true"/>
+        <entry name="Anio__c" type="String" expression="StringHandling.LEFT(row8.invoice_month,4)  " isNullable="true"/>
+        <entry name="Mes__c" type="String" expression="StringHandling.RIGHT(row8.invoice_month,2)  " isNullable="true"/>
+        <entry name="Fecha_Inicio__c" type="java.util.Date" expression="row8.usage_start_time  " isNullable="true"/>
+        <entry name="Fecha_Fin__c" type="java.util.Date" expression="row8.usage_end_time  " isNullable="true"/>
+        <entry name="Importe__c" type="Double" expression="row8.google_charge" isNullable="true"/>
+        <entry name="Descripcion_del_producto__c" type="String" expression="&quot;Usage of &quot;+ row8.usage_amount +&quot; seats, Order:&quot;+row8.order_id+&quot;, &quot;+row8.domain_name + &quot;, &quot;+ row8.service_description +&quot;-&quot; + row8.sku_description + &quot; | &quot; + row8.usage_type " isNullable="true"/>
+        <entry name="Cargo_Google_Numero__c" type="Double" expression="row8.google_charge" isNullable="true"/>
+        <entry name="Importe_Numero__c" type="Double" expression="row8.google_charge" isNullable="true"/>
+        <entry name="Cargo_Google_GMP__c" type="Double" expression="0.0" isNullable="true"/>
+        <entry name="Cargo_Google_GCP__c" type="Double" expression="0.0" isNullable="true"/>
+        <entry name="type" type="String" expression="&quot;pass&quot;" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="true" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null"/>
+  </mapperTable>
+</externalNode>

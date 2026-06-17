@@ -1,0 +1,13 @@
+# DEPRECATED: This file is no longer used
+# Configuration is now managed via .env and .env.{country} files
+
+# Legacy contexts.yaml is replaced by:
+# - .env (base configuration)
+# - .env.win_uk (UK-specific)
+# - .env.win_es (Spain-specific)
+# - .env.win_ar (Argentina-specific)
+# etc.
+
+# To add a new country:
+# 1. Create .env.{country_code} with all required variables
+# 2. Run: python -m src.etl.jobs.get_billing_accounts --country {country_code} --month M --year Y

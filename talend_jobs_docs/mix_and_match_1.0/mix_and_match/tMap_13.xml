@@ -1,0 +1,132 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_13" preview="pictures/_2Y8ZYBYeEfGpMsTDsMtuqA-tMap_13-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="copyOfBillingLines" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="billing_account_id" type="String" expression="" isNullable="true"/>
+        <entry name="op_id" type="String" expression="" isNullable="true"/>
+        <entry name="OpportunityId" type="String" expression="" isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="" isNullable="true"/>
+        <entry name="SKU__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Currency" type="String" expression="" isNullable="true"/>
+        <entry name="TotalSupport" type="double" expression="" isNullable="false"/>
+        <entry name="invoice_month" type="String" expression="" isNullable="true"/>
+        <entry name="Anio" type="String" expression="" isNullable="true"/>
+        <entry name="Mes" type="String" expression="" isNullable="true"/>
+        <entry name="Total_gcp" type="Double" expression="" isNullable="true"/>
+        <entry name="Cargo_Google_GCP" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_gcp" type="double" expression="" isNullable="false"/>
+        <entry name="Total_gmp" type="Double" expression="" isNullable="true"/>
+        <entry name="Cargo_Google_GMP" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_gmp" type="double" expression="" isNullable="false"/>
+        <entry name="Total_thirdparty" type="double" expression="" isNullable="false"/>
+        <entry name="Margen_total" type="double" expression="" isNullable="false"/>
+        <entry name="Cargo_google" type="Double" expression="" isNullable="true"/>
+        <entry name="Importe_factura" type="double" expression="" isNullable="false"/>
+        <entry name="Importe_factura_gcp" type="double" expression="" isNullable="false"/>
+        <entry name="Importe_factura_gmp" type="double" expression="" isNullable="false"/>
+        <entry name="ApplySupport" type="boolean" expression="" isNullable="false"/>
+        <entry name="porcentajeMargenGMP" type="double" expression="" isNullable="false"/>
+        <entry name="porcentajeMargenSoporte" type="double" expression="" isNullable="false"/>
+        <entry name="porcentajeMargenSoporteMaps" type="Double" expression="" isNullable="true"/>
+        <entry name="porcentajeMargenGCP" type="double" expression="" isNullable="false"/>
+        <entry name="Descripci_n_del_producto__c" type="String" expression="" isNullable="true"/>
+        <entry name="Rate" type="double" expression="" isNullable="false"/>
+        <entry name="project_id" type="String" expression="" isNullable="true"/>
+        <entry name="margen_ip_soporte" type="Double" expression="" isNullable="true"/>
+        <entry name="margen_ip_soporte_maps" type="Double" expression="" isNullable="true"/>
+        <entry name="Desglosar_Facturas" type="String" expression="" isNullable="true"/>
+        <entry name="soporte_tecnico_fijo" type="double" expression="" isNullable="false"/>
+        <entry name="soporte_maps_tecnico_fijo" type="double" expression="" isNullable="false"/>
+        <entry name="soporte_tecnico_minimo" type="double" expression="" isNullable="false"/>
+        <entry name="soporte_maps_tecnico_minimo" type="Double" expression="" isNullable="true"/>
+        <entry name="soporte_tecnico_porcentaje" type="double" expression="" isNullable="false"/>
+        <entry name="soporte_maps_tecnico_porcentaje" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_gmp_euros" type="double" expression="" isNullable="false"/>
+        <entry name="Margen_gcp_euros" type="double" expression="" isNullable="false"/>
+        <entry name="Margen_SWO" type="Double" expression="" isNullable="true"/>
+        <entry name="Rate_to_euro" type="double" expression="" isNullable="false"/>
+        <entry name="Rate_to_euro_soporte" type="double" expression="" isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="copyOfseparate_maps_gcp" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="billing_account_id" type="String" expression="copyOfBillingLines.billing_account_id" isNullable="true"/>
+        <entry name="op_id" type="String" expression="copyOfBillingLines.op_id" isNullable="true"/>
+        <entry name="OpportunityId" type="String" expression="copyOfBillingLines.OpportunityId" isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="copyOfBillingLines.Dominio__c" isNullable="true"/>
+        <entry name="SKU__c" type="Double" expression="copyOfBillingLines.SKU__c" isNullable="true"/>
+        <entry name="Currency" type="String" expression="copyOfBillingLines.Currency" isNullable="true"/>
+        <entry name="TotalSupport" type="Double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.TotalSupport " isNullable="true"/>
+        <entry name="invoice_month" type="String" expression="copyOfBillingLines.invoice_month " isNullable="true"/>
+        <entry name="Anio" type="String" expression="copyOfBillingLines.Anio " isNullable="true"/>
+        <entry name="Mes" type="String" expression="copyOfBillingLines.Mes " isNullable="true"/>
+        <entry name="Total_gcp" type="Double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.Total_gcp " isNullable="true"/>
+        <entry name="Cargo_Google_GCP" type="Double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.Cargo_Google_GCP " isNullable="true"/>
+        <entry name="Margen_gcp" type="Double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.Margen_gcp " isNullable="true"/>
+        <entry name="Total_gmp" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.Total_gmp " isNullable="true"/>
+        <entry name="Cargo_Google_GMP" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.Cargo_Google_GMP " isNullable="true"/>
+        <entry name="Margen_gmp" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.Margen_gmp " isNullable="true"/>
+        <entry name="Total_thirdparty" type="double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.Total_thirdparty " isNullable="false"/>
+        <entry name="Margen_total" type="Double" expression="copyOfBillingLines.Margen_total " isNullable="true"/>
+        <entry name="Cargo_google" type="Double" expression="Var.SKU_is_GCP ? copyOfBillingLines.Cargo_Google_GCP
+: Var.SKU_is_GMP ? copyOfBillingLines.Cargo_Google_GMP
+: copyOfBillingLines.Cargo_google " isNullable="true"/>
+        <entry name="Importe_factura" type="Double" expression="Var.SKU_is_GCP ? copyOfBillingLines.Importe_factura_gcp
+: Var.SKU_is_GMP ? copyOfBillingLines.Importe_factura_gmp
+: copyOfBillingLines.Importe_factura " isNullable="true"/>
+        <entry name="ApplySupport" type="boolean" expression="copyOfBillingLines.ApplySupport " isNullable="false"/>
+        <entry name="porcentajeMargenGMP" type="double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.porcentajeMargenGMP" isNullable="false"/>
+        <entry name="porcentajeMargenSoporte" type="double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.porcentajeMargenSoporte" isNullable="false"/>
+        <entry name="porcentajeMargenSoporteMaps" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.porcentajeMargenSoporteMaps" isNullable="true"/>
+        <entry name="porcentajeMargenGCP" type="double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.porcentajeMargenGCP" isNullable="false"/>
+        <entry name="Descripci_n_del_producto__c" type="String" expression="copyOfBillingLines.Descripci_n_del_producto__c " isNullable="true"/>
+        <entry name="Rate" type="double" expression="copyOfBillingLines.Rate " isNullable="false"/>
+        <entry name="project_id" type="String" expression="copyOfBillingLines.project_id " isNullable="true"/>
+        <entry name="margen_ip_soporte" type="Double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.margen_ip_soporte" isNullable="true"/>
+        <entry name="margen_ip_soporte_maps" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.margen_ip_soporte_maps " isNullable="true"/>
+        <entry name="Desglosar_Facturas" type="String" expression="copyOfBillingLines.Desglosar_Facturas " isNullable="true"/>
+        <entry name="soporte_tecnico_fijo" type="double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.soporte_tecnico_fijo" isNullable="false"/>
+        <entry name="soporte_maps_tecnico_fijo" type="double" expression="copyOfBillingLines.soporte_maps_tecnico_fijo " isNullable="false"/>
+        <entry name="soporte_tecnico_minimo" type="double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.soporte_maps_tecnico_minimo " isNullable="false"/>
+        <entry name="soporte_maps_tecnico_minimo" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.soporte_maps_tecnico_minimo" isNullable="true"/>
+        <entry name="soporte_tecnico_porcentaje" type="double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.soporte_tecnico_porcentaje" isNullable="false"/>
+        <entry name="soporte_maps_tecnico_porcentaje" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.soporte_maps_tecnico_porcentaje" isNullable="true"/>
+        <entry name="Margen_gmp_euros" type="Double" expression="Var.SKU_is_GCP ? 0d : copyOfBillingLines.Margen_gmp_euros " isNullable="true"/>
+        <entry name="Margen_gcp_euros" type="Double" expression="Var.SKU_is_GMP ? 0d : copyOfBillingLines.Margen_gcp_euros " isNullable="true"/>
+        <entry name="Margen_SWO" type="Double" expression="copyOfBillingLines.Margen_SWO " isNullable="true"/>
+        <entry name="Rate_to_euro" type="double" expression="copyOfBillingLines.Rate_to_euro " isNullable="false"/>
+        <entry name="Rate_to_euro_soporte" type="double" expression="copyOfBillingLines.Rate_to_euro_soporte " isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="SKU_is_GCP" type="boolean" expression="copyOfBillingLines.SKU__c != null &amp;&amp;
+(
+    Double.compare(copyOfBillingLines.SKU__c, 1419d) == 0 ||
+    Double.compare(copyOfBillingLines.SKU__c, 1421d) == 0
+) " isNullable="false"/>
+        <entry name="SKU_is_GMP" type="boolean" expression="copyOfBillingLines.SKU__c != null &amp;&amp;
+(
+    Double.compare(copyOfBillingLines.SKU__c, 1420d) == 0 ||
+    Double.compare(copyOfBillingLines.SKU__c, 1422d) == 0
+) " isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+</externalNode>
