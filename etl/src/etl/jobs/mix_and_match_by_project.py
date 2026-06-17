@@ -138,6 +138,7 @@ async def run_mix_and_match_by_project(config: MixAndMatchConfig) -> dict[str, A
         stats["bq_written"] = write_to_output_table(
             config, loader, "project_new", config.bq_output_table_flex_desglosadas,
             period_column="invoice_month",
+            extra_delete_filter="AND source = 'by_project'",
         )
 
     finally:

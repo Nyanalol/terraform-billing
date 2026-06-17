@@ -14,6 +14,8 @@
 -- simple; split por SKU (GCP 1419/1421, GMP 1420/1422); Importe por SKU; Margen_total pre-split.
 -- Columnas *_euros = valor en divisa de cuenta * rate(divisa->EUR). invoce_date = primer dia del mes
 -- (DD-MM-YYYY). project_id/descripcion vacios en flexibles.
+-- Filtros: Billing_Model='Flexible' + Desglosar='NO' + Margen GCP/GMP NOT NULL + Importe>0 para BQ.
+-- Para SF: mismos filtros base + Importe!=0 (en Python, incluye negativos).
 --
 -- Parametros: {project}, {transformed_dataset}, {invoice_month} (YYYYMM)
 CREATE OR REPLACE TABLE `{project}.{transformed_dataset}.flex_new` AS
@@ -37,7 +39,7 @@ rates AS (
   FROM `{project}.{transformed_dataset}.currencies_exchange_rates`
 ),
 opp AS (
-  SELECT Id, billing_account_id__c, CurrencyIsoCode, Billing_Model__c,
+  SELECT Id, billing_account_id__c, CurrencyIsoCode, Billing_Model__c, Desglosar_Facturas__c,
     IFNULL(googleInvoiceTypeOpp__c,'')='MARKETPLACE' AS is_mkt,
     IFNULL(SAFE_CAST(Margen_SWO__c AS FLOAT64),0)/100 AS swo,
     IFNULL(SAFE_CAST(Margen_de_partner_Descuento_GCP__c AS FLOAT64),0)/100 AS desc_gcp,
@@ -51,6 +53,8 @@ opp AS (
     IFNULL(SAFE_CAST(Sop_Tec_imp_minimo__c AS FLOAT64),0) AS sop_min,
     IFNULL(SAFE_CAST(Sop_Tec_Maps_imp_minimo__c AS FLOAT64),0) AS sop_maps_min
   FROM `{project}.{transformed_dataset}.stg_opportunities`
+  WHERE Margen_de_partner_Margen_GCP__c IS NOT NULL
+    AND Margen_de_partner_Margen_GMP__c IS NOT NULL
 ),
 oli AS (
   SELECT OpportunityId, SAFE_CAST(SKU__c AS FLOAT64) AS sku, Dominio__c,
@@ -78,6 +82,7 @@ base AS (
   LEFT JOIN rates re ON re.base_currency=UPPER(c.currency) AND re.target_currency='EUR'
   LEFT JOIN rates rea ON rea.base_currency=UPPER(o.CurrencyIsoCode) AND rea.target_currency='EUR'
   WHERE o.Billing_Model__c='Flexible'
+    AND o.Desglosar_Facturas__c = 'NO'
 ),
 calc AS (
   SELECT *,

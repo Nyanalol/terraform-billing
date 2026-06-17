@@ -134,12 +134,12 @@ def stage_reseller_view_to_bq(
 # ───────────────────────────────────────────────────────────────────────────
 
 
-def _build_opportunity_query(empresa_code: str) -> str:
+def _build_opportunity_query(empresa_code: str, stage_name: str) -> str:
     """Build SOQL query for flexible, active, won opportunities."""
     empresa_filter = build_empresa_filter(empresa_code)
     return (
         "SELECT Id FROM Opportunity "
-        "WHERE StageName = 'Cerrada ganada' "
+        f"WHERE StageName = '{stage_name}' "
         "AND Estado_del_contrato__c = 'Activado' "
         "AND RecordTypeName__c = 'Op Flexible' "
         "AND Linea_negocio_Intelligence_Partner__c IN "
@@ -172,10 +172,13 @@ def _build_excluded_query() -> str:
 
 
 def _clean_sku(value: Any) -> str:
-    """Remove trailing '.0' from SKU values."""
+    """Remove trailing '.0' from SKU values (e.g. '1417.0' -> '1417')."""
     if value is None:
         return ""
-    return str(value).replace(".0", "")
+    s = str(value)
+    if s.endswith(".0"):
+        return s[:-2]
+    return s
 
 
 def _build_description(row: dict[str, Any]) -> str:
@@ -264,7 +267,7 @@ async def transform_and_load_to_sf(
     # Extract from Salesforce in parallel
     sf_results = await extractor.extract_multiple_parallel(
         {
-            "opportunities": _build_opportunity_query(config.sf_empresa_code),
+            "opportunities": _build_opportunity_query(config.sf_empresa_code, config.sf_stage_name),
             "line_items": _build_line_items_query(config.billing_year, config.billing_month),
             "excluded": _build_excluded_query(),
         }

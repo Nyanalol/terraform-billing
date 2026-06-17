@@ -115,21 +115,28 @@ async def run_mix_and_match_flexibles(config: MixAndMatchConfig) -> dict[str, An
             logger.warning("no_flex_data_materialized")
             return stats
 
-        # Phase 3: SF insert
+        # Phase 3: SF insert (flex_new already has Desglosar='NO' + Importe!=0;
+        # Talend SF path uses Importe!=0 which is already guaranteed)
         sf_records = [_map_flex_to_sf(row, config) for row in data]
-        result = await extractor.insert_records("Carga_de_lectura__c", sf_records)
-        stats["sf_inserted"] = result.get("success", 0)
-        stats["sf_errors"] = result.get("errors", 0)
+        if sf_records:
+            result = await extractor.insert_records("Carga_de_lectura__c", sf_records)
+            stats["sf_inserted"] = result.get("success", 0)
+            stats["sf_errors"] = result.get("errors", 0)
+        else:
+            stats["sf_inserted"] = 0
+            stats["sf_errors"] = 0
         logger.info(
             "flex_sf_insert_complete",
             inserted=stats["sf_inserted"],
             errors=stats["sf_errors"],
+            total_rows=len(data),
         )
 
-        # Phase 4: BQ output (DELETE+INSERT by invoice_month)
+        # Phase 4: BQ output (DELETE+INSERT by invoice_month, only Importe > 0)
         stats["bq_written"] = write_to_output_table(
             config, loader, "flex_new", config.bq_output_table_flex,
             period_column="invoice_month",
+            source_where="CAST(Importe__c AS FLOAT64) > 0",
         )
 
     finally:
