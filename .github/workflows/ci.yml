@@ -1,0 +1,39 @@
+# CI del monorepo. Dos carriles independientes (infra Terraform / etl Python), filtrados por path.
+# Skeleton inicial — ampliar en Fase 6 (ver docs/UNIFICACION_PROYECTOS.md): añadir el check de
+# esquemas (mart de la ETL vs vista del consolidado) para evitar drift.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  infra:
+    name: terraform validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend=false
+      - run: terraform validate
+      # consolidado (root independiente)
+      - run: terraform -chdir=global init -backend=false
+      - run: terraform -chdir=global validate
+
+  etl:
+    name: python lint + test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: etl
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - run: uv run ruff check .
+      - run: uv run pytest -q

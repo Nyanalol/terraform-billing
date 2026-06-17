@@ -1,0 +1,182 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# FUENTE ÚNICA de la configuración de países del sistema de facturación GCP.
+#
+# Hoy esta info está duplicada en:
+#   - infra/tfvars/<país>.tfvars        (Terraform: despliegue por país)
+#   - infra/global/terraform.tfvars     (Terraform: mapa del consolidado + overrides)
+#   - etl/.env.<país>                   (Python: config de la ETL, p.ej. .env.win_es)
+#
+# OBJETIVO: que este fichero sea el único sitio donde se edita un país, y que unos
+# generadores produzcan los tfvars y los .env.<país> a partir de aquí (ver docs/UNIFICACION_PROYECTOS.md, Fase 2).
+# Por ahora es la fuente declarada; los generadores son trabajo de la Fase 2.
+#
+# Campos por país:
+#   project_id        : proyecto GCP real del país (donde vive su facturación)
+#   region            : location de BigQuery de sus datos (casi todos EU; Brasil southamerica-east1)
+#   export_dataset    : dataset del export de Google (BILLING*_CLOUD_PLATFORM)
+#   talend_context    : nombre del contexto Talend equivalente (referencia histórica)
+#   sf_empresa_ip     : cláusula Empresa_IP__c de Salesforce (filtro de oportunidades)
+#   status            : new | legacy_eu | cross_region | central
+#   consolidado       : cómo lo lee el consolidado global (looker_views_global)
+#     source_project  : proyecto desde el que el UNION lee este país
+#     looker_dataset  : dataset de las 7 vistas (looker_views | consolidado_src | br_src)
+#     billing_dataset : dataset de importes_lecturas_workspace (billing_views | consolidado_src | br_src)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Países NUEVOS: ya estándar, el consolidado los lee de looker_views en vivo.
+belgium:
+  project_id: swobe-billing-prod
+  region: EU
+  export_dataset: BILLINGBE_CLOUD_PLATFORM
+  talend_context: win_be
+  sf_empresa_ip: "Empresa_IP__c='001IV00001aazHW'"
+  status: new
+  consolidado: { source_project: swobe-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+colombia:
+  project_id: swoco-billing-prod
+  region: EU
+  export_dataset: BILLINGCO_CLOUD_PLATFORM
+  talend_context: win_co
+  sf_empresa_ip: "Empresa_IP__c='001IV00001PehnLYAR'"
+  status: new
+  consolidado: { source_project: swoco-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+ecuador:
+  project_id: swoec-billing-prod
+  region: EU
+  export_dataset: BILLINGEC_CLOUD_PLATFORM
+  talend_context: win_ec
+  sf_empresa_ip: "Empresa_IP__c='001IV00001fGr57'"
+  status: new
+  consolidado: { source_project: swoec-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+hong-kong:
+  project_id: swo-billing-prod-hk
+  region: EU
+  export_dataset: BILLING_HK_CLOUD_PLATFORM
+  talend_context: win_hk
+  sf_empresa_ip: "Empresa_IP__c='001IV00001JLmUT'"
+  status: new
+  consolidado: { source_project: swo-billing-prod-hk, looker_dataset: looker_views, billing_dataset: billing_views }
+
+india:
+  project_id: swoin-billing-prod
+  region: EU
+  export_dataset: BILLING_IN_CLOUD_PLATFORM
+  talend_context: win_in
+  sf_empresa_ip: "Empresa_IP__c='001IV00001Wp2D5'"
+  status: new
+  consolidado: { source_project: swoin-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+italy:
+  project_id: swoit-billing-prod
+  region: EU
+  export_dataset: BILLINGIT_CLOUD_PLATFORM
+  talend_context: win_it
+  sf_empresa_ip: "Empresa_IP__c='001IV00000WmUB4'"
+  status: new   # versión antigua, migrada al sistema nuevo en 2026-06
+  consolidado: { source_project: swoit-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+mexico:
+  project_id: swo-billing-prod-484513
+  region: EU
+  export_dataset: BILLINGMX_CLOUD_PLATFORM
+  talend_context: win_mx
+  sf_empresa_ip: "Empresa_IP__c='001IV00001RclHJ'"
+  status: new
+  consolidado: { source_project: swo-billing-prod-484513, looker_dataset: looker_views, billing_dataset: billing_views }
+
+singapore:
+  project_id: swosg-billing-prod
+  region: EU
+  export_dataset: BILLINGSG_CLOUD_PLATFORM
+  talend_context: win_sg
+  sf_empresa_ip: "Empresa_IP__c='001IV00001fGos1'"
+  status: new
+  consolidado: { source_project: swosg-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+usa:
+  project_id: swous-billing-prod
+  region: EU
+  export_dataset: BILLINGUS_CLOUD_PLATFORM
+  talend_context: win_us
+  sf_empresa_ip: "Empresa_IP__c='001IV00000fytRt'"
+  status: new
+  consolidado: { source_project: swous-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+vietnam:
+  project_id: swovn-billing-prod
+  region: EU
+  export_dataset: BILLING_VN_CLOUD_PLATFORM
+  talend_context: win_vn
+  sf_empresa_ip: "Empresa_IP__c='001IV00001MpLmp'"
+  status: new
+  consolidado: { source_project: swovn-billing-prod, looker_dataset: looker_views, billing_dataset: billing_views }
+
+# Países ANTIGUOS EU: el consolidado lee de un dataset 'consolidado_src' (NO toca su looker_views).
+switzerland:
+  project_id: swo-billing-prod
+  region: EU
+  export_dataset: BIILING_CLOUD_PLATFORM   # ojo: typo histórico (doble I) en el nombre real
+  talend_context: win_ch
+  sf_empresa_ip: "Empresa_IP__c='001IV000012VppW'"
+  status: legacy_eu
+  consolidado: { source_project: swo-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
+
+france:
+  project_id: swofr-billing-prod
+  region: EU
+  export_dataset: BILLINGFR_CLOUD_PLATFORM
+  talend_context: win_fr
+  sf_empresa_ip: "Empresa_IP__c='001IV00000WfIcw'"
+  status: legacy_eu
+  consolidado: { source_project: swofr-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
+
+uk:
+  project_id: swouk-billing-prod
+  region: EU
+  export_dataset: BILLINGUK_CLOUD_PLATFORM
+  talend_context: win_uk
+  sf_empresa_ip: "Empresa_IP__c='001IV00000Wlwj1'"
+  status: legacy_eu
+  consolidado: { source_project: swouk-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
+
+germany:
+  project_id: swode-billing-prod
+  region: EU
+  export_dataset: BILLINGDE_CLOUD_PLATFORM
+  talend_context: win_de
+  sf_empresa_ip: "Empresa_IP__c='001IV00000gVL84'"
+  status: legacy_eu
+  consolidado: { source_project: swode-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
+
+netherlands:
+  project_id: swonl-billing-prod
+  region: EU
+  export_dataset: billing_export   # ojo: distinto de los demás (no BILLINGNL_*)
+  talend_context: win_nl
+  sf_empresa_ip: "Empresa_IP__c='001IV00000rOsnC'"
+  status: legacy_eu
+  consolidado: { source_project: swonl-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
+
+# Brasil: datos en southamerica-east1. El consolidado (EU) NO une cross-region en vivo:
+# se materializa en BR (03:30) y se copia a swo-billingglobal-prod.br_src (EU, 04:00). Ver docs/UNIFICACION_PROYECTOS.md.
+brazil:
+  project_id: ipdb-billing-interno
+  region: southamerica-east1
+  export_dataset: BILLING_CLOUD_PLATFORMBRL
+  talend_context: win_br
+  sf_empresa_ip: "Empresa_IP__c='0015700001lTrkuAAC'"
+  status: cross_region
+  consolidado: { source_project: swo-billingglobal-prod, looker_dataset: br_src, billing_dataset: br_src }
+
+# España: proyecto central, estructura distinta (sin looker_views). El consolidado lee de consolidado_src.
+spain:
+  project_id: ip-billing-prod
+  region: EU
+  export_dataset: BILLING_CLOUD_PLATFORM
+  talend_context: win_es
+  sf_empresa_ip: "Empresa_IP__c='0015700001lTrioAAC' OR Empresa_IP__c='001IV00001TJUpHYAX'"
+  status: central
+  consolidado: { source_project: ip-billing-prod, looker_dataset: consolidado_src, billing_dataset: consolidado_src }
