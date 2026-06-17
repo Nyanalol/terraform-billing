@@ -136,7 +136,9 @@ async def run_job(job_name: str, country: str, month: int, year: int) -> int:
                 country, str(month).zfill(2), str(year)
             )
         elif job_name == "delete_today_lecturas":
-            return await run_delete_today_lecturas_job(country)
+            return await run_delete_today_lecturas_job(
+                country, str(month).zfill(2), str(year)
+            )
         else:
             logger.error("unknown_job", job_name=job_name)
             return 1

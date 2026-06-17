@@ -79,7 +79,8 @@ SELECT * FROM (
     CASE WHEN sku IN (1419, 1421) THEN ROUND(gcp_ok * (1 - desc_gcp) + tp_ok - mg_gcp_swo, 6)
          WHEN sku IN (1420, 1422) THEN ROUND(gmp_ok * (1 - desc_gmp) - mg_gmp_swo, 6)
          ELSE ROUND(gmp_ok * (1 - desc_gmp) + gcp_ok * (1 - desc_gcp) + tp_ok - mg_gmp_swo - mg_gcp_swo, 6) END AS Importe__c,
-    '{invoice_month}' AS invoice_month
+    '{invoice_month}' AS invoice_month,
+    'by_project' AS source
   FROM calc
 )
 WHERE ROUND(Importe__c, 6) > 0;

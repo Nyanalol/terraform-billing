@@ -181,6 +181,13 @@ async def main(country: str, month: str, year: str) -> int:
 
     try:
         rows = await fetch_all_rates(job_config)
+
+        # Guard: don't truncate table if all API rates failed
+        valid_rows = [r for r in rows if r.get("exchange_rate") is not None]
+        if not valid_rows:
+            logger.error("all_exchange_rates_failed", total_rows=len(rows))
+            return 1
+
         _write_to_bigquery(rows, job_config)
         logger.info("job_completed_successfully", country=country, rows_written=len(rows))
         return 0

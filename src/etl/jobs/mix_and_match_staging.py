@@ -85,6 +85,7 @@ _STG_OPPORTUNITIES_SOQL = (
     "Margen_de_partner_Descuento_GCP__c, Margen_de_partner_Descuento_GMP__c, "
     "Margen_de_partner_Descuento_Soporte__c, Margen_de_partner_Descuento_Soporte_Maps__c, "
     "Margen_de_partner_Margen_Soporte__c, Margen_de_partner_Margen_Soporte_Maps__c, "
+    "Margen_de_partner_Margen_GCP__c, Margen_de_partner_Margen_GMP__c, "
     "Sop_Tec_Porcent__c, Sop_Tec_Maps_Porcent__c, "
     "Sop_Tec_imp_minimo__c, Sop_Tec_Maps_imp_minimo__c, "
     "Sop_Tec_imp_fijo__c, Sop_Tec_Maps_Importe_Fijo__c "
@@ -104,9 +105,9 @@ _STG_LINE_ITEMS_SOQL = (
     "FROM OpportunityLineItem "
     "WHERE SKU__c IN ({skus}) "
     "AND (Fecha_Inicio_Contrato_Opp__c = NULL "
-    "OR Fecha_Inicio_Contrato_Opp__c < TODAY) "
+    "OR Fecha_Inicio_Contrato_Opp__c < {period_end}) "
     "AND (Fecha_Fin_Contrato_Opp__c = NULL "
-    "OR Fecha_Fin_Contrato_Opp__c >= TODAY)"
+    "OR Fecha_Fin_Contrato_Opp__c >= {period_start})"
 )
 
 
@@ -148,12 +149,16 @@ def write_to_output_table(
     temp_table_name: str,
     output_table_name: str,
     period_column: Optional[str] = None,
+    extra_delete_filter: Optional[str] = None,
+    source_where: Optional[str] = None,
 ) -> int:
     """
     Write temp table data to output table.
 
     If period_column is set (e.g. 'invoice_month'), uses DELETE+INSERT for
     idempotency.  Otherwise plain APPEND (matches Talend behaviour).
+    extra_delete_filter is appended to the DELETE WHERE clause (e.g. "AND source = 'by_project'").
+    source_where is appended as WHERE clause to the SELECT from temp table (e.g. "CAST(Importe__c AS FLOAT64) > 0").
 
     Returns:
         Number of rows inserted
@@ -168,9 +173,13 @@ def write_to_output_table(
     # Idempotent DELETE when the temp table carries a period column
     if period_column:
         try:
-            delete_job = loader.execute_query(
-                f"DELETE FROM {fq_output} "
+            delete_where = (
                 f"WHERE {period_column} = '{config.invoice_month}'"
+            )
+            if extra_delete_filter:
+                delete_where += f" {extra_delete_filter}"
+            delete_job = loader.execute_query(
+                f"DELETE FROM {fq_output} {delete_where}"
             )
             deleted = delete_job.num_dml_affected_rows or 0
             logger.info(
@@ -183,23 +192,33 @@ def write_to_output_table(
             # Table doesn't exist yet — will be created below
             logger.info("output_table_not_found_will_create", table=output_table_name)
 
-    # Try INSERT INTO existing table; if table doesn't exist, CREATE from temp
+    # Build source SELECT clause
+    source_select = f"SELECT * FROM {fq_temp}"
+    if source_where:
+        source_select += f" WHERE {source_where}"
+
+    # Try INSERT INTO existing table; if fails (schema mismatch or not exists), DROP+CREATE
     try:
         loader.execute_query(
             f"SELECT 1 FROM {fq_output} LIMIT 0"
         )
         insert_job = loader.execute_query(
-            f"INSERT INTO {fq_output} SELECT * FROM {fq_temp}"
+            f"INSERT INTO {fq_output} {source_select}"
         )
         inserted = insert_job.num_dml_affected_rows or 0
-    except Exception:
-        logger.info("creating_output_table_from_temp", table=output_table_name)
+    except Exception as e:
+        logger.info("insert_failed_recreating_table", table=output_table_name, reason=str(e)[:200])
+        # DROP if exists then CREATE from temp
+        try:
+            loader.execute_query(f"DROP TABLE IF EXISTS {fq_output}")
+        except Exception:
+            pass
         loader.execute_query(
-            f"CREATE TABLE {fq_output} AS SELECT * FROM {fq_temp}"
+            f"CREATE TABLE {fq_output} AS {source_select}"
         )
         # Count rows from temp table
         count_result = loader.query_to_dicts(
-            f"SELECT COUNT(*) AS cnt FROM {fq_temp}"
+            f"SELECT COUNT(*) AS cnt FROM ({source_select})"
         )
         inserted = count_result[0]["cnt"] if count_result else 0
 
@@ -238,7 +257,22 @@ async def create_staging_tables(
         empresa_filter=build_empresa_filter(config.sf_empresa_code),
         stage_name=config.sf_stage_name,
     )
-    oli_soql = _STG_LINE_ITEMS_SOQL.format(skus=skus_formatted)
+
+    # Period boundaries for line items (contract must overlap billing month)
+    year_int = int(config.billing_year)
+    month_int = int(config.billing_month)
+    if month_int == 12:
+        next_year, next_month = year_int + 1, 1
+    else:
+        next_year, next_month = year_int, month_int + 1
+    period_start = config.first_day  # YYYY-MM-01
+    period_end = f"{next_year}-{next_month:02d}-01"
+
+    oli_soql = _STG_LINE_ITEMS_SOQL.format(
+        skus=skus_formatted,
+        period_start=period_start,
+        period_end=period_end,
+    )
 
     # Extract from SF in parallel
     results = await extractor.extract_multiple_parallel(
@@ -277,7 +311,7 @@ async def create_staging_tables(
     return counts
 
 
-async def main(country: str) -> int:
+async def main(country: str, month: str = "01", year: str = "2026") -> int:
     """Main entry point."""
     configure_logging(log_level="INFO", environment="production")
 
@@ -289,8 +323,8 @@ async def main(country: str) -> int:
 
     config = MixAndMatchConfig(
         country=country,
-        billing_month="01",  # Not used for staging, placeholder
-        billing_year="2026",  # Not used for staging, placeholder
+        billing_month=month.zfill(2),
+        billing_year=year,
         gcp_project_id=settings.bq_project_id,
         bq_transformed_dataset=settings.bq_transformed_dataset,
         bq_input_dataset=settings.bq_input_dataset,
@@ -333,7 +367,9 @@ if __name__ == "__main__":
         description="Mix and Match - Staging (run once before mix_and_match jobs)"
     )
     parser.add_argument("--country", required=True, help="Country config (e.g., win_uk)")
+    parser.add_argument("--month", required=True, help="Billing month (e.g., 05)")
+    parser.add_argument("--year", required=True, help="Billing year (e.g., 2026)")
     args = parser.parse_args()
 
-    exit_code = asyncio.run(main(args.country))
+    exit_code = asyncio.run(main(args.country, args.month, args.year))
     sys.exit(exit_code)

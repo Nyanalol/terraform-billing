@@ -134,6 +134,7 @@ async def run_mix_and_match_soporte(config: MixAndMatchConfig) -> dict[str, Any]
         stats["bq_written"] = write_to_output_table(
             config, loader, "soporte_new", config.bq_output_table_flex_desglosadas,
             period_column="invoice_month",
+            extra_delete_filter="AND source = 'soporte'",
         )
 
     finally:

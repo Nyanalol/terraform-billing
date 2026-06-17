@@ -80,6 +80,7 @@ SELECT billing_account_id, opp_id AS OpportunityId__c, sku AS SKU__c,
   ROUND(ROUND(sup_gcp * p_sop, 2) + ROUND(sup_maps * p_sop_m, 2), 2) AS Importe__c,
   'Soporte técnico' AS descripcion,
   '' AS project_id,
-  '{invoice_month}' AS invoice_month
+  '{invoice_month}' AS invoice_month,
+  'soporte' AS source
 FROM sup
 WHERE ROUND(ROUND(sup_gcp * p_sop, 2) + ROUND(sup_maps * p_sop_m, 2), 2) > 0;

@@ -342,16 +342,28 @@ class SalesforceExtractor:
 
         Returns:
             Dictionary mapping query names to result lists
+
+        Raises:
+            RuntimeError: If any query fails
         """
         tasks = {name: self.query(soql) for name, soql in queries.items()}
         results = await asyncio.gather(*tasks.values(), return_exceptions=True)
 
         output = {}
+        errors = []
         for (name, _), result in zip(tasks.items(), results):
             if isinstance(result, Exception):
                 logger.error(f"query_failed_for_{name}", error=str(result))
+                errors.append((name, result))
                 output[name] = []
             else:
                 output[name] = result
+
+        if errors:
+            failed_names = [name for name, _ in errors]
+            raise RuntimeError(
+                f"SF queries failed: {failed_names}. "
+                f"First error: {errors[0][1]}"
+            )
 
         return output
