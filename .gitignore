@@ -27,6 +27,9 @@ etl/.venv/
 __pycache__/
 *.pyc
 
+# Claude Code (config/sesiones locales, no versionar)
+.claude/
+
 # scratch SQL de validacion (no versionar)
 etl/mix_and_match/_scratch*
 etl/mix_and_match/_*
