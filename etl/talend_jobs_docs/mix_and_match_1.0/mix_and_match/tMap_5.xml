@@ -1,0 +1,288 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<externalNode i18n.job.component.parameters="Component Parameters:" i18n.job.properties="Propiedades" i18n.job.values="Valores" i18n.mapper.table.for="Mapper table for " i18n.mapper.table.properties="Mapper table Properties" i18n.job.name="Nombre" i18n.tmap.matching.mode="Matching-mode" i18n.mapper.table.isminimized="isMinimized" i18n.tmap.isreject="isReject" i18n.tmap.isrejectinnnerjoin="isRejectInnerJoin" i18n.tmap.isinnerjoin="isInnerJoin" i18n.tmap.expressionfilter="expressionFilter" i18n.mapper.table.metadata.entries="Metadata Table Entries" i18n.job.type="Tipo" i18n.mapper.table.expression="Expresi&#243;n" i18n.tmap.isnullable="isNullable" i18n.tmap.constraint.entries="Constraint Table Entries" name="tMap_5" preview="pictures/_2Y8ZYBYeEfGpMsTDsMtuqA-tMap_5-PREVIEW.bmp">
+  <parameters>
+    <column name="tStatCatcher Statistics">false</column>
+    <column name="Mapping links display as: ">AUTO</column>
+    <column name="Temp data directory path: "></column>
+    <column name="Max buffer size (nb of rows): ">2000000</column>
+    <column name="Ignore trailing zeros for BigDecimal">true</column>
+    <column name="Show Information">false</column>
+    <column name="Comentario"><![CDATA[]]></column>
+    <column name="Use an existing validation rule">false</column>
+  </parameters>
+  <mapperTable type="input">
+    <table name="OpProduct_agrupadas_por_proyecto" matching-mode="UNIQUE_MATCH" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="OpportunityId" type="String" expression="" isNullable="false"/>
+        <entry name="Descripci_n_del_producto__c" type="String" expression="" isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="" isNullable="true"/>
+        <entry name="Fecha_Fin_Contrato__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Fecha_Inicio_Contrato__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="SKU__c" type="Double" expression="" isNullable="true"/>
+        <entry name="CurrencyIsoCode" type="String" expression="" isNullable="false"/>
+        <entry name="SmallOpportunityId" type="String" expression="" isNullable="false"/>
+        <entry name="Fecha_Inicio_Contrato_Opp__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Fecha_Fin_Contrato_Opp__c" type="java.util.Date" expression="" isNullable="true"/>
+        <entry name="Margen_partner_GCP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_partner_GMP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_partner_Soporte__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_partner_Soporte_Maps__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Desglosar_Facturas__c" type="String" expression="" isNullable="true"/>
+        <entry name="Billing_Model__c" type="String" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_Porcent__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_Maps_Porcent__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_imp_minimo__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_Maps_imp_minimo__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_imp_fijo__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Sop_Tec_Maps_imp_fijo__c" type="double" expression="" isNullable="false"/>
+        <entry name="billing_account_id__c" type="String" expression="" isNullable="true"/>
+        <entry name="billing_account_desc__c" type="String" expression="" isNullable="true"/>
+        <entry name="Margen_base_GCP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_base_GMP__c" type="Double" expression="" isNullable="true"/>
+        <entry name="descuento_gmp" type="Double" expression="" isNullable="true"/>
+        <entry name="descuento_gcp" type="Double" expression="" isNullable="true"/>
+        <entry name="descuento_soporte" type="Double" expression="" isNullable="true"/>
+        <entry name="descuento_soporte_maps" type="Double" expression="" isNullable="true"/>
+        <entry name="Margen_SWO" type="Double" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+    <table name="row8" matching-mode="ALL_MATCHES" lookup-mode="LOAD_ONCE" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="true" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="invoice_month" type="String" expression="" isNullable="true"/>
+        <entry name="cost_gcp" type="Float" expression="" isNullable="true"/>
+        <entry name="credits_gcp" type="Float" expression="" isNullable="true"/>
+        <entry name="total_gcp" type="Float" expression="" isNullable="true"/>
+        <entry name="cost_gmp" type="Float" expression="" isNullable="true"/>
+        <entry name="credits_gmp" type="Float" expression="" isNullable="true"/>
+        <entry name="total_gmp" type="Float" expression="" isNullable="true"/>
+        <entry name="billing_account_id" type="String" expression="OpProduct_agrupadas_por_proyecto.billing_account_id__c " isNullable="true"/>
+        <entry name="project_id" type="String" expression="" isNullable="true"/>
+        <entry name="reseller_margin_gmp" type="String" expression="" isNullable="true"/>
+        <entry name="reseller_margin_gcp" type="String" expression="" isNullable="true"/>
+        <entry name="currency" type="String" expression="" isNullable="true"/>
+        <entry name="cost_thirdparty" type="Float" expression="" isNullable="true"/>
+        <entry name="credits_thirdparty" type="Float" expression="" isNullable="true"/>
+        <entry name="total_thirdparty" type="Float" expression="" isNullable="true"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="output">
+    <table name="copyOfBillingLines" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="billing_account_id" type="String" expression="OpProduct_agrupadas_por_proyecto.billing_account_id__c " isNullable="true"/>
+        <entry name="op_id" type="String" expression="OpProduct_agrupadas_por_proyecto.OpportunityId " isNullable="true"/>
+        <entry name="OpportunityId" type="String" expression="OpProduct_agrupadas_por_proyecto.OpportunityId " isNullable="true"/>
+        <entry name="Dominio__c" type="String" expression="OpProduct_agrupadas_por_proyecto.Dominio__c " isNullable="true"/>
+        <entry name="SKU__c" type="Double" expression="OpProduct_agrupadas_por_proyecto.SKU__c " isNullable="true"/>
+        <entry name="Currency" type="String" expression="OpProduct_agrupadas_por_proyecto.CurrencyIsoCode " isNullable="true"/>
+        <entry name="TotalSupport" type="double" expression="Var.TotalSupport " isNullable="false"/>
+        <entry name="invoice_month" type="String" expression="Var.invoice_month " isNullable="true"/>
+        <entry name="Anio" type="String" expression="Var.Anio " isNullable="true"/>
+        <entry name="Mes" type="String" expression="Var.Mes " isNullable="true"/>
+        <entry name="Total_gcp" type="Double" expression="Var.Total_gcp_currency_ok " isNullable="true"/>
+        <entry name="Cargo_Google_GCP" type="Double" expression="Var.Cargo_Google_GCP " isNullable="true"/>
+        <entry name="Margen_gcp" type="double" expression="Var.Margen_gcp " isNullable="false"/>
+        <entry name="Total_gmp" type="Double" expression="Var.Total_gmp_currency_ok " isNullable="true"/>
+        <entry name="Cargo_Google_GMP" type="Double" expression="Var.Cargo_Google_GMP" isNullable="true"/>
+        <entry name="Margen_gmp" type="double" expression="Var.Margen_gmp " isNullable="false"/>
+        <entry name="Total_thirdparty" type="double" expression="Var.Total_thirdparty_currency_ok " isNullable="false"/>
+        <entry name="Margen_total" type="double" expression="Var.Margen_total " isNullable="false"/>
+        <entry name="Cargo_google" type="Double" expression="Var.Cargo_google " isNullable="true"/>
+        <entry name="Importe_factura" type="double" expression="Var.Importe_factura " isNullable="false"/>
+        <entry name="Importe_factura_gcp" type="double" expression="Var.Importe_factura_gcp " isNullable="false"/>
+        <entry name="Importe_factura_gmp" type="double" expression="Var.Importe_factura_gmp " isNullable="false"/>
+        <entry name="ApplySupport" type="boolean" expression="Var.ApplySupport " isNullable="false"/>
+        <entry name="porcentajeMargenGMP" type="double" expression="Var.porcentajeMargenGMP " isNullable="false"/>
+        <entry name="porcentajeMargenSoporte" type="double" expression="Var.porcentajeMargenSoporte " isNullable="false"/>
+        <entry name="porcentajeMargenSoporteMaps" type="Double" expression="OpProduct_agrupadas_por_proyecto.Margen_partner_Soporte_Maps__c " isNullable="true"/>
+        <entry name="porcentajeMargenGCP" type="double" expression="Var.porcentajeMargenGCP " isNullable="false"/>
+        <entry name="Descripci_n_del_producto__c" type="String" expression="OpProduct_agrupadas_por_proyecto.Descripci_n_del_producto__c " isNullable="true"/>
+        <entry name="Rate" type="double" expression="Var.Rate " isNullable="false"/>
+        <entry name="project_id" type="String" expression="Var.project_id " isNullable="true"/>
+        <entry name="margen_ip_soporte" type="Double" expression="OpProduct_agrupadas_por_proyecto.Margen_partner_Soporte__c " isNullable="true"/>
+        <entry name="margen_ip_soporte_maps" type="Double" expression="OpProduct_agrupadas_por_proyecto.Margen_partner_Soporte_Maps__c " isNullable="true"/>
+        <entry name="Desglosar_Facturas" type="String" expression="OpProduct_agrupadas_por_proyecto.Desglosar_Facturas__c " isNullable="true"/>
+        <entry name="soporte_tecnico_fijo" type="double" expression="Var.soporte_tecnico_fijo " isNullable="false"/>
+        <entry name="soporte_maps_tecnico_fijo" type="double" expression="OpProduct_agrupadas_por_proyecto.Sop_Tec_Maps_imp_fijo__c " isNullable="false"/>
+        <entry name="soporte_tecnico_minimo" type="double" expression="Var.soporte_tecnico_minimo " isNullable="false"/>
+        <entry name="soporte_maps_tecnico_minimo" type="Double" expression="OpProduct_agrupadas_por_proyecto.Sop_Tec_Maps_imp_minimo__c " isNullable="true"/>
+        <entry name="soporte_tecnico_porcentaje" type="double" expression="Var.soporte_tecnico_porcentaje " isNullable="false"/>
+        <entry name="soporte_maps_tecnico_porcentaje" type="Double" expression="OpProduct_agrupadas_por_proyecto.Sop_Tec_Maps_Porcent__c " isNullable="true"/>
+        <entry name="Margen_gmp_euros" type="double" expression="Var.Margen_gmp_euros * Var.Rate_to_euro" isNullable="false"/>
+        <entry name="Margen_gcp_euros" type="double" expression="Var.Margen_gcp_euros * Var.Rate_to_euro" isNullable="false"/>
+        <entry name="Margen_SWO" type="Double" expression="OpProduct_agrupadas_por_proyecto.Margen_SWO " isNullable="true"/>
+        <entry name="Rate_to_euro" type="double" expression="Var.Rate_to_euro " isNullable="false"/>
+        <entry name="Rate_to_euro_soporte" type="double" expression="Var.Rate_to_euro_soporte " isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+  <mapperTable type="var">
+    <table name="Var" isMinimized="false" isReject="false" isRejectInnerJoin="false" isInnerJoin="false" isPersistent="false" expressionFilter="null" activateExpressionFilter="false" activateCondensedTool="false" activateColumnNameFilter="false" columnNameFilter="null">
+      <metadataTableEntries>
+        <entry name="Descuento_gcp" type="double" expression="(OpProduct_agrupadas_por_proyecto.descuento_gcp == null ? 0 : OpProduct_agrupadas_por_proyecto.descuento_gcp  ) / 100 " isNullable="false"/>
+        <entry name="Descuento_gmp" type="double" expression="( OpProduct_agrupadas_por_proyecto.descuento_gmp == null ? 0 : OpProduct_agrupadas_por_proyecto.descuento_gmp ) / 100 " isNullable="false"/>
+        <entry name="Descuento_soporte" type="double" expression="( OpProduct_agrupadas_por_proyecto.descuento_soporte == null ? 0 : OpProduct_agrupadas_por_proyecto.descuento_soporte ) / 100 " isNullable="false"/>
+        <entry name="reseller_margin_gmp" type="double" expression="row8.reseller_margin_gmp == null ? 0 : Mathematical.REAL(row8.reseller_margin_gmp) " isNullable="false"/>
+        <entry name="reseller_margin_gcp" type="double" expression="row8.reseller_margin_gcp == null ? 0 : Mathematical.REAL(row8.reseller_margin_gcp) " isNullable="false"/>
+        <entry name="Redondeo" type="double" expression="1000000.0" isNullable="false"/>
+        <entry name="Total_gmp_euros" type="double" expression="Math.round( (row8.total_gmp == null ? 0 : row8.total_gmp ) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Total_gcp_euros" type="double" expression="Math.round( (row8.total_gcp == null ? 0 : 
+row8.total_gcp )*Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Total_thirdparty_euros" type="double" expression="Math.round( (row8.total_thirdparty == null ? 0 : 
+row8.total_thirdparty )*Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Margen_gmp_euros" type="double" expression="/*Math.round( (Var.Total_gmp_euros * OpProduct_agrupadas_por_proyecto.Margen_partner_GMP__c)*1000000 ) / 1000000.0 */
+/*
+Math.round( 
+	(   -1*Var.reseller_margin_gmp * (1-Var.Descuento_gmp)
+)*1000000
+) / 1000000.0 */
+
+/*
+Math.round( 
+	(   -1*Var.reseller_margin_gmp * (1-Var.Descuento_gmp) * (1-OpProduct_agrupadas_por_proyecto.Margen_SWO)
+)*1000000
+) / 1000000.0 
+*/
+
+Math.round( 
+	(
+
+	((-1*Var.reseller_margin_gmp) - (Var.Total_gmp_euros*Var.Descuento_gmp)) * (1-OpProduct_agrupadas_por_billing_account.Margen_SWO)
+
+) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Margen_gcp_euros" type="double" expression="/*Math.round( (Var.Total_gcp_euros * OpProduct_agrupadas_por_proyecto.Margen_partner_GCP__c )*1000000 ) / 1000000.0 */
+/*Math.round( 
+	(   -1*Var.reseller_margin_gcp * (1-Var.Descuento_gcp)
+)*1000000
+) / 1000000.0 
+*/
+
+/*Math.round( 
+	(   -1*Var.reseller_margin_gcp * (1-Var.Descuento_gcp) * (1- OpProduct_agrupadas_por_proyecto.Margen_SWO)
+)*1000000
+) / 1000000.0 */
+
+Math.round( 
+	(
+
+	((-1*Var.reseller_margin_gcp) - (Var.Total_gcp_euros*Var.Descuento_gcp)) * (1-OpProduct_agrupadas_por_billing_account.Margen_SWO)
+
+) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="porcentajeMargenGMP" type="double" expression="OpProduct_agrupadas_por_proyecto.Margen_partner_GMP__c " isNullable="false"/>
+        <entry name="porcentajeMargenSoporte" type="double" expression="OpProduct_agrupadas_por_proyecto.Margen_partner_Soporte__c " isNullable="false"/>
+        <entry name="porcentajeMargenGCP" type="double" expression="OpProduct_agrupadas_por_proyecto.Margen_partner_GCP__c " isNullable="false"/>
+        <entry name="Rate" type="double" expression="(row8 == null || row8.currency == null || OpProduct_agrupadas_por_proyecto.CurrencyIsoCode == null) ? 1.0 : 
+routines.CurrencyUtils.getRate(row8.currency, OpProduct_agrupadas_por_proyecto.CurrencyIsoCode) " isNullable="false"/>
+        <entry name="Rate_to_euro" type="double" expression="(row8 == null || row8.currency == null) ? 1.0 : 
+routines.CurrencyUtils.getRate(row8.currency, &quot;eur&quot;) " isNullable="false"/>
+        <entry name="Rate_to_euro_soporte" type="double" expression="(OpProduct_agrupadas_por_proyecto.CurrencyIsoCode == null) ? 1.0 : 
+routines.CurrencyUtils.getRate(OpProduct_agrupadas_por_proyecto.CurrencyIsoCode, &quot;eur&quot;) " isNullable="false"/>
+        <entry name="Total_gmp_currency_ok" type="double" expression="Math.round( (row8.total_gmp == null ? 0 : row8.total_gmp * Var.Rate) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Total_gcp_currency_ok" type="double" expression="Math.round( (row8.total_gcp == null ? 0 : 
+row8.total_gcp * Var.Rate)*Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Total_thirdparty_currency_ok" type="double" expression="Math.round( (row8.total_thirdparty == null ? 0 : 
+row8.total_thirdparty * Var.Rate)*Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="ApplySupport" type="boolean" expression="TalendDate.compareDate(OpProduct_agrupadas_por_proyecto.Fecha_Inicio_Contrato_Opp__c, 		TalendDate.parseDate(&quot;yyyy-MM-dd&quot;, context.year+&quot;-&quot;+context.month+&quot;-23&quot;) ) &lt;= 0 " isNullable="false"/>
+        <entry name="Anio" type="String" expression="row8.invoice_month == null ? /*&quot;sin_anio&quot;*/ context.year : StringHandling.LEFT(row8.invoice_month, 4) " isNullable="false"/>
+        <entry name="Mes" type="String" expression="row8.invoice_month == null ? /*&quot;sin_mes&quot;*/ context.month :
+&quot;1-&quot;+row8.invoice_month.substring(4) " isNullable="false"/>
+        <entry name="Cargo_google" type="double" expression="/*Math.round ( 
+	(Var.Total_gcp_currency_ok + Var.Total_gmp_currency_ok 
+	- 		
+	(Var.Total_gcp_currency_ok* OpProduct_agrupadas_por_proyecto.Margen_base_GCP__c) 
+	- 
+	(Var.Total_gmp_currency_ok* OpProduct_agrupadas_por_proyecto.Margen_base_GMP__c)
+
+) * Var.Redondeo ) / Var.Redondeo */
+
+Math.round( (
+Var.Total_gmp_euros + Var.Total_gcp_euros + 
+Var.Total_thirdparty_euros +
+Var.reseller_margin_gmp + Var.reseller_margin_gcp
+)*Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="TotalSupport" type="double" expression="0.0" isNullable="false"/>
+        <entry name="Margen_gcp" type="double" expression="/*Math.round( (Var.Total_gcp_currency_ok * OpProduct_agrupadas_por_proyecto.Margen_partner_GCP__c )*Var.Redondeo) / Var.Redondeo */
+Math.round( (Var.Margen_gcp_euros * Var.Rate) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Margen_gmp" type="double" expression="/*Math.round( (Var.Total_gmp_currency_ok * OpProduct_agrupadas_por_proyecto.Margen_partner_GMP__c)*Var.Redondeo ) / Var.Redondeo */
+Math.round( (Var.Margen_gmp_euros * Var.Rate) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Margen_gcp_swo" type="double" expression="/*Math.round( (
+(Math.round( 
+	(   -1*Var.reseller_margin_gcp * (1-Var.Descuento_gcp) * (OpProduct_agrupadas_por_proyecto.Margen_SWO)
+)*1000000
+) / 1000000.0 )
+ * Var.Rate) *Var.Redondeo) / Var.Redondeo */
+ 
+Math.round( 
+	(
+
+	((-1*Var.reseller_margin_gcp) - (Var.Total_gcp_euros*Var.Descuento_gcp)) * (OpProduct_agrupadas_por_billing_account.Margen_SWO)
+
+) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Margen_gmp_swo" type="double" expression="/*Math.round( (
+(Math.round( 
+	(   -1*Var.reseller_margin_gmp * (1-Var.Descuento_gmp) * (OpProduct_agrupadas_por_proyecto.Margen_SWO)
+)*1000000
+) / 1000000.0 )
+ * Var.Rate) *Var.Redondeo) / Var.Redondeo 
+ */
+  Math.round( 
+	(
+
+	((-1*Var.reseller_margin_gmp) - (Var.Total_gmp_euros*Var.Descuento_gmp)) * (OpProduct_agrupadas_por_billing_account.Margen_SWO)
+
+) *Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="Importe_factura" type="double" expression="Math.round ( ( 
+
+(Var.TotalSupport * (1-Var.Descuento_soporte) ) + 
+(Var.Total_gmp_currency_ok * (1-Var.Descuento_gmp) ) + 
+(Var.Total_gcp_currency_ok * (1-Var.Descuento_gcp) ) +
+(Var.Total_thirdparty_currency_ok ) - 
+/*(Var.Margen_gcp * (OpProduct_agrupadas_por_proyecto.Margen_SWO)) -
+(Var.Margen_gmp * (OpProduct_agrupadas_por_proyecto.Margen_SWO))*/
+Var.Margen_gmp_swo - Var.Margen_gcp_swo
+) * Var.Redondeo ) / Var.Redondeo " isNullable="false"/>
+        <entry name="Importe_factura_gcp" type="double" expression="Math.round ( ( 
+(Var.TotalSupport * (1-Var.Descuento_soporte) ) + 
+(Var.Total_gcp_currency_ok * (1-Var.Descuento_gcp) ) +
+(Var.Total_thirdparty_currency_ok ) - 
+Var.Margen_gcp_swo
+) * Var.Redondeo ) / Var.Redondeo " isNullable="false"/>
+        <entry name="Importe_factura_gmp" type="double" expression="Math.round ( ( 
+
+(Var.Total_gmp_currency_ok * (1-Var.Descuento_gmp) ) -Var.Margen_gmp_swo
+) * Var.Redondeo ) / Var.Redondeo " isNullable="false"/>
+        <entry name="Margen" type="double" expression="/*
+(
+(Var.TotalSupport * (1-Var.Descuento_soporte)/Var.Rate ) + 
+(
+	(Var.Margen_gcp_euros - (Var.Total_gcp_euros * Var.Descuento_gcp)) 
+ )  + 
+	((Var.Margen_gmp_euros - (Var.Total_gmp_euros * Var.Descuento_gmp)) 
+) 
+*/
+
+(
+(Var.TotalSupport * (1-Var.Descuento_soporte)/Var.Rate ) + 
+(
+	(Var.Margen_gcp_euros )  /**  (1-OpProduct_agrupadas_por_proyecto.Margen_SWO))*/
+ )  + 
+	((Var.Margen_gmp_euros ) /** (1-OpProduct_agrupadas_por_proyecto.Margen_SWO)) */
+  )
+) " isNullable="false"/>
+        <entry name="Margen_total" type="double" expression="Math.round( (Var.Importe_factura &gt; 0  ? (Var.Margen*100 / (Var.Importe_factura/Var.Rate)) : 0)*Var.Redondeo) / Var.Redondeo " isNullable="false"/>
+        <entry name="soporte_tecnico_fijo" type="double" expression="OpProduct_agrupadas_por_proyecto.Sop_Tec_imp_fijo__c " isNullable="false"/>
+        <entry name="soporte_tecnico_minimo" type="double" expression="OpProduct_agrupadas_por_proyecto.Sop_Tec_imp_minimo__c " isNullable="false"/>
+        <entry name="soporte_tecnico_porcentaje" type="double" expression="OpProduct_agrupadas_por_proyecto.Sop_Tec_Porcent__c " isNullable="false"/>
+        <entry name="project_id" type="String" expression="row8.project_id == null || row8.project_id.length() == 0 ? &quot;No project name&quot; : row8.project_id " isNullable="false"/>
+        <entry name="invoice_month" type="String" expression="context.year + context.month " isNullable="false"/>
+        <entry name="Cargo_Google_GCP" type="double" expression="(Math.round((Var.Total_gcp_euros+Var.reseller_margin_gcp+Var.Total_thirdparty_currency_ok)*Var.Redondeo) / Var.Redondeo) &lt; 0.0 &amp;&amp;
+(Math.round((Var.Total_gcp_euros+Var.reseller_margin_gcp+Var.Total_thirdparty_currency_ok)*Var.Redondeo) / Var.Redondeo) &gt; -0.001
+? 0 : (Math.round((Var.Total_gcp_euros+Var.reseller_margin_gcp+Var.Total_thirdparty_currency_ok)*Var.Redondeo) / Var.Redondeo) " isNullable="false"/>
+        <entry name="Cargo_Google_GMP" type="double" expression="(Math.round((Var.Total_gmp_euros+Var.reseller_margin_gmp)*Var.Redondeo) / Var.Redondeo) &lt; 0.0 &amp;&amp;
+(Math.round((Var.Total_gmp_euros+Var.reseller_margin_gmp)*Var.Redondeo) / Var.Redondeo) &gt; -0.001
+? 0 : (Math.round((Var.Total_gmp_euros+Var.reseller_margin_gmp)*Var.Redondeo) / Var.Redondeo) " isNullable="false"/>
+      </metadataTableEntries>
+    </table>
+  </mapperTable>
+</externalNode>

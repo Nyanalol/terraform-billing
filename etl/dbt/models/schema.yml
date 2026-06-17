@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: billing_accounts_facturables
+    description: Billable billing accounts extracted from Salesforce Opportunities
+    columns:
+      - name: Id
+        description: Salesforce Opportunity ID
+        data_type: string
+        tests:
+          - not_null
+          - unique
+      
+      - name: AccountId
+        description: Related Salesforce Account ID
+        data_type: string
+      
+      - name: Name
+        description: Opportunity name
+        data_type: string
+      
+      - name: Amount
+        description: Opportunity amount in base currency
+        data_type: decimal
+      
+      - name: StageName
+        description: Sales stage
+        data_type: string
+      
+      - name: CloseDate
+        description: Expected close date
+        data_type: date
+      
+      - name: CreatedDate
+        description: Record creation timestamp
+        data_type: timestamp
+      
+      - name: Importe_Facturable__c
+        description: Billable amount (custom field)
+        data_type: decimal
+      
+      - name: Estado_facturaciones__c
+        description: Billing status (custom field)
+        data_type: string
+
+  - name: billing_accounts_n_a
+    description: Billing accounts marked as N/A
+    columns:
+      - name: billing_account_id__c
+        description: Custom billing account ID
+        data_type: string
+        tests:
+          - not_null
+      
+      - name: billing_account_desc__c
+        description: Billing account description
+        data_type: string
+      
+      - name: Fecha_Fin_Contrato__c
+        description: Contract end date
+        data_type: date
+      
+      - name: Fecha_Inicio_Contrato__c
+        description: Contract start date
+        data_type: date
+
+  - name: all_billing_accounts
+    description: Complete dataset of all billing accounts for reconciliation
+    columns:
+      - name: Id
+        description: Salesforce record ID
+        data_type: string
+        tests:
+          - not_null
+          - unique
+      
+      - name: Empresa
+        description: Company/Enterprise code
+        data_type: string
