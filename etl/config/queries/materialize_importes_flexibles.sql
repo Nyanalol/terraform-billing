@@ -39,7 +39,7 @@ rates AS (
   FROM `{project}.{transformed_dataset}.currencies_exchange_rates`
 ),
 opp AS (
-  SELECT Id, billing_account_id__c, CurrencyIsoCode, Billing_Model__c, Desglosar_Facturas__c,
+  SELECT Id, billing_account_id__c, billing_account_desc__c, CurrencyIsoCode, Billing_Model__c, Desglosar_Facturas__c,
     IFNULL(googleInvoiceTypeOpp__c,'')='MARKETPLACE' AS is_mkt,
     IFNULL(SAFE_CAST(Margen_SWO__c AS FLOAT64),0)/100 AS swo,
     IFNULL(SAFE_CAST(Margen_de_partner_Descuento_GCP__c AS FLOAT64),0)/100 AS desc_gcp,
@@ -67,9 +67,11 @@ oli AS (
 base AS (
   -- billing_account_id desde la OPP (no del consumo): asi sobreviven las cuentas con minimo de
   -- soporte y CERO consumo (no estan en sum_costs). LEFT JOIN + coalesce de los totales a 0.
-  SELECT o.billing_account_id__c AS billing_account_id, o.Id AS opp_id, oli.sku, oli.Dominio__c, o.CurrencyIsoCode,
+  SELECT o.billing_account_id__c AS billing_account_id, o.billing_account_desc__c AS o_billing_account_desc, o.Id AS opp_id, oli.sku, oli.Dominio__c, o.CurrencyIsoCode,
     oli.sku IN (1419,1421) AS is_gcp, oli.sku IN (1420,1422) AS is_gmp,
-    IFNULL(r.exchange_rate,1.0) AS rate, IFNULL(re.exchange_rate,1.0) AS rate_eur, IFNULL(rea.exchange_rate,1.0) AS rate_eur_acc,
+    IFNULL(r.exchange_rate,1.0) AS rate,
+    IF(UPPER(c.currency)='EUR', 1.0, IFNULL(re.exchange_rate,1.0)) AS rate_eur,
+    IF(UPPER(o.CurrencyIsoCode)='EUR', 1.0, IFNULL(rea.exchange_rate,1.0)) AS rate_eur_acc,
     IF(o.is_mkt, IFNULL(c.total_mkt,0), IFNULL(c.total_gcp,0)) AS b_gcp, IF(o.is_mkt, 0, IFNULL(c.total_gmp,0)) AS b_gmp,
     IF(o.is_mkt, 0, IFNULL(c.total_thirdparty,0)) AS b_tp,
     IF(o.is_mkt, IFNULL(c.rmargin_mkt,0), IFNULL(c.rmargin_gcp,0)) AS b_rmg_gcp, IF(o.is_mkt, 0, IFNULL(c.rmargin_gmp,0)) AS b_rmg_gmp,
@@ -97,27 +99,44 @@ calc2 AS (
   SELECT *, ROUND(sup*(1-desc_sop) + sup_maps*(1-desc_sop_maps) + gmp_ok*(1-desc_gmp) + gcp_ok*(1-desc_gcp) + tp_ok - mg_gmp_swo - mg_gcp_swo, 6) AS importe_full FROM calc
 )
 SELECT * FROM (
-  SELECT billing_account_id, Dominio__c, opp_id AS OpportunityId__c, CAST(sku AS STRING) AS SKU__c, CurrencyIsoCode AS CurrencyIsoCode__c,
+  SELECT billing_account_id, o_billing_account_desc AS Dominio__c, opp_id AS OpportunityId__c, CAST(sku AS STRING) AS SKU__c, CurrencyIsoCode AS CurrencyIsoCode__c,
     CAST(IF(is_gmp, 0, ROUND(sup,6)) AS STRING) AS TotalSupport,
     CAST(ROUND(CASE WHEN importe_full>0 THEN (sup*(1-desc_sop)/rate + mg_gcp_e + mg_gmp_e)*100/(importe_full/rate) ELSE 0 END,6) AS STRING) AS Margen__c,
-    CAST(IF(is_gmp, 0, ROUND(b_gcp,6)) AS STRING) AS Total_gcp,
-    CAST(IF(is_gmp, 0, ROUND(mg_gcp_e,6)) AS STRING) AS Magen_gcp,
-    CAST(IF(is_gcp, 0, ROUND(b_gmp,6)) AS STRING) AS Total_gmp,
-    CAST(IF(is_gcp, 0, ROUND(mg_gmp_e,6)) AS STRING) AS Margen_gmp,
+    CAST(IF(is_gmp, 0, gcp_ok) AS STRING) AS Total_gcp,
+    CAST(IF(is_gmp, 0, ROUND(ROUND(mg_gcp_e,6) * rate, 6)) AS STRING) AS Magen_gcp,
+    CAST(IF(is_gcp, 0, gmp_ok) AS STRING) AS Total_gmp,
+    CAST(IF(is_gcp, 0, ROUND(ROUND(mg_gmp_e,6) * rate, 6)) AS STRING) AS Margen_gmp,
     CAST(ROUND(CASE WHEN importe_full>0 THEN (sup*(1-desc_sop)/rate + mg_gcp_e + mg_gmp_e)*100/(importe_full/rate) ELSE 0 END,6) AS STRING) AS Margen_total,
-    CAST(ROUND(IF(is_gmp,0,b_gcp) + IF(is_gcp,0,b_gmp) + IF(is_gmp,0,b_tp) + IF(is_gcp,0,b_rmg_gmp) + IF(is_gmp,0,b_rmg_gcp),6) AS STRING) AS Cargo_Google__c,
+    CAST(CASE
+      WHEN is_gcp THEN
+        CASE WHEN ROUND(b_gcp + b_rmg_gcp + b_tp, 6) < 0 AND ROUND(b_gcp + b_rmg_gcp + b_tp, 6) > -0.001
+          THEN 0 ELSE ROUND(b_gcp + b_rmg_gcp + b_tp, 6) END
+      WHEN is_gmp THEN
+        CASE WHEN ROUND(b_gmp + b_rmg_gmp, 6) < 0 AND ROUND(b_gmp + b_rmg_gmp, 6) > -0.001
+          THEN 0 ELSE ROUND(b_gmp + b_rmg_gmp, 6) END
+      ELSE ROUND(b_gmp + b_gcp + b_tp + b_rmg_gmp + b_rmg_gcp, 6)
+    END AS STRING) AS Cargo_Google__c,
     CAST(CASE WHEN is_gcp THEN ROUND(sup*(1-desc_sop) + gcp_ok*(1-desc_gcp) + tp_ok - mg_gcp_swo, 6)
          WHEN is_gmp THEN ROUND(sup_maps*(1-desc_sop_maps) + gmp_ok*(1-desc_gmp) - mg_gmp_swo, 6)
          ELSE importe_full END AS STRING) AS Importe__c,
     '{invoice_month}' AS invoice_month,
     FORMAT_DATE('%d-%m-%Y', (SELECT month_start FROM params)) AS invoce_date,
     CAST(ROUND(rate,6) AS STRING) AS cambio_aplicado, '' AS project_id, '' AS descripcion,
-    CAST(IF(is_gmp, 0, mg_gcp_e*rate_eur) AS STRING) AS Margen_gcp_euros,
-    CAST(IF(is_gcp, 0, mg_gmp_e*rate_eur) AS STRING) AS Margen_gmp_euros,
+    CAST(IF(is_gmp, 0, ROUND(mg_gcp_e,6)*rate_eur) AS STRING) AS Margen_gcp_euros,
+    CAST(IF(is_gcp, 0, ROUND(mg_gmp_e,6)*rate_eur) AS STRING) AS Margen_gmp_euros,
     CAST(IF(is_gmp, 0, sup*m_sop*rate_eur_acc) AS STRING) AS Margen_soporte_euros,
-    CAST(IF(is_gcp, 0, sup_maps*m_sop_maps*rate_eur_acc) AS STRING) AS Margen_soporte_maps_euros,
-    CAST(ROUND(mg_gcp_swo + mg_gmp_swo,6) AS STRING) AS Margen_SWO,
-    CAST(IF(is_gmp, 0, ROUND(b_tp,6)) AS STRING) AS Total_thirdparty
+    CAST(IF(is_gcp, 0, sup_maps*m_sop_maps) AS STRING) AS Margen_soporte_maps_euros,
+    'Flexible' AS billing_model,
+    CAST(swo AS STRING) AS Margen_SWO,
+    CAST(IF(is_gmp, 0, tp_ok) AS STRING) AS Total_thirdparty,
+    CAST(IF(is_gmp, 0,
+      CASE WHEN ROUND(b_gcp + b_rmg_gcp + tp_ok, 6) < 0 AND ROUND(b_gcp + b_rmg_gcp + tp_ok, 6) > -0.001
+        THEN 0 ELSE ROUND(b_gcp + b_rmg_gcp + tp_ok, 6) END
+    ) AS STRING) AS Cargo_Google_GCP,
+    CAST(IF(is_gcp, 0,
+      CASE WHEN ROUND(b_gmp + b_rmg_gmp, 6) < 0 AND ROUND(b_gmp + b_rmg_gmp, 6) > -0.001
+        THEN 0 ELSE ROUND(b_gmp + b_rmg_gmp, 6) END
+    ) AS STRING) AS Cargo_Google_GMP
   FROM calc2
   WHERE ROUND(CASE WHEN is_gcp THEN sup*(1-desc_sop) + gcp_ok*(1-desc_gcp) + tp_ok - mg_gcp_swo
        WHEN is_gmp THEN sup_maps*(1-desc_sop_maps) + gmp_ok*(1-desc_gmp) - mg_gmp_swo

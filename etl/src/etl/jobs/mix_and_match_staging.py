@@ -79,7 +79,7 @@ class MixAndMatchConfig(BaseModel):
 # ───────────────────────────────────────────────────────────────────────────
 
 _STG_OPPORTUNITIES_SOQL = (
-    "SELECT Id, billing_account_id__c, CurrencyIsoCode, Billing_Model__c, "
+    "SELECT Id, billing_account_id__c, billing_account_desc__c, CurrencyIsoCode, Billing_Model__c, "
     "Desglosar_Facturas__c, googleInvoiceTypeOpp__c, "
     "Margen_SWO__c, "
     "Margen_de_partner_Descuento_GCP__c, Margen_de_partner_Descuento_GMP__c, "
