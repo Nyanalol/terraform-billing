@@ -32,6 +32,18 @@ variable "countries" {
   }
 }
 
+variable "looker_dataset_overrides" {
+  description = "Override del dataset fuente de las vistas por país (default looker_views). Los países ANTIGUOS exponen un dataset 'consolidado_src' con las vistas estándar para NO tocar su looker_views (reporting heredado)."
+  type        = map(string)
+  default     = {}
+}
+
+variable "billing_dataset_overrides" {
+  description = "Override del dataset fuente de las tablas billing_views por país (default billing_views). Brasil (cross-region southamerica-east1) expone una copia EU 'br_src' en el proyecto global."
+  type        = map(string)
+  default     = {}
+}
+
 variable "views" {
   description = "Vistas de looker_views a unir. Cada una genera una tabla global y una scheduled query."
   type        = list(string)

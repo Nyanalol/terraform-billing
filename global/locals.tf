@@ -13,13 +13,34 @@ locals {
     var.months_back - 1,
   )
 
+  # Etiqueta de país que se materializa en la columna `country` (para estandarizar el Looker).
+  # Las claves del mapa siguen en minúscula (se usan en el for_each de IAM); solo cambia la etiqueta.
+  # title() capitaliza la primera letra; overrides para acrónimos/multi-palabra.
+  country_label_overrides = {
+    "usa"       = "USA"
+    "uk"        = "UK"
+    "hong-kong" = "Hong Kong"
+  }
+  country_label = {
+    for cname, pid in var.countries : cname => lookup(local.country_label_overrides, cname, title(cname))
+  }
+
+  # Dataset fuente de las vistas por país: default looker_views; los antiguos usan consolidado_src.
+  looker_src = {
+    for cname, pid in var.countries : cname => lookup(var.looker_dataset_overrides, cname, local.looker_dataset)
+  }
+  # Dataset fuente de las tablas billing_views por país: default billing_views; Brasil usa la copia EU.
+  billing_src = {
+    for cname, pid in var.countries : cname => lookup(var.billing_dataset_overrides, cname, local.billing_dataset)
+  }
+
   # ─── looker_views: filtro por invoice_month, clustering por country + invoice_month ──────
   union_sql = {
     for v in var.views : v =>
     "CREATE OR REPLACE TABLE `${var.global_project_id}.${var.global_dataset}.${v}` CLUSTER BY country, invoice_month AS\n${
       join("\nUNION ALL\n", [
         for cname, pid in var.countries :
-        "SELECT *, '${cname}' AS country FROM `${pid}.${local.looker_dataset}.${v}` WHERE invoice_month >= ${local.cutoff_sql_expr}"
+        "SELECT *, '${local.country_label[cname]}' AS country FROM `${pid}.${local.looker_src[cname]}.${v}` WHERE invoice_month >= ${local.cutoff_sql_expr}"
       ])
     }"
   }
@@ -31,7 +52,7 @@ locals {
     "CREATE OR REPLACE TABLE `${var.global_project_id}.${var.global_dataset}.${t}` CLUSTER BY country AS\n${
       join("\nUNION ALL\n", [
         for cname, pid in var.countries :
-        "SELECT *, '${cname}' AS country FROM `${pid}.${local.billing_dataset}.${t}` WHERE CONCAT(Anyo__c, Mes__c) >= ${local.cutoff_sql_expr}"
+        "SELECT *, '${local.country_label[cname]}' AS country FROM `${pid}.${local.billing_src[cname]}.${t}` WHERE CONCAT(Anyo__c, Mes__c) >= ${local.cutoff_sql_expr}"
       ])
     }"
   }

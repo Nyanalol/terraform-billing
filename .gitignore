@@ -26,3 +26,8 @@ etl/.venv/
 # Python bytecode
 __pycache__/
 *.pyc
+
+# scratch SQL de validacion (no versionar)
+etl/mix_and_match/_scratch*
+etl/mix_and_match/_*
+backups_views/
