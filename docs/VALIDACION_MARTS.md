@@ -50,6 +50,24 @@ Particularidades de Brasil encontradas: (a) `sum_costs` antiguo SIN `reseller_ma
 (Brasil es ThirdParty-Reseller=FALSE → se añade NULL); (b) destapó la root cause real del bug 7
 (autodetect BOOL del string "NO"); (c) el job de currencies no honraba el token (bug 9).
 
+## Resultado validación PAÍSES ANTIGUOS EU 202605 (vs Talend)
+
+Todos en EU (sin cross-region). Flujo estándar `validate_country.sh` (staging SF → get_data →
+marts → diff). Talend `importes_lecturas_by_project` = 0 en los 5 (verificado) → sin desglosadas.
+
+| País | flexibles nuevo/Talend | by_project | soporte | Veredicto |
+|---|---|---|---|---|
+| Francia | 8/8 | 0/0 | 0 | **exacto** ✓ |
+| Suiza | 5/5 | 0/0 | 0 | **exacto** ✓ |
+| Holanda | 39/39 | 0/0 | 0 | **exacto** ✓ |
+| UK | 10/8 (solo_n=2, solo_t=0) | 0/0 | 0 | reproduce los 8 + 2 opps NUEVAS (SF drift, verificado) |
+| Alemania | 20/18 (solo_n=4, solo_t=2) | 0/0 | 0 | 16 comunes (= los de Ángel) + drift SF |
+
+Los extras de UK/DE NO son bugs: son oportunidades cerradas-ganadas en SF **después** del run de
+Talend (probado en UK: las 2 filas de más son 2 OpportunityIds nuevos distintos, ausentes en Talend,
+importes 0.14/0.03 GBP). El sistema nuevo lee SF en vivo → está más al día que el Talend de 202605.
+Consistente con lo que documentó Ángel (FR 8/8, NL 39/39, CH 5/5, UK 7/8*, DE 16/18).
+
 ## Bugs / mejoras para Ángel
 
 1. **🔴 `by_project` DUPLICA filas** (doble facturación). El CTE `oli` **no tiene `DISTINCT`**
