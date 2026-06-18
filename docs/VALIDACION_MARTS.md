@@ -33,6 +33,23 @@ Parches runtime (NO commitear; son bugs de Ángel, ver abajo) — re-aplicar ant
 | by_project | 407 | 399 | 4 | 0 | **399/399 exactos** + 8 filas DUPLICADAS (bug) |
 | soporte | 7 | 4 | — | 0 | **4/4 exactos** + 3 drift SF (documentado), limpio |
 
+## Resultado validación BRASIL 202605 (cross-region, vs Talend)
+
+Brasil corre en `southamerica-east1` (export en US, marts en southamerica). Validado **prod-safe**:
+round-trip de `sum_costs` (63+619 filas) southamerica → sandbox EU (read-only en Brasil), y el
+resto del flujo (staging SF, get_data, currencies, marts) en el sandbox EU. Comparación cross-region
+fila a fila (clave + importe redondeado) a local.
+
+| Mart | nuevo | Talend | Veredicto |
+|---|---|---|---|
+| flexibles | 69 | 69 | **69/69 exactas, 0 diferencias** ✓ |
+| by_project | 0 | 0 | ✓ (Brasil es todo `Desglosar='NO'`, sin desglosadas) |
+| soporte | 0 | — | ✓ |
+
+Particularidades de Brasil encontradas: (a) `sum_costs` antiguo SIN `reseller_margin_thirdparty_marketplace`
+(Brasil es ThirdParty-Reseller=FALSE → se añade NULL); (b) destapó la root cause real del bug 7
+(autodetect BOOL del string "NO"); (c) el job de currencies no honraba el token (bug 9).
+
 ## Bugs / mejoras para Ángel
 
 1. **🔴 `by_project` DUPLICA filas** (doble facturación). El CTE `oli` **no tiene `DISTINCT`**
@@ -46,12 +63,25 @@ Parches runtime (NO commitear; son bugs de Ángel, ver abajo) — re-aplicar ant
 5. **🟢 `bigquery_loader`** usa ADC fija; no honra token → cuesta correr fuera de Cloud Run.
 6. **🟢 flexibles** `321 vs 316`: revisar (posibles dups por el mismo motivo + el filtro `Desglosar='NO'`).
 
-7. **🔴 `staging` autodetect de esquema** (CRÍTICO): `stg_opportunities` se carga con autodetect →
-   en países SIN desglosadas, `Desglosar_Facturas__c` se infiere **BOOL** (SF devuelve false/null) →
-   los marts comparan `= 'SI'`/`'NO'` (STRING) → **fallan en casi todos los países nuevos**.
-   **Fix: esquema explícito (STRING) en el load de staging.**
+7. **🔴 `staging` autodetect de esquema** (CRÍTICO, root cause corregida en validación de Brasil):
+   `stg_opportunities` se carga con autodetect. El bug NO es solo que SF devuelva bool: el
+   **autodetect de BigQuery interpreta el propio string `"NO"` como BOOLEAN** (lo trata como
+   literal booleano). Probado aislado: `{"Desglosar_Facturas__c":"NO"}` → columna BOOLEAN. Por eso
+   en países con TODO "NO" (Brasil) sale BOOL aunque el Python ya escriba el string 'NO'; en los
+   mixtos (con algún "SI") autodetect ve STRING y cuela. Los marts comparan `= 'SI'/'NO'` → fallan.
+   **Fix aplicado:** normalizar EN BQ tras el load (`CREATE OR REPLACE TABLE ... SELECT * REPLACE(
+   IF(UPPER(CAST(Desglosar_Facturas__c AS STRING)) IN ('SI','TRUE'),'SI','NO') ...)`), que no
+   depende del autodetect y cubre bool y string por igual. (La coerción en Python era inútil.)
 8. **🟡 `CURRENCIES`** del `.env` común = `EUR,GBP,USD,CHF,BRL` → faltan las divisas de los países
    nuevos (HKD, VND, INR, MXN, SGD, COP...) → el job de currencies no las trae → sin conversión.
+   **Fix:** lista GLOBAL (unión) calculada de countries.yaml; se corre 1 vez. Ver docs/GENERADORES_Y_CURRENCIES.md.
+9. **🟢 `get_currencies_exchange_rates`** creaba el cliente BQ con `bigquery.Client(project=...)` SIN
+   honrar `GOOGLE_OAUTH_ACCESS_TOKEN` (a diferencia del loader) → 403 fuera de Cloud Run. **Fix:**
+   `_bq_client()` que usa el token si está (igual que `bigquery_loader`). Encontrado en Brasil.
+
+> NOTA estado: bugs 1-6 ya estaban corregidos+pusheados; 7 (root cause real) y 9 corregidos en la
+> validación de Brasil. Los "parches runtime" de la sección de arriba ya NO aplican (config.py,
+> loader y el token están arreglados en el código; la ETL lee countries.yaml directamente).
 
 ## Validación país-por-país — flujo automatizado (`tools/validate_country.sh`)
 

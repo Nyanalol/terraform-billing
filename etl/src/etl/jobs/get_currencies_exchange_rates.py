@@ -129,9 +129,19 @@ async def fetch_all_rates(config: GetCurrenciesJobConfig) -> list[dict]:
     return all_rows
 
 
+def _bq_client(project_id: str) -> bigquery.Client:
+    """Honra GOOGLE_OAUTH_ACCESS_TOKEN (correr fuera de Cloud Run); si no, ADC."""
+    import os
+    token = os.environ.get("GOOGLE_OAUTH_ACCESS_TOKEN")
+    if token:
+        from google.oauth2.credentials import Credentials
+        return bigquery.Client(project=project_id, credentials=Credentials(token=token))
+    return bigquery.Client(project=project_id)
+
+
 def _write_to_bigquery(rows: list[dict], config: GetCurrenciesJobConfig) -> None:
     """Write rows to BigQuery using WRITE_TRUNCATE."""
-    client = bigquery.Client(project=config.gcp_project_id)
+    client = _bq_client(config.gcp_project_id)
     table_id = f"{config.gcp_project_id}.{config.bq_output_dataset}.{config.bq_output_table}"
 
     schema = [

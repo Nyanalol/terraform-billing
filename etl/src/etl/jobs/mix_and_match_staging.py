@@ -293,16 +293,20 @@ async def create_staging_tables(
 
     counts: dict[str, int] = {}
 
-    # Normalizar Desglosar_Facturas__c -> 'SI'/'NO'. SF lo devuelve como bool/null en paises sin
-    # desglosadas; con autodetect BQ lo infiere BOOL y los marts (que comparan = 'SI'/'NO') fallan
-    # con "No matching signature for = : BOOL, STRING". Forzar la semantica STRING aqui.
-    for rec in opp_data:
-        v = rec.get("Desglosar_Facturas__c")
-        rec["Desglosar_Facturas__c"] = "SI" if str(v).strip().upper() in ("SI", "TRUE") else "NO"
-
     if opp_data:
         loader.load_raw_data("stg_opportunities", opp_data, "WRITE_TRUNCATE")
         counts["stg_opportunities"] = len(opp_data)
+        # Normalizar Desglosar_Facturas__c -> STRING 'SI'/'NO'. SF lo devuelve como bool/null;
+        # el autodetect de BQ infiere el string "NO" como BOOLEAN (lo trata como literal booleano),
+        # asi que en paises con TODO "NO" (p.ej. Brasil) la columna sale BOOL y los marts (que
+        # comparan = 'SI'/'NO') fallan con "No matching signature for = : BOOL, STRING".
+        # Forzarlo en BQ (no depende del autodetect) cubre bool(true/false) y string por igual.
+        stg_opp = f"`{config.gcp_project_id}.{config.bq_transformed_dataset}.stg_opportunities`"
+        loader.execute_query(
+            f"CREATE OR REPLACE TABLE {stg_opp} AS SELECT * REPLACE("
+            f"  IF(UPPER(CAST(Desglosar_Facturas__c AS STRING)) IN ('SI','TRUE'), 'SI', 'NO')"
+            f"  AS Desglosar_Facturas__c) FROM {stg_opp}"
+        )
     else:
         logger.warning("no_opportunities_extracted")
         counts["stg_opportunities"] = 0
