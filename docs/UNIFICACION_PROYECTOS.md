@@ -2,6 +2,12 @@
 
 > Análisis de si tiene sentido unir los dos proyectos del sistema de facturación GCP, qué
 > sinergias hay, cómo se estructuraría y los pasos a seguir. Escrito el 2026-06-16.
+>
+> **Estado (2026-06-18):** el plan ya está en su mayoría EJECUTADO. Fases 1-2 hechas
+> (`countries.yaml` es la fuente única; genera tfvars y la ETL lo lee directo — ver
+> `GENERADORES_Y_CURRENCIES.md`); Fase 4 hecha (marts flexibles/by_project/soporte validados vs
+> Talend — ver `VALIDACION_MARTS.md`) + tabla central de currencies. Pendiente: deploy de
+> orquestación (Fase 5) y CI (Fase 6). El roadmap de abajo se conserva como contexto histórico.
 
 ---
 
@@ -38,8 +44,8 @@
   `utils/`, `main.py`, `config.py`.
 - **`config/queries/`**: el **SQL de la lógica ETL** — los 3 marts del motor `mix_and_match`
   (`materialize_importes_flexibles/by_project/soporte.sql`), extractores (`opportunities`,
-  `line_items`), `materialize_billing_accounts`, `init_partitioned_tables`.
-- **`dbt/`**, **`docker/Dockerfile`**, **`tests/`**, `pyproject.toml` (uv), `MIX_AND_MATCH_SPEC.md`.
+  `line_items`, `all_opportunities`), `materialize_billing_accounts(_full)`, `get_data_*`.
+- **`docker/Dockerfile`**, `pyproject.toml` (uv), `MIX_AND_MATCH_SPEC.md`. (El `dbt/` se eliminó: la decisión es SQL plano "sin dbt".)
 - Deps: `google-cloud-bigquery`, `simple-salesforce`, `google-cloud-secret-manager`.
 
 ---

@@ -29,7 +29,4 @@ dev = [
     "ruff>=0.1.0",
     "mypy>=1.5.0",
 ]
-dbt = [
-    "dbt-core>=1.7.0",
-    "dbt-bigquery>=1.7.0",
-]
+# (extra 'dbt' eliminado: la decisión es SQL plano "sin dbt"; los marts son materialize_*.sql.)
