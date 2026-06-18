@@ -39,14 +39,14 @@ def _map_project_to_sf(
     """Map project_new row to Carga_de_lectura__c SF fields."""
     total_gcp = float(row.get("Total_gcp", 0))
     total_gmp = float(row.get("Total_gmp", 0))
-    cargo_google = total_gcp + total_gmp
+    cargo_google = float(row.get("Cargo_Google__c", total_gcp + total_gmp))
 
     return {
         "OpportunityId__c": row["OpportunityId__c"],
-        "Dominio__c": "",  # Not in by_project SQL output
+        "Dominio__c": row.get("Dominio__c", ""),
         "SKU__c": float(row.get("SKU__c", 0)),
         "CurrencyIsoCode__c": row.get("CurrencyIsoCode__c", ""),
-        "Margen__c": 0.0,  # Not computed in by_project SQL
+        "Margen__c": float(row.get("Margen__c", 0)),
         "Cargo_Google__c": cargo_google,
         "Anio__c": float(config.billing_year),
         "Mes__c": float(config.billing_month),
@@ -55,10 +55,10 @@ def _map_project_to_sf(
         "Importe__c": float(row.get("Importe__c", 0)),
         "Descripcion_del_producto__c": row.get("descripcion", ""),
         "Proyecto__c": row.get("project_id", ""),
-        "Margen_gmp_euros__c": 0.0,  # Not computed in by_project SQL
-        "Margen_gcp_euros__c": 0.0,  # Not computed in by_project SQL
-        "Margen_soporte_euros__c": 0.0,  # Hardcoded 0 (same as Talend)
-        "Margen_soporte_maps_euros__c": 0.0,  # Hardcoded 0 (same as Talend)
+        "Margen_gmp_euros__c": float(row.get("Margen_gmp_euros", 0)),
+        "Margen_gcp_euros__c": float(row.get("Margen_gcp_euros", 0)),
+        "Margen_soporte_euros__c": 0.0,
+        "Margen_soporte_maps_euros__c": 0.0,
         "Cargo_Google_Numero__c": cargo_google,
         "Importe_Numero__c": float(row.get("Importe__c", 0)),
         "Cargo_Google_GCP__c": total_gcp,
