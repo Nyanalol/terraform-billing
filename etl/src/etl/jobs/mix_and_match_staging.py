@@ -40,6 +40,11 @@ class MixAndMatchConfig(BaseModel):
     bq_transformed_dataset: str  # staging tables + output tables
     bq_input_dataset: str  # consumption data (sum_costs_credits tables)
 
+    # Tabla CENTRAL de tipos de cambio (run once). La usa la CTE `rates` de flexibles/by_project.
+    bq_currencies_project: str = "swo-billingglobal-prod"
+    bq_currencies_dataset: str = "billing_reference"
+    bq_currencies_table: str = "currency_exchange_rates"
+
     # Salesforce
     sf_user: str
     sf_empresa_code: str
@@ -127,6 +132,9 @@ def get_sql_params(config: MixAndMatchConfig) -> dict[str, str]:
         "transformed_dataset": config.bq_transformed_dataset,
         "input_dataset": config.bq_input_dataset,
         "invoice_month": config.invoice_month,
+        "currencies_project": config.bq_currencies_project,
+        "currencies_dataset": config.bq_currencies_dataset,
+        "currencies_table": config.bq_currencies_table,
     }
 
 

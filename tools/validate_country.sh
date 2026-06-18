@@ -22,6 +22,7 @@ Q "CREATE OR REPLACE VIEW \`$SB.billing_views.sum_costs_credits_per_month\` AS S
 # 6) marts (SQL -> sandbox)
 for m in flexibles by_project soporte; do
   sed -e "s/{project}/$SB/g" -e "s/{transformed_dataset}/billing_views/g" -e "s/{invoice_month}/$M/g" \
+      -e "s/{currencies_project}/$SB/g" -e "s/{currencies_dataset}/billing_views/g" -e "s/{currencies_table}/currency_exchange_rates/g" \
     "$ROOT/etl/config/queries/materialize_importes_$m.sql" | bq --project_id=$SB --location=EU query --use_legacy_sql=false --format=none >/dev/null 2>&1
 done
 # 7) diff vs Talend (flexibles fila a fila por clave+importe redondeado)

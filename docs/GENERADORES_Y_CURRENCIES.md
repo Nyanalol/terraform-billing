@@ -54,12 +54,23 @@ Los tipos de cambio son **globales**: `USD→HKD` no depende del país. Por eso:
 - El job `get_currencies_exchange_rates` se corre **una sola vez** por periodo y produce la
   matriz completa de pares, que sirve a todos.
 
-### Estado actual y pendiente para prod (coordinar con Ángel)
+### Tabla CENTRAL en el proyecto del consolidado (implementado)
 
-- **Sandbox** (`ip-trabajo-apeinado`, dataset compartido `billing_views`): la tabla
-  `currencies_exchange_rates` es única, así que un solo run la rellena para todos. ✅ ya funciona.
-- **Prod** (un proyecto por país): hoy cada país escribiría su propia
-  `{project}.{dataset}.currencies_exchange_rates` (`materialize_importes_*.sql` la leen del
-  proyecto del país) → 17× la misma matriz. Lo limpio es una **tabla central** de currencies
-  (en el proyecto global) y que los marts la lean de ahí (lectura cross-project + IAM).
-  **Pendiente de decidir/implementar con Ángel** (toca el SQL de los marts).
+Una sola `currency_exchange_rates` en `swo-billingglobal-prod.billing_reference`
+(Terraform `infra/global/reference.tf`; particionada por `rate_date`, clúster por divisa,
+con `billing_month` para el JOIN con `invoice_month`). El job la escribe una vez por periodo
+(idempotente: `WRITE_TRUNCATE` de la partición del mes) y los marts la leen de ahí.
+
+- **Método de cruces**: fetch DIRECTO de cada par a Hexarate (el más preciso y el validado
+  contra Talend), no derivar desde EUR.
+- **Brasil**: como BigQuery no une cross-region, hay una copia `billing_reference_sa`
+  (southamerica-east1, también en `reference.tf`). El job, al correr para `win_br`, escribe ahí.
+- **Resolución de ubicación** (`config.py::load_country_settings`): prod EU → `billing_reference`;
+  prod Brasil → `billing_reference_sa`; sandbox → el propio sandbox. Override por env
+  `CURRENCIES_PROJECT`/`CURRENCIES_DATASET`.
+- **Validado** en sandbox: rates idénticos a la tabla per-país ya validada (121=121, 0 difieren)
+  y CH flexibles 5/5 cross-currency → **cero cambio de importes**.
+
+Pendiente de DEPLOY (no de código): `terraform -chdir=infra/global apply` (crea `billing_reference_sa`),
+IAM para que el SA de la ETL escriba en `billing_reference*` y los runners de marts lean cross-project,
+y el primer run del job en prod para sobreescribir el 202605 de la central con los rates validados.

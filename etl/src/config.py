@@ -20,6 +20,14 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 COUNTRIES_YAML = Path(os.environ.get("COUNTRIES_YAML", REPO_ROOT / "countries.yaml"))
 SANDBOX_PROJECT_DEFAULT = "ip-trabajo-apeinado"
 
+# Tabla CENTRAL de tipos de cambio (run once para todos los países). Vive en el proyecto del
+# consolidado (infra/global/reference.tf). Como BigQuery no une cross-region, Brasil
+# (southamerica-east1) usa una copia en un dataset SA; los demás (EU) leen la tabla EU.
+CURRENCIES_CENTRAL_PROJECT = "swo-billingglobal-prod"
+CURRENCIES_DATASET_EU = "billing_reference"
+CURRENCIES_DATASET_SA = "billing_reference_sa"   # copia southamerica-east1 (Brasil)
+CURRENCIES_TABLE = "currency_exchange_rates"
+
 # Divisas SIEMPRE necesarias (USD = consumo del export; EUR = reporting). La lista CURRENCIES
 # es GLOBAL e igual para todos los países: los tipos de cambio no dependen del país, así que el
 # job de currencies se corre UNA vez. Ver docs/GENERADORES_Y_CURRENCIES.md.
@@ -90,6 +98,12 @@ class Settings(BaseSettings):
     # Currencies (common)
     currencies: str
 
+    # Ubicación de la tabla CENTRAL de tipos de cambio (run once). La resuelve
+    # load_country_settings según modo/región; los jobs/marts la leen de aquí.
+    bq_currencies_project: str = CURRENCIES_CENTRAL_PROJECT
+    bq_currencies_dataset: str = CURRENCIES_DATASET_EU
+    bq_currencies_table: str = CURRENCIES_TABLE
+
     class Config:
         env_file = ".env"
         case_sensitive = False
@@ -124,17 +138,29 @@ def load_country_settings(country_code: str) -> Settings:
 
     # 3) modo sandbox/prod
     mode = os.environ.get("ETL_MODE", "sandbox").strip().lower()
+    is_sa = str(meta.get("region", "")).startswith("southamerica")
     if mode == "prod":
         project = meta["project_id"]
         raw_dataset = meta["export_dataset"]
+        # Tabla central de currencies en el consolidado; Brasil (SA) usa la copia southamerica.
+        cur_project = CURRENCIES_CENTRAL_PROJECT
+        cur_dataset = CURRENCIES_DATASET_SA if is_sa else CURRENCIES_DATASET_EU
     else:
         project = os.environ.get("SANDBOX_PROJECT", SANDBOX_PROJECT_DEFAULT)
         raw_dataset = "billing_raw"
+        # En sandbox la central vive en el propio sandbox (mismo proyecto/dataset).
+        cur_project = project
+        cur_dataset = "billing_views"
+    # Override explícito por env (p. ej. apuntar al consolidado real desde sandbox para probar).
+    cur_project = os.environ.get("CURRENCIES_PROJECT", cur_project)
+    cur_dataset = os.environ.get("CURRENCIES_DATASET", cur_dataset)
 
     # 4) Settings: los kwargs (config de país derivada) tienen prioridad sobre el .env;
     #    los secretos (sf_user, sf_skus, sf_private_key, ...) siguen viniendo del .env.
     try:
         return Settings(
+            bq_currencies_project=cur_project,
+            bq_currencies_dataset=cur_dataset,
             sf_empresa_code=_empresa_code(meta["sf_empresa_ip"]),
             bq_project_id=project,
             bq_raw_dataset=raw_dataset,

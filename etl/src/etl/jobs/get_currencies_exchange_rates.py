@@ -19,7 +19,7 @@ Usage:
 import asyncio
 import json
 import sys
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, timezone
 from itertools import product
 
 import httpx
@@ -45,7 +45,7 @@ class GetCurrenciesJobConfig(BaseModel):
 
     gcp_project_id: str
     bq_output_dataset: str
-    bq_output_table: str = "currencies_exchange_rates"
+    bq_output_table: str = "currency_exchange_rates"   # tabla CENTRAL (singular)
 
     currencies: list[str]
 
@@ -124,9 +124,25 @@ async def fetch_all_rates(config: GetCurrenciesJobConfig) -> list[dict]:
         ]
         api_results = await asyncio.gather(*tasks)
 
-    all_rows = same_currency + list(api_results)
-    logger.info("rates_fetched", total=len(all_rows), same_currency=len(same_currency), api_calls=len(different_pairs))
-    return all_rows
+    # Enriquecer al schema CENTRAL: rate_date (fecha del cambio), billing_month (YYYYMM para
+    # el JOIN con invoice_month) y fetched_at. Se descartan los pares sin rate (exchange_rate
+    # REQUIRED en la tabla central); un par ausente lo trata el mart como IFNULL(...,1.0), igual.
+    billing_month = f"{config.billing_year}{config.billing_month}"
+    fetched_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    out = [
+        {
+            "base_currency": r["base_currency"],
+            "target_currency": r["target_currency"],
+            "exchange_rate": r["exchange_rate"],
+            "rate_date": query_date,
+            "billing_month": billing_month,
+            "fetched_at": fetched_at,
+        }
+        for r in (same_currency + list(api_results))
+        if r.get("exchange_rate") is not None
+    ]
+    logger.info("rates_fetched", total=len(out), same_currency=len(same_currency), api_calls=len(different_pairs))
+    return out
 
 
 def _bq_client(project_id: str) -> bigquery.Client:
@@ -140,16 +156,31 @@ def _bq_client(project_id: str) -> bigquery.Client:
 
 
 def _write_to_bigquery(rows: list[dict], config: GetCurrenciesJobConfig) -> None:
-    """Write rows to BigQuery using WRITE_TRUNCATE."""
+    """Escribe la matriz en la tabla CENTRAL, idempotente por mes (WRITE_TRUNCATE de la
+    partición rate_date). Crea la tabla particionada+clusterizada si no existe (p. ej. sandbox)."""
     client = _bq_client(config.gcp_project_id)
-    table_id = f"{config.gcp_project_id}.{config.bq_output_dataset}.{config.bq_output_table}"
+    base_table_id = f"{config.gcp_project_id}.{config.bq_output_dataset}.{config.bq_output_table}"
 
     schema = [
-        bigquery.SchemaField("base_currency", "STRING"),
-        bigquery.SchemaField("target_currency", "STRING"),
-        bigquery.SchemaField("exchange_rate", "FLOAT64"),
-        bigquery.SchemaField("timestamp", "STRING"),
+        bigquery.SchemaField("base_currency", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("target_currency", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("exchange_rate", "FLOAT64", mode="REQUIRED"),
+        bigquery.SchemaField("rate_date", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("billing_month", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("fetched_at", "TIMESTAMP"),
     ]
+
+    # Crear la tabla si no existe (en prod ya la crea Terraform; en sandbox no).
+    table = bigquery.Table(base_table_id, schema=schema)
+    table.time_partitioning = bigquery.TimePartitioning(
+        type_=bigquery.TimePartitioningType.DAY, field="rate_date"
+    )
+    table.clustering_fields = ["base_currency", "target_currency"]
+    client.create_table(table, exists_ok=True)
+
+    # WRITE_TRUNCATE de la partición del mes (rate_date = primer día del mes siguiente).
+    partition = rows[0]["rate_date"].replace("-", "")  # YYYYMMDD
+    target = f"{base_table_id}${partition}"
 
     job_config = bigquery.LoadJobConfig(
         schema=schema,
@@ -163,9 +194,9 @@ def _write_to_bigquery(rows: list[dict], config: GetCurrenciesJobConfig) -> None
         buf.write(json.dumps(row) + "\n")
     buf.seek(0)
 
-    load_job = client.load_table_from_file(buf, table_id, job_config=job_config)
+    load_job = client.load_table_from_file(buf, target, job_config=job_config)
     load_job.result()
-    logger.info("bigquery_write_complete", table=table_id, rows=len(rows))
+    logger.info("bigquery_write_complete", table=target, rows=len(rows))
 
 
 async def main(country: str, month: str, year: str) -> int:
@@ -184,8 +215,9 @@ async def main(country: str, month: str, year: str) -> int:
         country=country,
         billing_month=month.zfill(2),
         billing_year=year,
-        gcp_project_id=settings.bq_project_id,
-        bq_output_dataset=settings.bq_workspace_dataset or settings.bq_transformed_dataset,
+        gcp_project_id=settings.bq_currencies_project,
+        bq_output_dataset=settings.bq_currencies_dataset,
+        bq_output_table=settings.bq_currencies_table,
         currencies=currencies,
     )
 

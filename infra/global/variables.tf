@@ -22,6 +22,18 @@ variable "reference_dataset" {
   default     = "billing_reference"
 }
 
+variable "reference_dataset_sa" {
+  description = "Copia southamerica-east1 del dataset de referencia (Brasil; BigQuery no une cross-region)."
+  type        = string
+  default     = "billing_reference_sa"
+}
+
+variable "location_sa" {
+  description = "Location de la copia southamerica del dataset de referencia (Brasil)."
+  type        = string
+  default     = "southamerica-east1"
+}
+
 variable "countries" {
   description = "Mapa país → project_id. El nombre se usa como valor de la columna 'country'. Incluir SOLO países ya desplegados (con su dataset looker_views)."
   type        = map(string)
