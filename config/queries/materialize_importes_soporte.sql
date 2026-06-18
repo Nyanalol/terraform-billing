@@ -49,8 +49,7 @@ oli AS (
   SELECT DISTINCT OpportunityId, SAFE_CAST(SKU__c AS FLOAT64) AS sku,
     SAFE_CAST(Fecha_Inicio_Contrato_Opp__c AS DATE) AS f_ini
   FROM `{project}.{transformed_dataset}.stg_line_items`, params
-  WHERE SAFE_CAST(SKU__c AS FLOAT64) IN (1417, 1409, 1410, 1731, 1730, 1902, 1910, 1729, 1252, 1251, 1911, 1207, 1418, 1419, 1420, 1421, 1422)
-    AND (SAFE_CAST(Fecha_Inicio_Contrato_Opp__c AS DATE) IS NULL
+  WHERE (SAFE_CAST(Fecha_Inicio_Contrato_Opp__c AS DATE) IS NULL
          OR SAFE_CAST(Fecha_Inicio_Contrato_Opp__c AS DATE) < params.next_month_start)
     AND (SAFE_CAST(Fecha_Fin_Contrato_Opp__c AS DATE) IS NULL
          OR SAFE_CAST(Fecha_Fin_Contrato_Opp__c AS DATE) >= params.month_start)
