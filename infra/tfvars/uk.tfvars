@@ -6,7 +6,10 @@ country                        = "uk"
 billing_cloud_platform_dataset = "BILLINGUK_CLOUD_PLATFORM"
 location                       = "EU"
 
-payer_billing_accounts = {}
+payer_billing_accounts = {
+  "016670-CD9B53-5669A0" = "SWO UK_GBP"
+  "013AB7-89A6E0-9D4DF1" = "SWO UK_GBP - OCRE"
+}
 
 currency_symbols = {
   "EUR" = "€"

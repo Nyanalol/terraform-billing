@@ -6,7 +6,9 @@ country                        = "france"
 billing_cloud_platform_dataset = "BILLINGFR_CLOUD_PLATFORM"
 location                       = "EU"
 
-payer_billing_accounts = {}
+payer_billing_accounts = {
+  "0117CD-C73A9C-3BA32E" = "SWO FRANCE_EUR"
+}
 
 currency_symbols = {
   "EUR" = "€"

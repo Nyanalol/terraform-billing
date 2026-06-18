@@ -6,7 +6,10 @@ country                        = "netherlands"
 billing_cloud_platform_dataset = "billing_export"
 location                       = "EU"
 
-payer_billing_accounts = {}
+payer_billing_accounts = {
+  "01341E-7E79EA-92E816" = "SWO NETHERLANDS_EUR"
+  "011FFE-F0683A-226427" = "SWO NL_EUR - OCRE"
+}
 
 currency_symbols = {
   "EUR" = "€"

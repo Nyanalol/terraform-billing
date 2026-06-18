@@ -6,7 +6,10 @@ country                        = "brazil"
 billing_cloud_platform_dataset = "BILLING_CLOUD_PLATFORMBRL"
 location                       = "EU"
 
-payer_billing_accounts = {}
+payer_billing_accounts = {
+  "0120C2-4D1D47-5C12C7" = "SWO BRAZIL_BRL_GCP"
+  "01DC38-521399-1EAC42" = "SWO BRAZIL_BRL_MAPS"
+}
 
 currency_symbols = {
   "EUR" = "€"

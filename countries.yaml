@@ -168,7 +168,11 @@ switzerland:
   sf_empresa_ip: "Empresa_IP__c='001IV000012VppW'"
   status: legacy_eu
   consolidado: { source_project: swo-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "0109BA-628A47-6BB7A8": "SWO SWITZERLAND_USD"
+    "01AB6C-48DD9E-3EAD94": "SWO SWITZERLAND_CHF"
+    "01521B-383550-D5DC11": "SWO SWITZERLAND_EUR"
 
 france:
   project_id: swofr-billing-prod
@@ -179,7 +183,9 @@ france:
   sf_empresa_ip: "Empresa_IP__c='001IV00000WfIcw'"
   status: legacy_eu
   consolidado: { source_project: swofr-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "0117CD-C73A9C-3BA32E": "SWO FRANCE_EUR"   # ✓
 
 uk:
   project_id: swouk-billing-prod
@@ -190,7 +196,10 @@ uk:
   sf_empresa_ip: "Empresa_IP__c='001IV00000Wlwj1'"
   status: legacy_eu
   consolidado: { source_project: swouk-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "016670-CD9B53-5669A0": "SWO UK_GBP"   # ✓
+    "013AB7-89A6E0-9D4DF1": "SWO UK_GBP - OCRE"
 
 germany:
   project_id: swode-billing-prod
@@ -201,7 +210,9 @@ germany:
   sf_empresa_ip: "Empresa_IP__c='001IV00000gVL84'"
   status: legacy_eu
   consolidado: { source_project: swode-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "018C13-69CA42-BA5DF3": "SWO GERMANY_EUR"   # ✓
 
 netherlands:
   project_id: swonl-billing-prod
@@ -212,7 +223,10 @@ netherlands:
   sf_empresa_ip: "Empresa_IP__c='001IV00000rOsnC'"
   status: legacy_eu
   consolidado: { source_project: swonl-billing-prod, looker_dataset: consolidado_src, billing_dataset: billing_views }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "01341E-7E79EA-92E816": "SWO NETHERLANDS_EUR"
+    "011FFE-F0683A-226427": "SWO NL_EUR - OCRE"
 
 # Brasil: datos en southamerica-east1. El consolidado (EU) NO une cross-region en vivo:
 # se materializa en BR (03:30) y se copia a swo-billingglobal-prod.br_src (EU, 04:00). Ver docs/UNIFICACION_PROYECTOS.md.
@@ -225,7 +239,10 @@ brazil:
   sf_empresa_ip: "Empresa_IP__c='0015700001lTrkuAAC'"
   status: cross_region
   consolidado: { source_project: swo-billingglobal-prod, looker_dataset: br_src, billing_dataset: br_src }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "0120C2-4D1D47-5C12C7": "SWO BRAZIL_BRL_GCP"
+    "01DC38-521399-1EAC42": "SWO BRAZIL_BRL_MAPS"
   tf: { sku_third_party_migration_service_account: "" }
 
 # España: proyecto central, estructura distinta (sin looker_views). El consolidado lee de consolidado_src.
@@ -238,5 +255,10 @@ spain:
   sf_empresa_ip: "(Empresa_IP__c='0015700001lTrioAAC' OR Empresa_IP__c='001IV00001TJUpHYAX')"
   status: central
   consolidado: { source_project: ip-billing-prod, looker_dataset: consolidado_src, billing_dataset: consolidado_src }
-  payer_billing_accounts: {}
+  # IDs reales del reseller_billing_detailed_export_v1; nombre confirmado (✓) por gcp_billing_accounts_name_id, resto por convención Ops + volumen.
+  payer_billing_accounts:
+    "001244-593F93-3FC8DF": "SWO SPAIN_EUR"   # ✓
+    "01161C-DDDB50-45D065": "SWO SPAIN_EUR - OCRE"
+    "0194A7-052425-63DF63": "SWO SPAIN_USD"
+    "01C497-D03C3E-04B5C6": "SWO SPAIN_GBP"
   tf: { manage_spain_iam: false, sku_third_party_migration_service_account: "" }

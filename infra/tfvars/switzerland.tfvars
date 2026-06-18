@@ -6,7 +6,11 @@ country                        = "switzerland"
 billing_cloud_platform_dataset = "BIILING_CLOUD_PLATFORM"
 location                       = "EU"
 
-payer_billing_accounts = {}
+payer_billing_accounts = {
+  "0109BA-628A47-6BB7A8" = "SWO SWITZERLAND_USD"
+  "01AB6C-48DD9E-3EAD94" = "SWO SWITZERLAND_CHF"
+  "01521B-383550-D5DC11" = "SWO SWITZERLAND_EUR"
+}
 
 currency_symbols = {
   "EUR" = "€"
