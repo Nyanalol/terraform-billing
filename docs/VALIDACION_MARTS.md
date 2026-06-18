@@ -46,17 +46,35 @@ Parches runtime (NO commitear; son bugs de Ángel, ver abajo) — re-aplicar ant
 5. **🟢 `bigquery_loader`** usa ADC fija; no honra token → cuesta correr fuera de Cloud Run.
 6. **🟢 flexibles** `321 vs 316`: revisar (posibles dups por el mismo motivo + el filtro `Desglosar='NO'`).
 
-## Validación país-por-país (flujo SAFE, pendiente para mañana)
+7. **🔴 `staging` autodetect de esquema** (CRÍTICO): `stg_opportunities` se carga con autodetect →
+   en países SIN desglosadas, `Desglosar_Facturas__c` se infiere **BOOL** (SF devuelve false/null) →
+   los marts comparan `= 'SI'`/`'NO'` (STRING) → **fallan en casi todos los países nuevos**.
+   **Fix: esquema explícito (STRING) en el load de staging.**
+8. **🟡 `CURRENCIES`** del `.env` común = `EUR,GBP,USD,CHF,BRL` → faltan las divisas de los países
+   nuevos (HKD, VND, INR, MXN, SGD, COP...) → el job de currencies no las trae → sin conversión.
 
-Por cada país (todo read-prod / write-sandbox, sin SF-write):
-1. Copiar `<pais>.billing_views.sum_costs_credits_per_month` → `ip-trabajo-apeinado.billing_views.sum_costs_credits_per_month`.
-2. `gen_env.py --mode sandbox --country win_<xx> --write` → `.env.win_<xx>`.
-3. `python -m src.etl.jobs.mix_and_match_staging --country win_<xx> --month 05 --year 2026` (SF read → sandbox stg_*).
-4. `python -m src.etl.jobs.get_data --country win_<xx> --month 05 --year 2026` (→ sandbox bq_group_*).
-5. Marts en SQL (sed de los 3 `.sql` → bq query → sandbox flex_new/project_new/soporte_new).
-6. Diff vs `<pais>` Talend (`importes_lecturas_temp` / `_by_project` 202605).
+## Validación país-por-país — flujo automatizado (`tools/validate_country.sh`)
 
-Hecho: **España**. Pendiente: los otros 16 (sandbox single-tenant → uno a uno, reciclando sum_costs).
+Script que hace por país (read-prod / write-sandbox, **sin SF-write**): vista sum_costs → país,
+gen_env, staging, fix BOOL Desglosar, get_data, marts, diff vs Talend.
+`bash tools/validate_country.sh win_<xx> <project_id>`.
+
+### Resultados (202605) — flexibles vs Talend `importes_lecturas_temp`
+
+| País | flex nuevo/Talend | Veredicto |
+|---|---|---|
+| España | 316 económicas exactas | ✅ (by_project bug dups; soporte 4/4) |
+| Vietnam | 3/3 | ✅ exacto |
+| Colombia | 1/1 | ✅ exacto |
+| Mexico | 1/1 | ✅ exacto |
+| Belgium, Ecuador, India, Singapore, USA | 0/0 | ✅ sin datos |
+| Hong Kong | 2/2 (1 difería) | ✅ era el rate HKD ausente; con rate → 13.58 ≈ 13.57 Talend |
+| Italy | 2/0 | ✅ nuevo correcto; Talend nunca corrió 202605 (solo 202405) |
+
+**Conclusión: los marts validan bien en todos.** Las discrepancias eran de setup (rates) o Talend
+no-corrido, NO de lógica. Bugs reales = solo el `DISTINCT` (#1) y el autodetect-BOOL (#7).
+
+Pendiente: EU antiguos (CH/FR/UK/DE/NL — Ángel ya validó flexibles) y Brasil (cross-region).
 
 ## Estado global del reemplazo de Talend
 - Jobs migrados: ✅ todos (+ `run_all`). Consolidado (17 países): ✅. Monorepo: ✅ (pusheado a Ángel).
