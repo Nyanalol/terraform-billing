@@ -47,7 +47,9 @@ opp AS (
     AND Margen_de_partner_Margen_GMP__c IS NOT NULL
 ),
 oli AS (
-  SELECT OpportunityId, SAFE_CAST(SKU__c AS FLOAT64) AS sku,
+  -- DISTINCT: stg_line_items puede traer OLIs duplicados (misma opp+SKU); sin esto, el JOIN
+  -- multiplica las filas de salida -> Carga_de_lectura__c DUPLICADAS en SF (doble facturacion).
+  SELECT DISTINCT OpportunityId, SAFE_CAST(SKU__c AS FLOAT64) AS sku,
     Descripci_n_del_producto__c AS descripcion
   FROM `{project}.{transformed_dataset}.stg_line_items`, params
   WHERE (SAFE_CAST(Fecha_Inicio_Contrato_Opp__c AS DATE) IS NULL
@@ -120,7 +122,7 @@ SELECT * FROM (
     CAST(IF(is_gmp, 0, ROUND(mg_gcp_e, 6) * rate_eur) AS STRING) AS Margen_gcp_euros,
     CAST(0 AS STRING) AS Margen_soporte_euros,
     CAST(0 AS STRING) AS Margen_soporte_maps_euros,
-    CAST(swo AS STRING) AS Margen_SWO,
+    CAST(ROUND(mg_gcp_swo + mg_gmp_swo, 6) AS STRING) AS Margen_SWO,
     CAST(IF(is_gmp, 0, tp_ok) AS STRING) AS Total_thirdparty,
     'by_project' AS source
   FROM calc2

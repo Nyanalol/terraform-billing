@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"  # ignora claves del .env no declaradas (GCP_PROJECT_ID, LOG_LEVEL, ENVIRONMENT)
 
 
 def load_country_settings(country_code: str) -> Settings:

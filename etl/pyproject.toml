@@ -15,9 +15,10 @@ dependencies = [
     "structlog>=24.1.0",
     "httpx>=0.24.0",
     "pytz>=2024.1",
-    "pyjks>=20.0.0",
-    "cryptography>=48.0.0",
+    "cryptography>=42.0.0",
 ]
+# Nota: pyjks (lector de keystore .jks, arrastra twofish que requiere compilador C++) eliminado:
+# la auth SF usa la clave PEM de SF_PRIVATE_KEY directamente, no el .jks.
 
 [project.optional-dependencies]
 dev = [

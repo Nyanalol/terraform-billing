@@ -1,5 +1,6 @@
 """BigQuery data loading module."""
 
+import os
 from typing import Any, Optional
 from datetime import datetime
 import structlog
@@ -9,6 +10,16 @@ from google.cloud.bigquery import LoadJobConfig, SourceFormat, SchemaUpdateOptio
 from google.cloud.exceptions import GoogleCloudError
 
 logger = structlog.get_logger(__name__)
+
+
+def _bq_client(project_id: str) -> bigquery.Client:
+    """Cliente BQ. Honra GOOGLE_OAUTH_ACCESS_TOKEN (correr fuera de Cloud Run / ADC distinto);
+    si no está, usa ADC por defecto (Cloud Run, gcloud auth application-default)."""
+    token = os.environ.get("GOOGLE_OAUTH_ACCESS_TOKEN")
+    if token:
+        from google.oauth2.credentials import Credentials
+        return bigquery.Client(project=project_id, credentials=Credentials(token=token))
+    return bigquery.Client(project=project_id)
 
 
 class BigQueryLoader:
@@ -24,7 +35,7 @@ class BigQueryLoader:
         """
         self.project_id = project_id
         self.dataset_id = dataset_id
-        self.client = bigquery.Client(project=project_id)
+        self.client = _bq_client(project_id)
         logger.info(
             "bigquery_loader_initialized",
             project_id=project_id,
