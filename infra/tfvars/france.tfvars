@@ -24,6 +24,8 @@ currency_symbols = {
   "BRL" = "R$"
 }
 
+scheduled_query_service_account = "bigquery-talend@swofr-billing-prod.iam.gserviceaccount.com"
+
 create_service_account = false   # la SA ya existe (creada a mano antes de Terraform)
 create_hmac_key     = false
 

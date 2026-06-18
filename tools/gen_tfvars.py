@@ -74,9 +74,10 @@ def render(country: str, meta: dict) -> str:
     L += _fmt_map("currency_symbols", symbols)
     L.append("")
 
-    if is_new:
-        L.append(f'scheduled_query_service_account = "bigquery-talend@{project}.iam.gserviceaccount.com"')
-        L.append("")
+    # SA de las scheduled queries: bigquery-talend@{project} existe en los 17 proyectos
+    # (verificado vía gcloud iam service-accounts list), también en los antiguos.
+    L.append(f'scheduled_query_service_account = "bigquery-talend@{project}.iam.gserviceaccount.com"')
+    L.append("")
     if not create_sa:
         L.append("create_service_account = false   # la SA ya existe (creada a mano antes de Terraform)")
     if create_hmac:

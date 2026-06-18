@@ -38,15 +38,17 @@ variable "currency_symbols" {
   default     = {}
 }
 variable "ext_maps_services_sheet_url" {
-  description = "URL of the Google Sheet that backs the ext_maps_services external table."
+  description = "URL of the Google Sheet that backs the ext_maps_services external table (lookup global SWO, igual para todos los países)."
   type        = string
-  default     = "https://docs.google.com/spreadsheets/d/XXXX"
+  # URL real tomada del estado desplegado de HK (antes era placeholder XXXX -> external table rota).
+  default = "https://docs.google.com/spreadsheets/d/1U_GZoqKomDdsPfpdR09OKnbjeG5NzPEIGG1iiWE_m0M/edit?usp=sharing"
 }
 
 variable "ext_workspace_sku_sf_sheet_url" {
-  description = "URL of the Google Sheet that backs the ext_workspace_sku_sf external table."
+  description = "URL of the Google Sheet that backs the ext_workspace_sku_sf external table (lookup global SWO, igual para todos los países)."
   type        = string
-  default     = "https://docs.google.com/spreadsheets/d/XXXX"
+  # URL real tomada del estado desplegado de HK (antes era placeholder XXXX -> external table rota).
+  default = "https://docs.google.com/spreadsheets/d/1uPYZPp3iDAv-hojOJN8b1_MHn9qQJ1NVTRUC_eDgLYU/edit?gid=494423533#gid=494423533"
 }
 variable "sku_third_party_migration_service_account" {
   description = "Service account email used to execute the sku_third_party migration scheduled query. Leave empty to use the caller credentials."
