@@ -39,26 +39,26 @@ def _map_soporte_to_sf(
     """Map soporte_new row to Carga_de_lectura__c SF fields."""
     return {
         "OpportunityId__c": row["OpportunityId__c"],
-        "Dominio__c": "",  # Not in soporte output
+        "Dominio__c": row.get("Dominio__c", ""),
         "SKU__c": float(row.get("SKU__c", 0)),
         "CurrencyIsoCode__c": row.get("CurrencyIsoCode__c", ""),
-        "Margen__c": 0.0,  # Not computed in soporte SQL
-        "Cargo_Google__c": 0.0,  # Hardcoded 0 (same as Talend)
+        "Margen__c": float(row.get("Margen__c", 0)),
+        "Cargo_Google__c": 0.0,
         "Anio__c": float(config.billing_year),
         "Mes__c": float(config.billing_month),
         "Fecha_Inicio__c": config.first_day,
         "Fecha_Fin__c": config.last_day,
         "Importe__c": float(row.get("Importe__c", 0)),
         "Descripcion_del_producto__c": row.get("descripcion", ""),
-        "Proyecto__c": "Soporte",  # Hardcoded (same as Talend)
-        "Margen_gmp_euros__c": 0.0,  # Hardcoded 0 (same as Talend)
-        "Margen_gcp_euros__c": 0.0,  # Hardcoded 0 (same as Talend)
-        "Margen_soporte_euros__c": 0.0,  # Not computed in soporte SQL
-        "Margen_soporte_maps_euros__c": 0.0,  # Not computed in soporte SQL
-        "Cargo_Google_Numero__c": 0.0,  # Hardcoded 0 (same as Talend)
+        "Proyecto__c": "Soporte",
+        "Margen_gmp_euros__c": 0.0,
+        "Margen_gcp_euros__c": 0.0,
+        "Margen_soporte_euros__c": float(row.get("Margen_soporte_euros", 0)),
+        "Margen_soporte_maps_euros__c": float(row.get("Margen_soporte_maps_euros", 0)),
+        "Cargo_Google_Numero__c": 0.0,
         "Importe_Numero__c": float(row.get("Importe__c", 0)),
-        "Cargo_Google_GCP__c": 0.0,  # Hardcoded 0 (same as Talend)
-        "Cargo_Google_GMP__c": 0.0,  # Hardcoded 0 (same as Talend)
+        "Cargo_Google_GCP__c": 0.0,
+        "Cargo_Google_GMP__c": 0.0,
     }
 
 
