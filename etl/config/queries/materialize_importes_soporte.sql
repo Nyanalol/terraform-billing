@@ -50,7 +50,8 @@ consumo_acc AS (
 ),
 rates AS (
   SELECT base_currency, target_currency, exchange_rate
-  FROM `{project}.{transformed_dataset}.currencies_exchange_rates`
+  FROM `{currencies_project}.{currencies_dataset}.{currencies_table}`
+  WHERE billing_month = '{invoice_month}'
 ),
 opp AS (
   SELECT Id, billing_account_id__c, billing_account_desc__c, CurrencyIsoCode,
