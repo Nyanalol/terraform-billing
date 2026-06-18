@@ -29,7 +29,26 @@ def empresa_code(clause: str) -> str:
     return "(" + " OR ".join(f"Empresa_IP__c='{c}'" for c in codes) + ")"
 
 
-def render(ctx: str, meta: dict, mode: str) -> str:
+# Divisas SIEMPRE necesarias aunque un país no las facture:
+#   USD = moneda del consumo (el export de Google viene en USD)
+#   EUR = moneda de reporting del consolidado
+BASE_CURRENCIES = ["EUR", "USD"]
+
+
+def global_currencies(data: dict) -> list[str]:
+    """Unión GLOBAL de divisas = USD + EUR + la divisa de facturación de cada país.
+    Los tipos de cambio son globales (USD→HKD no depende del país), así que el job
+    get_currencies_exchange_rates se ejecuta UNA vez con esta lista y produce la matriz
+    completa que sirve a todos. Ver docs (orquestación) para la tabla central en prod."""
+    cur = list(BASE_CURRENCIES)
+    for meta in data.values():
+        c = meta.get("currency")
+        if c and c not in cur:
+            cur.append(c)
+    return cur
+
+
+def render(ctx: str, meta: dict, mode: str, currencies: str) -> str:
     if mode == "prod":
         project = meta["project_id"]
         raw = meta["export_dataset"]
@@ -47,6 +66,11 @@ def render(ctx: str, meta: dict, mode: str) -> str:
         "BQ_TRANSFORMED_DATASET=billing_views",
         "BQ_INPUT_DATASET=billing_views",
         "BQ_WORKSPACE_DATASET=billing_views",
+        "",
+        f"# Divisa de facturación de este país: {meta.get('currency', '?')}.",
+        "# CURRENCIES es la lista GLOBAL (igual en todos los países): el job de currencies",
+        "# se corre UNA sola vez y rellena la matriz completa de tipos de cambio.",
+        f"CURRENCIES={currencies}",
     ]
     return "\n".join(lines) + "\n"
 
@@ -60,12 +84,13 @@ def main():
     write, check = "--write" in args, "--check" in args
 
     data = yaml.safe_load(COUNTRIES.read_text(encoding="utf-8"))
+    currencies = ",".join(global_currencies(data))
     drift = 0
     for ctx_country, meta in sorted(data.items()):
         ctx = meta["talend_context"]
         if only and ctx != only:
             continue
-        content = render(ctx, meta, mode)
+        content = render(ctx, meta, mode, currencies)
         target = ETL / f".env.{ctx}"
         if write:
             target.write_text(content, encoding="utf-8")

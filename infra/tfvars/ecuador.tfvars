@@ -1,3 +1,5 @@
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+
 project_id                     = "swoec-billing-prod"
 country                        = "ecuador"
 billing_cloud_platform_dataset = "BILLINGEC_CLOUD_PLATFORM"
@@ -25,5 +27,5 @@ scheduled_query_service_account = "bigquery-talend@swoec-billing-prod.iam.gservi
 staging_bucket_name = "gcp-billing-process-staging-ec"
 create_hmac_key     = true
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00001fGr57'"

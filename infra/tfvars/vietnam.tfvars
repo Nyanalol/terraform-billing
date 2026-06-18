@@ -1,6 +1,8 @@
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+
 project_id                     = "swovn-billing-prod"
 country                        = "vietnam"
-billing_cloud_platform_dataset = "BILLING_VN_CLOUD_PLATFORM" # OJO: con guion bajo (verificado), no BILLINGVN_...
+billing_cloud_platform_dataset = "BILLING_VN_CLOUD_PLATFORM"
 location                       = "EU"
 
 payer_billing_accounts = {
@@ -25,5 +27,5 @@ scheduled_query_service_account = "bigquery-talend@swovn-billing-prod.iam.gservi
 staging_bucket_name = "gcp-billing-process-staging-vn"
 create_hmac_key     = true
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00001MpLmp'"

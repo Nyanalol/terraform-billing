@@ -1,3 +1,5 @@
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+
 project_id                     = "swoit-billing-prod"
 country                        = "italy"
 billing_cloud_platform_dataset = "BILLINGIT_CLOUD_PLATFORM"
@@ -23,8 +25,7 @@ currency_symbols = {
 
 scheduled_query_service_account = "bigquery-talend@swoit-billing-prod.iam.gserviceaccount.com"
 
-# HMAC bloqueada por org policy (igual que HK). Activar cuando OPS habilite keys.
-create_hmac_key = false
+create_hmac_key     = false
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00000WmUB4'"

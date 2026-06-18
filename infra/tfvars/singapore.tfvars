@@ -1,4 +1,6 @@
-project_id                     = "swosg-billing-prod" # OJO: swosg- (no swo-sg-, que era lo que decia el email de Ops)
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+
+project_id                     = "swosg-billing-prod"
 country                        = "singapore"
 billing_cloud_platform_dataset = "BILLINGSG_CLOUD_PLATFORM"
 location                       = "EU"
@@ -26,5 +28,5 @@ scheduled_query_service_account = "bigquery-talend@swosg-billing-prod.iam.gservi
 staging_bucket_name = "gcp-billing-process-staging-sg"
 create_hmac_key     = true
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00001fGos1'"

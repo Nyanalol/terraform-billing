@@ -1,11 +1,11 @@
-# PAIS ANTIGUO — ESQUELETO para futuro import. NO desplegar tal cual (estructura compatible,
-# pero requiere import de lo existente + reconciliar vistas). Ver docs/MIGRACION_PAISES_ANTIGUOS.md.
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+# PAÍS ANTIGUO / ESQUELETO — NO desplegar tal cual. Ver docs/MIGRACION_PAISES_ANTIGUOS.md.
+
 project_id                     = "swofr-billing-prod"
 country                        = "france"
 billing_cloud_platform_dataset = "BILLINGFR_CLOUD_PLATFORM"
 location                       = "EU"
 
-# TODO: rellenar payer_billing_account_id. Cuentas: SWO FRANCE_EUR, SWO FRANCE_USD
 payer_billing_accounts = {}
 
 currency_symbols = {
@@ -22,8 +22,8 @@ currency_symbols = {
   "BRL" = "R$"
 }
 
-create_service_account = false # la SA ya existe
-create_hmac_key        = false
+create_service_account = false   # la SA ya existe (creada a mano antes de Terraform)
+create_hmac_key     = false
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00000WfIcw'"

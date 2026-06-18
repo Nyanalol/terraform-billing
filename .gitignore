@@ -23,6 +23,13 @@ terraform.tfstate.backup
 # venv local del ETL
 etl/.venv/
 
+# .env del ETL: el base lleva el secreto SF_PRIVATE_KEY (NUNCA versionar).
+# Los .env.<país> son GENERADOS por tools/gen_env.py desde countries.yaml -> tampoco se versionan.
+etl/.env
+etl/.env.*
+etl/tests/.env.*
+!etl/.env.example
+
 # Python bytecode
 __pycache__/
 *.pyc

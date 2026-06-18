@@ -1,12 +1,11 @@
-# PAIS ANTIGUO — ESQUELETO para futuro import. NO desplegar tal cual.
-# OJO: el dataset del export se llama "billing_export" (no BILLING*_CLOUD_PLATFORM).
-# Ver docs/MIGRACION_PAISES_ANTIGUOS.md.
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+# PAÍS ANTIGUO / ESQUELETO — NO desplegar tal cual. Ver docs/MIGRACION_PAISES_ANTIGUOS.md.
+
 project_id                     = "swonl-billing-prod"
 country                        = "netherlands"
 billing_cloud_platform_dataset = "billing_export"
 location                       = "EU"
 
-# TODO: rellenar payer_billing_account_id. Cuentas: SWO NETHERLANDS_EUR, SWO NL_EUR - OCRE
 payer_billing_accounts = {}
 
 currency_symbols = {
@@ -23,8 +22,8 @@ currency_symbols = {
   "BRL" = "R$"
 }
 
-create_service_account = false # la SA ya existe
-create_hmac_key        = false
+create_service_account = false   # la SA ya existe (creada a mano antes de Terraform)
+create_hmac_key     = false
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00000rOsnC'"

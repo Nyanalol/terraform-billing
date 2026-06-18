@@ -1,3 +1,5 @@
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+
 project_id                     = "swous-billing-prod"
 country                        = "usa"
 billing_cloud_platform_dataset = "BILLINGUS_CLOUD_PLATFORM"
@@ -25,5 +27,5 @@ scheduled_query_service_account = "bigquery-talend@swous-billing-prod.iam.gservi
 staging_bucket_name = "gcp-billing-process-staging-us"
 create_hmac_key     = true
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='001IV00000fytRt'"

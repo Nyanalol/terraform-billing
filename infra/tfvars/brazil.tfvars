@@ -1,12 +1,11 @@
-# PAIS ANTIGUO — ESQUELETO para futuro import. NO desplegar tal cual.
-# Sin dataset looker_views (reporting en billing_views). ThirdParty Reseller = FALSE.
-# Ver docs/MIGRACION_PAISES_ANTIGUOS.md.
+# GENERADO por tools/gen_tfvars.py desde countries.yaml — NO editar a mano.
+# PAÍS ANTIGUO / ESQUELETO — NO desplegar tal cual. Ver docs/MIGRACION_PAISES_ANTIGUOS.md.
+
 project_id                     = "ipdb-billing-interno"
 country                        = "brazil"
 billing_cloud_platform_dataset = "BILLING_CLOUD_PLATFORMBRL"
 location                       = "EU"
 
-# TODO: rellenar payer_billing_account_id. Cuentas: SWO BRAZIL_BRL_GCP, SWO BRAZIL_BRL_MAPS
 payer_billing_accounts = {}
 
 currency_symbols = {
@@ -23,11 +22,10 @@ currency_symbols = {
   "BRL" = "R$"
 }
 
-create_service_account = false # la SA ya existe
-create_hmac_key        = false
+create_service_account = false   # la SA ya existe (creada a mano antes de Terraform)
+create_hmac_key     = false
 
-# ThirdParty Reseller Active = FALSE -> sin migracion de sku_third_party.
 sku_third_party_migration_service_account = ""
 
-# Clausula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
+# Cláusula Empresa_IP__c de Salesforce (config Talend). Ver generate-config-billing.ps1.
 sf_empresa_ip = "Empresa_IP__c='0015700001lTrkuAAC'"
