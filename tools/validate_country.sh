@@ -11,17 +11,13 @@ CTX=$1; PROJ=$2; TALDS=${3:-billing_views}
 SB=ip-trabajo-apeinado; M=202605; ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 Q(){ bq --project_id=$SB --location=EU query --use_legacy_sql=false --format=none "$1" 2>&1 | grep -iE 'error' | head -1; }
 
+# NOTA: la ETL lee la config de país de countries.yaml; ETL_MODE=sandbox (default) -> ip-trabajo-apeinado.
+export ETL_MODE=sandbox
 # 1) vista sum_costs -> país (read prod / la vista vive en sandbox)
 Q "CREATE OR REPLACE VIEW \`$SB.billing_views.sum_costs_credits_per_month\` AS SELECT * FROM \`$PROJ.billing_views.sum_costs_credits_per_month\`"
-# 2) .env del país (sandbox)
-python "$ROOT/tools/gen_env.py" --mode sandbox --country "$CTX" --write >/dev/null
-# 3) staging (SF read -> sandbox stg_*)
+# 2) staging (SF read -> sandbox stg_*). Desglosar_Facturas__c ya sale 'SI'/'NO' (fix en el staging).
 ( cd "$ROOT/etl" && .venv/Scripts/python.exe -m src.etl.jobs.mix_and_match_staging --country "$CTX" --month 05 --year 2026 >/dev/null 2>&1 )
-# 4) workaround robusto: Desglosar_Facturas__c BOOL/STRING -> 'SI'/'NO' (bug autodetect del staging)
-Q "CREATE OR REPLACE TABLE \`$SB.billing_views.stg_opportunities\` AS
-   SELECT * REPLACE(CASE WHEN CAST(Desglosar_Facturas__c AS STRING) IN ('true','SI') THEN 'SI' ELSE 'NO' END AS Desglosar_Facturas__c)
-   FROM \`$SB.billing_views.stg_opportunities\`"
-# 5) get_data (-> sandbox bq_group_*)
+# 3) get_data (-> sandbox bq_group_*)
 ( cd "$ROOT/etl" && .venv/Scripts/python.exe -m src.etl.jobs.get_data --country "$CTX" --month 05 --year 2026 >/dev/null 2>&1 )
 # 6) marts (SQL -> sandbox)
 for m in flexibles by_project soporte; do

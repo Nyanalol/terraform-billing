@@ -56,7 +56,8 @@ Parches runtime (NO commitear; son bugs de Ángel, ver abajo) — re-aplicar ant
 ## Validación país-por-país — flujo automatizado (`tools/validate_country.sh`)
 
 Script que hace por país (read-prod / write-sandbox, **sin SF-write**): vista sum_costs → país,
-gen_env, staging, fix BOOL Desglosar, get_data, marts, diff vs Talend.
+staging, get_data, marts, diff vs Talend. La config de país sale de countries.yaml
+(`ETL_MODE=sandbox` → ip-trabajo-apeinado); Desglosar ya sale 'SI'/'NO' del staging (fix aplicado).
 `bash tools/validate_country.sh win_<xx> <project_id>`.
 
 ### Resultados (202605) — flexibles vs Talend `importes_lecturas_temp`

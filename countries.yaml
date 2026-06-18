@@ -6,11 +6,11 @@
 #   - infra/global/terraform.tfvars     (Terraform: mapa del consolidado + overrides)
 #   - etl/.env.<país>                   (Python: config de la ETL, p.ej. .env.win_es)
 #
-# OBJETIVO: que este sea el ÚNICO sitio donde se edita un país. Tres generadores
-# producen el resto (NO editar a mano los ficheros generados):
-#   tools/gen_tfvars.py        -> infra/tfvars/<país>.tfvars       (despliegue por país)
-#   tools/gen_global_tfvars.py -> infra/global/terraform.tfvars    (mapa del consolidado)
-#   tools/gen_env.py           -> etl/.env.<contexto>              (config de la ETL)
+# OBJETIVO: que este sea el ÚNICO sitio donde se edita un país.
+#   Terraform: generadores producen los ficheros (NO editar a mano los generados):
+#     tools/gen_tfvars.py        -> infra/tfvars/<país>.tfvars     (despliegue por país)
+#     tools/gen_global_tfvars.py -> infra/global/terraform.tfvars  (mapa del consolidado)
+#   ETL: lee este fichero DIRECTAMENTE (etl/src/config.py::load_country_settings); no hay .env.<país>.
 # Verificación sin tocar nada: `python tools/gen_tfvars.py --check` (compara por valor
 # semántico, ignora comentarios/orden = lo que ve Terraform).
 #

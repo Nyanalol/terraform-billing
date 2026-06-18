@@ -36,7 +36,7 @@ class BillingAccountsJobConfig(BaseModel):
     billing_month: int
     billing_year: int
 
-    # Loaded from .env.{country}
+    # De countries.yaml vía load_country_settings (modo sandbox/prod por ETL_MODE)
     gcp_project_id: str
     bq_raw_dataset: str
     bq_transformed_dataset: str

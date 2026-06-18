@@ -16,6 +16,7 @@ dependencies = [
     "httpx>=0.24.0",
     "pytz>=2024.1",
     "cryptography>=42.0.0",
+    "pyyaml>=6.0",          # leer countries.yaml (fuente única de config por país)
 ]
 # Nota: pyjks (lector de keystore .jks, arrastra twofish que requiere compilador C++) eliminado:
 # la auth SF usa la clave PEM de SF_PRIVATE_KEY directamente, no el .jks.

@@ -6,7 +6,7 @@ Migración de jobs de facturación de Talend a Python 3.12+ / GCP.
 
 ```
 src/
-├── config.py                           # Pydantic Settings (.env + .env.{country})
+├── config.py                           # Pydantic Settings (.env secretos + countries.yaml por país)
 ├── etl/
 │   ├── main.py                         # Orquestador CLI
 │   ├── extract/
@@ -72,19 +72,21 @@ Job principal de cruce de datos de facturación. Es el más complejo.
 
 ```bash
 uv sync
-cp .env.example .env          # Rellenar credenciales comunes
-cp .env.example .env.win_uk   # Rellenar config de país
+cp .env.example .env          # Rellenar SOLO secretos comunes (claves SF) + ETL_MODE
 ```
 
 ## Configuración
 
-Jerarquía de variables de entorno:
+La config por país se lee de `countries.yaml` (raíz del repo) — fuente única. El `.env` solo
+lleva secretos y el modo:
 
-| Archivo | Contenido |
+| Fuente | Contenido |
 |---------|-----------|
-| `.env` | Comunes: `SF_USER`, `SF_PRIVATE_KEY`, `SF_CLIENT_ID`, `SF_SKUS`, `CURRENCIES` |
-| `.env.{country}` | Por país: `BQ_PROJECT_ID`, `BQ_RAW_DATASET`, `SF_EMPRESA_CODE`, etc. |
+| `.env` | Secretos/comunes: `SF_USER`, `SF_PRIVATE_KEY`, `SF_CLIENT_ID`, `SF_SKUS`; `ETL_MODE` (sandbox/prod) |
+| `countries.yaml` | Por país: `project_id`, `export_dataset`, `sf_empresa_ip`, `currency`, ... (lo lee `load_country_settings`) |
 | CLI args | Runtime: `--country`, `--month`, `--year` |
+
+`ETL_MODE=sandbox` (default) apunta a `ip-trabajo-apeinado`; `prod` al proyecto real del país.
 
 ## Ejecución
 

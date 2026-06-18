@@ -2,16 +2,22 @@
 
 ## 1. `countries.yaml` como fuente única
 
-Toda la configuración por país vive en `countries.yaml`. Tres generadores producen los
-ficheros derivados (que **no** se editan a mano):
+Toda la configuración por país vive en `countries.yaml`. Hay dos consumidores con estrategias
+distintas:
+
+**Terraform** usa ficheros generados (artefacto versionado + `--check`):
 
 | Generador | Produce | Notas |
 |---|---|---|
 | `tools/gen_tfvars.py` | `infra/tfvars/<país>.tfvars` | despliegue por país (versionado: sin secretos) |
 | `tools/gen_global_tfvars.py` | `infra/global/terraform.tfvars` | mapa del consolidado |
-| `tools/gen_env.py` | `etl/.env.<contexto>` | config de la ETL (ignorado: local) |
 
-Flujo: se edita `countries.yaml` → `--write` regenera → `--check` valida que no haya drift.
+**ETL** NO usa generador: `etl/src/config.py::load_country_settings` **lee `countries.yaml`
+directamente**. El `.env` común queda **solo para secretos** (claves SF) y el modo
+(`ETL_MODE=sandbox|prod`). No hay ficheros `.env.<país>`.
+
+Flujo Terraform: se edita `countries.yaml` → `--write` regenera → `--check` valida que no haya drift.
+Flujo ETL: se edita `countries.yaml` y ya (la ETL lo lee en cada ejecución).
 
 `gen_tfvars.py --check` compara **por valor semántico** (ignora comentarios, espacios y orden),
 que es exactamente lo que evalúa Terraform. Hoy los 17 países dan **OK** (los `.tfvars`
@@ -42,8 +48,9 @@ Italia (`create_hmac_key=false`, org policy), Brasil/España (`sku_third_party..
 
 Los tipos de cambio son **globales**: `USD→HKD` no depende del país. Por eso:
 
-- `gen_env.py` emite la **misma** lista `CURRENCIES` en todos los `.env` = unión de las divisas
-  de facturación de los 17 países + USD (moneda del consumo) + EUR (reporting).
+- `load_country_settings` calcula la **misma** lista `CURRENCIES` para todos los países: la
+  unión de las divisas de facturación de los 17 (`currency` en countries.yaml), más USD
+  (consumo) y EUR (reporting). No depende del país que se pase.
 - El job `get_currencies_exchange_rates` se corre **una sola vez** por periodo y produce la
   matriz completa de pares, que sirve a todos.
 
