@@ -1,6 +1,7 @@
 """Salesforce data extraction module."""
 
 import asyncio
+import os
 from typing import Any, Optional
 from datetime import datetime
 import structlog
@@ -12,47 +13,64 @@ logger = structlog.get_logger(__name__)
 
 
 class SalesforceExtractor:
-    """Extract data from Salesforce using OAuth JWT authentication."""
+    """Extract data from Salesforce. Soporta dos modos de auth:
+    - JWT (connected app + cert): username + private_key + client_id.
+    - Usuario/contraseña: username + password (+ security_token). Se usa si hay password
+      (parámetro o env SF_PASSWORD); útil cuando el connected app del JWT no está disponible."""
 
     def __init__(
         self,
         username: str,
-        private_key: str,
-        client_id: str,
+        private_key: Optional[str] = None,
+        client_id: Optional[str] = None,
         sandbox: bool = False,
+        password: Optional[str] = None,
+        security_token: Optional[str] = None,
     ):
         """
-        Initialize Salesforce extractor.
-
         Args:
             username: Salesforce username
-            private_key: Private key for JWT authentication
-            client_id: OAuth client ID
-            sandbox: Whether to use sandbox environment
+            private_key: clave privada para JWT (opcional si se usa usuario/contraseña)
+            client_id: consumer key del connected app para JWT (opcional si usuario/contraseña)
+            sandbox: usar entorno sandbox (domain 'test') en vez de 'login'
+            password: contraseña para auth usuario/contraseña (o env SF_PASSWORD)
+            security_token: token de seguridad SF si el org lo exige (o env SF_SECURITY_TOKEN)
         """
         self.username = username
-        self.private_key = private_key.replace("\\n", "\n")
+        self.private_key = (private_key or "").replace("\\n", "\n")
         self.client_id = client_id
         self.sandbox = sandbox
+        self.password = password
+        self.security_token = security_token
         self.sf: Optional[Salesforce] = None
         self.is_connected = False
 
     async def connect(self) -> None:
-        """Connect to Salesforce using JWT."""
+        """Conecta a Salesforce. Usuario/contraseña si hay password; si no, JWT."""
+        domain = "test" if self.sandbox else "login"
+        password = self.password or os.environ.get("SF_PASSWORD")
         try:
-            logger.info(
-                "connecting_to_salesforce",
-                username=self.username,
-                sandbox=self.sandbox,
-            )
-            # Simple-salesforce doesn't support async natively, run in thread
-            self.sf = await asyncio.to_thread(
-                Salesforce,
-                username=self.username,
-                privatekey=self.private_key,
-                consumer_key=self.client_id,
-                domain="test" if self.sandbox else "login",
-            )
+            if password:
+                token = self.security_token or os.environ.get("SF_SECURITY_TOKEN", "")
+                logger.info("connecting_to_salesforce", username=self.username,
+                            sandbox=self.sandbox, auth="password")
+                self.sf = await asyncio.to_thread(
+                    Salesforce,
+                    username=self.username,
+                    password=password,
+                    security_token=token,
+                    domain=domain,
+                )
+            else:
+                logger.info("connecting_to_salesforce", username=self.username,
+                            sandbox=self.sandbox, auth="jwt")
+                self.sf = await asyncio.to_thread(
+                    Salesforce,
+                    username=self.username,
+                    privatekey=self.private_key,
+                    consumer_key=self.client_id,
+                    domain=domain,
+                )
             self.is_connected = True
             logger.info("salesforce_connected_successfully")
         except SalesforceException as e:
